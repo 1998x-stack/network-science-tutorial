@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>第13章 信息与谣言传播</title>
+    <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+<div class="double-border">
+<div class="container">
+    <div class="sidebar">
+        <h3>🌐 课程目录</h3>
+        <ul class="chapter-list">
+            <li><a href="01.html">第1章 网络科学导论</a></li>
+            <li><a href="02.html">第2章 图论基础</a></li>
+            <li><a href="03.html">第3章 网络基本度量</a></li>
+            <li><a href="04.html">第4章 随机网络模型</a></li>
+            <li><a href="05.html">第5章 小世界网络</a></li>
+            <li><a href="06.html">第6章 无标度网络</a></li>
+            <li><a href="07.html">第7章 度分布与网络异质性</a></li>
+            <li><a href="08.html">第8章 中心性分析</a></li>
+            <li><a href="09.html">第9章 PageRank与链接分析</a></li>
+            <li><a href="10.html">第10章 社团检测（上）</a></li>
+            <li><a href="11.html">第11章 社团检测（下）</a></li>
+            <li><a href="12.html">第12章 网络传播动力学</a></li>
+            <li><a href="13.html" class="active">第13章 信息与谣言传播</a></li>
+            <li><a href="14.html">第14章 网络上的博弈</a></li>
+            <li><a href="15.html">第15章 网络鲁棒性与脆弱性</a></li>
+            <li><a href="16.html">第16章 链路预测</a></li>
+            <li><a href="17.html">第17章 网络可视化</a></li>
+            <li><a href="18.html">第18章 网络数据采集</a></li>
+            <li><a href="19.html">第19章 多层网络</a></li>
+            <li><a href="20.html">第20章 时序与动态网络</a></li>
+            <li><a href="21.html">第21章 网络嵌入与表示学习</a></li>
+            <li><a href="22.html">第22章 图神经网络入门</a></li>
+            <li><a href="23.html">第23章 NetworkX实战</a></li>
+            <li><a href="24.html">第24章 社交网络分析案例</a></li>
+            <li><a href="25.html">第25章 大规模网络分析</a></li>
+            <li><a href="26.html">第26章 网络科学+机器学习</a></li>
+            <li><a href="27.html">第27章 网络科学前沿</a></li>
+            <li><a href="28.html">第28章 综合实战项目</a></li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <h1>第13章 信息与谣言传播</h1>
+
+        <p>大家好，欢迎回到网络科学课程！上一章我们学习了传染病在网络上传播的动力学模型，从SIR到免疫策略。也许你已经在猜测：信息传播是不是也可以用类似的模型来描述？答案是：<strong>部分可以，但问题远没有那么简单</strong>。</p>
+
+        <p>一个新闻在你的朋友圈里被转发，和一个病毒在你的邻居之间传播，表面上看都是"沿着网络边扩散"。但信息有它独特的性质：一条信息你不会感染两次（你已经知道了），但你需要看到它多次才会真正相信（社会增强效应）；你转发一条信息不取决于你和谁接触过，而取决于你看到了多少来自不同朋友的转发。这些差异使得信息传播的建模比疾病传播更加复杂和有趣。</p>
+
+        <h2>信息传播vs疾病传播</h2>
+
+        <p>信息传播和疾病传播虽然有表面的相似性，但在微观机制上有着根本的不同。理解两者的差异是正确建模的前提。</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>维度</th>
+                    <th>疾病传播</th>
+                    <th>信息传播</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>传播机制</td>
+                    <td>一次接触即可感染</td>
+                    <td>可能需要多次曝光才采纳</td>
+                </tr>
+                <tr>
+                    <td>免疫性</td>
+                    <td>康复后免疫（或短期免疫）</td>
+                    <td>"知道"就是永久免疫</td>
+                </tr>
+                <tr>
+                    <td>传播意愿</td>
+                    <td>被动（被病毒复制驱动）</td>
+                    <td>主动（需要决策是否转发）</td>
+                </tr>
+                <tr>
+                    <td>内容变化</td>
+                    <td>病原体遗传序列稳定</td>
+                    <td>信息在传播中会变形、扭曲</td>
+                </tr>
+                <tr>
+                    <td>社会强化</td>
+                    <td>无（一次接触≈多次接触）</td>
+                    <td>显著（多次曝光增加采纳概率）</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>这些差异引出了一个重要的概念——<strong>复杂 contagion（复杂传播）</strong>，由Damon Centola在2010年提出。简单传播（simple contagion）如疾病，一次接触就够了；而复杂传播如新行为采纳、谣言相信度，往往需要来自多个来源的"社会强化"才会发生。</p>
+
+        <div class="highlight">
+            <strong>关键洞察：</strong>Centola在2010年做了一个著名的实验：在一个在线健康社区中推广新的健康行为。他发现，具有高聚类系数（密集的三角形网络结构）的网络比随机网络更容易传播新行为。这与疾病传播完全相反！对于疾病，高聚类会<strong>抑制</strong>传播（因为"重复感染"已感染的邻居是浪费的）；但对于需要社会强化的行为，高聚类<strong>促进</strong>传播（因为我们有更多共享的社交联系来反复确认该行为的价值）。
+        </div>
+
+        <h2>信息级联</h2>
+
+        <p><strong>信息级联（Information Cascade）</strong>描述了这样一种现象：当人们看到前面很多人做出了某个选择时，即使自己的信息与之相悖，也会选择跟随。这在社会心理学中被称为"羊群效应"（herding behavior）。</p>
+
+        <h3>阈值模型</h3>
+
+        <p>信息级联的经典数学模型是<strong>阈值模型（Threshold Model）</strong>，由Mark Granovetter在1978年提出。在这个模型中，每个节点有一个"阈值"φ——当节点看到的采取了某个行为的邻居比例超过φ时，它也会采取该行为。</p>
+
+        <p>最简单的阈值模型运行方式如下：</p>
+
+        <ul>
+            <li>初始化：选择一小部分节点作为"初始采纳者"（seed set）。</li>
+            <li>每一轮，每个尚未采纳的节点检查其邻居中已采纳的比例。</li>
+            <li>如果比例 ≥ φ，该节点也采纳。</li>
+            <li>重复直到没有新的采纳发生。</li>
+        </ul>
+
+        <p>这个简单模型产生了一个丰富的动力学现象。当阈值较低时（φ ≈ 0.1-0.2），一条信息可以轻松引爆整个网络；当阈值较高时（φ ≈ 0.5），传播往往在局部受阻，无法形成大规模的级联。</p>
+
+        <p>阈值模型的一个关键发现是<strong>级联的临界质量（critical mass）</strong>：初始采纳者规模需要超过某个临界值，才能引发全局级联。在随机网络上，这个临界值通常以"相变"的形式出现——初始采纳者的比例从19%跳到20%时，最终采纳规模可能从5%骤升到80%。</p>
+
+        <pre><code># 简单阈值模型的模拟
+import networkx as nx
+import random
+
+def threshold_cascade(G, seeds, threshold=0.25):
+    active = set(seeds)
+    changed = True
+    while changed:
+        changed = False
+        for node in G.nodes():
+            if node in active:
+                continue
+            neighbors = list(G.neighbors(node))
+            if not neighbors:
+                continue
+            active_neighbors = sum(1 for n in neighbors if n in active)
+            if active_neighbors / len(neighbors) >= threshold:
+                active.add(node)
+                changed = True
+    return active
+
+G = nx.erdos_renyi_graph(1000, 0.01)
+seeds = random.sample(list(G.nodes()), 50)
+final_active = threshold_cascade(G, seeds, threshold=0.25)
+print(f"初始种子: 50 → 最终活跃: {len(final_active)}")</code></pre>
+
+        <h3>为什么会发生信息级联</h3>
+
+        <p>信息级联的发生有三个条件：</p>
+
+        <ul>
+            <li><strong>观察到的行为序列</strong>：人们能看到前面的人做了什么。</li>
+            <li><strong>信号质量递减</strong>：越往后的人，对自己私人信息的信心越容易被公共信息（前面人的行为）压倒。</li>
+            <li><strong>决策的序贯性</strong>：决策是依次做出的，而非同时做出。</li>
+        </ul>
+
+        <p>一个经典的例子是餐厅选择：你看到一家餐厅门口排了很长的队，就认为这家一定好吃，尽管你可能有不同的私人信息（比如朋友推荐了另一家）。这就是信息级联——人们忽略了自己的私人信号，追随了公共行为。</p>
+
+        <div class="warning">
+            <strong>踩坑故事：</strong>国内某电商平台的"爆品推荐"系统曾踩过信息级联的坑。系统根据销量排序推荐商品，这本是合理的。但问题在于，用户的购买决策会同时受到"销量"和"推荐位置"的影响——被推荐的商品销量更高，销量更高反过来让它保持在推荐位。结果导致少数几款商品垄断了推荐流量，大量质量更好的新产品永远没有出头之日。这个"富者愈富"的马太效应正是信息级联在商业系统中的负面表现。
+        </div>
+
+        <h2>弱关系的力量</h2>
+
+        <p>1973年，社会学家Mark Granovetter发表了一篇里程碑式的论文——《弱关系的力量》（The Strength of Weak Ties）。这篇论文的洞察不仅改变了社会学，也成为了网络科学的核心概念之一。</p>
+
+        <p>Granovetter将人际关系分为<strong>强关系</strong>（如家人、密友）和<strong>弱关系</strong>（如普通朋友、同事、熟人）。他发现，在找工作的过程中，人们通过弱关系获得有效信息的机会<strong>远大于</strong>通过强关系。为什么呢？</p>
+
+        <p>答案在于网络结构。你的强关系往往也彼此认识——他们形成一个密集的社团，因此共享相似的社交圈和信息源。这样一来，强关系带来的信息<strong>冗余度</strong>很高——你知道的基本上他们也知道了。相反，弱关系往往连接着你所在的社团和另一个完全不同的社团——它们是<strong>桥梁</strong>（bridge edges），携带了来自远方的新信息。</p>
+
+        <p>在信息传播的语境下，弱关系扮演了<strong>信息高速公路</strong>的角色。如果没有弱关系，信息会在各个社团内部打转，无法跨社团传播。这就是为什么"六度分隔"能够成立——每一度之间的跳跃，大概率是通过弱关系实现的。</p>
+
+        <div class="highlight">
+            <strong>网络科学的视角：</strong>从网络度量的角度看，"弱关系"就是高介数中心性的边。而Granovetter本人可能没有预料到的是，他的"弱关系假说"可以用网络科学的语言精确表述：在社交网络中，边介数（edge betweenness）和边的强度（由互动频率定义）呈<strong>负相关</strong>——最关键的"桥梁"往往也是强度最弱的边。这使得一旦弱关系断裂，整个网络的连通性可能遭受严重破坏。
+        </div>
+
+        <h2>影响力最大化</h2>
+
+        <p>给定一个传播模型（如阈值模型或独立级联模型），如果我们想最大化信息的传播范围，应该选择哪些节点作为初始"种子"？这就是<strong>影响力最大化（Influence Maximization）</strong>问题，由Pedro Domingos和Matt Richardson在2001年提出，后来由David Kempe、Jon Kleinberg和Eva Tardos在2003年给出了优雅的理论框架。</p>
+
+        <h3>Kempe-Kleinberg-Tardos框架</h3>
+
+        <p>Kempe等人的核心贡献是证明了影响力最大化问题是一个<strong>子模函数（submodular function）</strong>最大化问题。子模性有一个直观的经济学解释——"边际收益递减"：在冷启动阶段，每增加一个种子节点能带来大量的新增感染；但种子多了之后，新增种子带来的边际影响越来越小。</p>
+
+        <p>子模性带来了一个极其重要的性质：<strong>贪心算法</strong>——每次选择当前能使传播范围增加最多的节点加入种子集——能够保证最终结果至少是最优解的 (1 - 1/e) ≈ 63%。这是理论计算机科学中一个经典的结果：即使问题是NP难的，贪心算法也能提供可证明的近似保证。</p>
+
+        <pre><code># 贪心算法框架（简化）
+import networkx as nx
+import random
+
+def greedy_influence_max(G, model, k):
+    """贪心选择k个种子节点"""
+    seeds = set()
+    for _ in range(k):
+        best_gain = 0
+        best_node = None
+        for node in G.nodes():
+            if node in seeds:
+                continue
+            # 模拟添加该节点后的传播范围
+            candidate = seeds | {node}
+            spread = simulate_spread(G, model, candidate)
+            gain = spread - len(simulate_spread(G, model, seeds))
+            if gain > best_gain:
+                best_gain = gain
+                best_node = node
+        seeds.add(best_node)
+    return seeds</code></pre>
+
+        <p>贪心算法的缺陷在于效率——每选一个种子都需要对所有候选节点进行蒙特卡洛模拟，对于大规模网络这几乎是不可行的。后续研究提出了大量改进：从CELF（利用子模性加速贪心选择）到RIS（Reverse Influence Sampling，一种基于随机逆向采样的方法），使得影响力最大化能够扩展到千万级节点的网络。</p>
+
+        <h3>应用场景</h3>
+
+        <p>影响力最大化在多个领域有着直接的应用：</p>
+        <ul>
+            <li><strong>病毒式营销</strong>：选择最有影响力的用户分发试用产品，期望引发连锁推荐。</li>
+            <li><strong>公共卫生宣传</strong>：在特定人群中推广健康行为（如疫苗接种、戒烟）。</li>
+            <li><strong>政治动员</strong>：在选举前针对关键选民进行上门宣讲。</li>
+            <li><strong>谣言遏制</strong>：反过来用——部署"真相种子"来对抗谣言传播。</li>
+        </ul>
+
+        <h2>社交媒体中的谣言</h2>
+
+        <p>信息传播研究的一个紧迫的社会议题是<strong>谣言在社交媒体上的传播</strong>。Facebook、Twitter、微信等平台提供了前所未有的信息流通速度，但也为虚假信息的传播创造了条件。</p>
+
+        <h3>回音室与过滤气泡</h3>
+
+        <p>社交媒体中存在着两种相互加强的现象：</p>
+
+        <ul>
+            <li><strong>回音室（Echo Chamber）</strong>：人们倾向于与观点相近的人互动，导致同类信息在封闭圈子内反复回荡、不断强化。</li>
+            <li><strong>过滤气泡（Filter Bubble）</strong>：推荐算法根据用户历史行为"投其所好"，逐渐将用户隔离在与其既有观点一致的信息环境中。</li>
+        </ul>
+
+        <p>从网络科学的角度看，回音室效应是<strong>同质性（homophily）</strong>和<strong>社团结构</strong>共同作用的结果。如果社交网络本身就被划分为高度极化、内部紧密的社团，信息就几乎无法跨越意识形态的鸿沟——即使在结构上有弱关系桥接，情绪和信任问题也会阻碍信息的有效传递。</p>
+
+        <div class="tip">
+            <strong>思考题：</strong>"辟谣"为何常常效果不佳？从信息传播的角度看，辟谣信息本质上是一条<strong>新的信息</strong>，它需要穿透回音室、跨越社团边界、并克服"先入为主"的认知偏差。更糟糕的是，辟谣信息往往只在相信谣言的人群的<strong>外围</strong>传播，无法抵达核心的信奉者。有效的辟谣需要利用目标社团内部的权威节点作为传播的中继——这就是影响力最大化思想在虚假信息治理中的应用。
+        </div>
+
+        <h3>谣言的检测与缓解</h3>
+
+        <p>基于网络科学的方法可以辅助谣言的检测和缓解：</p>
+
+        <ul>
+            <li><strong>传播模式分析</strong>：虚假信息的传播模式往往不同于真实信息——谣言通常传播得更快、更广，且呈现出更明显的"爆发式"增长曲线。</li>
+            <li><strong>源点定位</strong>：在网络上观察到传播的痕迹后，可以通过反向推理算法（如基于谣言中心的估计器）定位谣言的来源。这在法律取证中有着重要应用。</li>
+            <li><strong>免疫式干预</strong>：类似于疾病传播中的熟人免疫策略，在信息网络中，识别并接种"关键辟谣节点"可以有效阻断虚假信息的扩散。</li>
+        </ul>
+
+        <p>本章我们从信息传播与疾病传播的根本差异出发，探讨了复杂传播理论、信息级联的阈值模型、弱关系在信息扩散中的关键作用，以及影响力最大化这一兼具理论和应用价值的问题。在社交媒体的时代背景下，这些知识不仅是学术兴趣，更是理解和应对"后真相"时代信息挑战的必备工具。</p>
+
+        <p>下一章，我们将转向另一个迷人的主题——<strong>网络上的博弈</strong>。当自私的个体在网络中互动时，合作是如何涌现的？网络结构是否能促进合作？我们第14章见！</p>
+
+        <div class="footer-nav">
+            <a href="12.html">← 上一章</a>
+            <a href="index.html">📖 返回目录</a>
+            <a href="14.html">下一章 →</a>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

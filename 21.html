@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>第21章 网络嵌入与表示学习</title>
+    <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+<div class="double-border">
+<div class="container">
+    <div class="sidebar">
+        <h3>🧊 课程目录</h3>
+        <ul class="chapter-list">
+            <li><a href="01.html">第1章 网络科学导论</a></li>
+            <li><a href="02.html">第2章 图论基础</a></li>
+            <li><a href="03.html">第3章 网络基本度量</a></li>
+            <li><a href="04.html">第4章 随机网络模型</a></li>
+            <li><a href="05.html">第5章 小世界网络</a></li>
+            <li><a href="06.html">第6章 无标度网络</a></li>
+            <li><a href="07.html">第7章 度分布与网络异质性</a></li>
+            <li><a href="08.html">第8章 中心性分析</a></li>
+            <li><a href="09.html">第9章 PageRank与链接分析</a></li>
+            <li><a href="10.html">第10章 社团检测（上）</a></li>
+            <li><a href="11.html">第11章 社团检测（下）</a></li>
+            <li><a href="12.html">第12章 网络传播动力学</a></li>
+            <li><a href="13.html">第13章 信息与谣言传播</a></li>
+            <li><a href="14.html">第14章 网络上的博弈</a></li>
+            <li><a href="15.html">第15章 网络鲁棒性与脆弱性</a></li>
+            <li><a href="16.html">第16章 链路预测</a></li>
+            <li><a href="17.html">第17章 网络可视化</a></li>
+            <li><a href="18.html">第18章 网络数据采集</a></li>
+            <li><a href="19.html">第19章 多层网络</a></li>
+            <li><a href="20.html">第20章 时序与动态网络</a></li>
+            <li><a href="21.html" class="active">第21章 网络嵌入与表示学习</a></li>
+            <li><a href="22.html">第22章 图神经网络入门</a></li>
+            <li><a href="23.html">第23章 NetworkX实战</a></li>
+            <li><a href="24.html">第24章 社交网络分析案例</a></li>
+            <li><a href="25.html">第25章 大规模网络分析</a></li>
+            <li><a href="26.html">第26章 网络科学+机器学习</a></li>
+            <li><a href="27.html">第27章 网络科学前沿</a></li>
+            <li><a href="28.html">第28章 综合实战项目</a></li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <h1>第21章 网络嵌入与表示学习</h1>
+
+        <p>同学们好！从本章开始，我们的视角将从"网络分析"逐渐转向"网络+机器学习"的融合方向。前面这么多章，我们一直在手动设计和计算各种网络特征——度分布、聚类系数、中心性、社团结构……这些都是"特征工程"的范畴。但如果你想让机器自动从网络结构中学习有用的表示呢？这就是本章的核心问题：<strong>网络嵌入</strong>（Network Embedding）。</p>
+
+        <h2>从特征工程到表示学习</h2>
+
+        <p>在传统的网络分析中，如果我们要完成一个节点分类任务（比如：判断一个社交网络用户是否会购买某产品），我们通常的做法是：</p>
+
+        <ol>
+            <li>计算每个节点的各种拓扑特征（度、聚类系数、PageRank、介数中心性……）</li>
+            <li>将这些特征拼接成一个特征向量</li>
+            <li>将这个特征向量喂给一个分类器（如SVM、随机森林）</li>
+        </ol>
+
+        <p>这种方式有什么问题？首先，特征的设计完全依赖人工经验——你选择了哪些特征，就限定了模型能学到的信息边界，可能会遗漏重要的结构模式。其次，这些特征之间通常高度相关（比如度和介数中心性有很强的正相关性），冗余信息会降低模型的效率。最后，这种特征工程的方式很难推广到新的任务——为一类网络精心设计的特征在另一类网络上可能完全不适用。</p>
+
+        <p><strong>网络嵌入</strong>（又叫图表示学习）的目标是：<strong>自动学习每个节点的低维稠密向量表示，使得这个向量能够保留网络的结构信息</strong>。就像一个词嵌入（word2vec）将单词映射到语义空间一样，节点嵌入将节点映射到"结构空间"——在这个空间中，结构相似的节点距离更近。</p>
+
+        <div class="highlight">
+            <strong>关键直觉：</strong>网络嵌入的核心思想是"分布假设的网络版"——在自然语言处理中，"一个词的含义由其上下文决定"；在网络嵌入中，"一个节点的角色由其邻居决定"。如果你能找到一种方式让"邻居相似"的节点具有相似的向量表示，那么这个向量就自然地编码了节点的结构信息。
+        </div>
+
+        <p>网络嵌入方法大致可以分为三类：基于矩阵分解的方法（如拉普拉斯特征映射）、基于随机游走的方法（如DeepWalk和Node2Vec）、以及基于图神经网络的方法（下一章的内容）。本章我们重点讲解基于随机游走的浅层嵌入方法。</p>
+
+        <h2>DeepWalk</h2>
+
+        <p>DeepWalk 是网络嵌入领域的开创性工作之一，由Bryan Perozzi等人在2014年提出。它的核心思想非常优雅：既然word2vec能从文本序列中学习单词的语义表示，那我们能不能把网络中的节点"翻译"成某种"序列"？答案是肯定的——随机游走（Random Walk）。</p>
+
+        <h3>算法流程</h3>
+
+        <p>DeepWalk 的流程可以分为三步：</p>
+
+        <p><strong>第一步：生成随机游走序列。</strong>从每个节点出发，进行若干次固定长度的随机游走。每次游走时，从当前节点的邻居中随机选择一个作为下一步。这就像是让一个醉汉在网络上乱逛，记录下他经过的节点序列。</p>
+
+        <p><strong>第二步：构造"节点-上下文"对。</strong>类似于word2vec中的SkipGram模型，在每个游走序列中，对每个中心节点，将其前后窗口大小内的节点视为"上下文"——就像是在处理一个"节点句子"。</p>
+
+        <p><strong>第三步：优化嵌入。</strong>通过最大化"给定中心节点，预测其上下文节点"的对数似然，来更新节点的嵌入向量。优化方法通常使用负采样（Negative Sampling）来加速计算。</p>
+
+        <pre><code># DeepWalk的简化实现
+import networkx as nx
+import numpy as np
+from random import choice
+
+def random_walk(graph, start_node, walk_length):
+    """从start_node出发，生成一条长度为walk_length的随机游走"""
+    walk = [start_node]
+    for _ in range(walk_length - 1):
+        current = walk[-1]
+        neighbors = list(graph.neighbors(current))
+        if not neighbors:
+            break
+        walk.append(choice(neighbors))
+    return walk
+
+def generate_walks(graph, num_walks, walk_length):
+    """为每个节点生成num_walks条随机游走"""
+    walks = []
+    nodes = list(graph.nodes())
+    for _ in range(num_walks):
+        np.random.shuffle(nodes)
+        for node in nodes:
+            walks.append(random_walk(graph, node, walk_length))
+    return walks
+
+# 用法示例
+G = nx.karate_club_graph()
+walks = generate_walks(G, num_walks=10, walk_length=40)
+print(f"生成了 {len(walks)} 条游走序列")
+print(f"第一条序列前10个节点: {walks[0][:10]}")
+# 然后将walks传递给word2vec模型训练嵌入
+</code></pre>
+
+        <p>这个简单的随机游走策略背后有一个深刻的道理：它等价于在网络上进行一种<strong>节点频率的谱分解</strong>。Perozzi等人的实验表明，即使是最简单的均匀随机游走，学到的节点嵌入也在节点分类任务上显著优于手工特征。</p>
+
+        <h3>DeepWalk为什么有效？</h3>
+
+        <p>直觉上来说，随机游走捕捉的是节点的"社区上下文"——两个节点如果经常在同一条随机游走中共同出现，它们在网络中就是"接近"的（可能通过多条路径相连）。这种接近性既包含了直接的邻居关系（一阶接近性），也包含了间接的邻居关系（二阶甚至更高阶的接近性）。这正是DeepWalk区别于单纯做邻接矩阵分解的关键——它编码了更丰富的结构信息。</p>
+
+        <h2>Node2Vec</h2>
+
+        <p>DeepWalk 虽然效果不错，但有一个明显的缺点：随机游走完全随机，无法控制游走的探索模式。这就引出了 Node2Vec——2016年由Grover和Leskovec在KDD上发表的改进方法。</p>
+
+        <h3>有偏随机游走</h3>
+
+        <p>Node2Vec 的核心创新是在随机游走中引入了两个可调参数 p 和 q，用来控制游走的"探索风格"：</p>
+
+        <ul>
+            <li><strong>返回参数 p（Return parameter）</strong>：控制重新访问上一个节点的概率。p 越小，游走越倾向于"回头"（回到上一步的节点），这会让游走更接近BFS（广度优先搜索）的风格。</li>
+            <li><strong>进出参数 q（In-out parameter）</strong>：控制游走是倾向于在局部徘徊还是向外探索。q < 1 时，游走更倾向于远离起始节点（近似DFS，深度优先搜索）；q > 1 时，游走更倾向于在局部邻居中探索（近似BFS）。</li>
+        </ul>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>参数设置</th>
+                    <th>探索风格</th>
+                    <th>等价于</th>
+                    <th>嵌入特性</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>p=1, q=1</td>
+                    <td>均匀随机游走</td>
+                    <td>DeepWalk</td>
+                    <td>社区相似性</td>
+                </tr>
+                <tr>
+                    <td>p=0.5, q=2</td>
+                    <td>偏向BFS</td>
+                    <td>局部邻居优先</td>
+                    <td>结构等价性（structural equivalence）</td>
+                </tr>
+                <tr>
+                    <td>p=2, q=0.5</td>
+                    <td>偏向DFS</td>
+                    <td>远距离探索</td>
+                    <td>角色等价性（role equivalence）</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>为什么这种灵活性重要？考虑一个社交网络。如果我想识别具有相似<strong>社区归属</strong>的用户（即属于同一个朋友圈的人），我需要BFS风格的嵌入——关注局部邻居的重叠度。但如果我想识别具有相似<strong>结构角色</strong>的用户（比如两个不同城市里都是"意见领袖"的人），我就需要DFS风格的嵌入——关注远距离的结构相似性。Node2Vec通过调整 p 和 q，统一了这两种需求。</p>
+
+        <pre><code># Node2Vec的有偏游走核心逻辑（p和q的调整）
+import networkx as nx
+import numpy as np
+from random import choices
+
+def biased_random_walk_step(graph, current, previous, p, q):
+    """Node2Vec有偏游走的单步转移"""
+    neighbors = list(graph.neighbors(current))
+    if previous is None or len(neighbors) == 0:
+        return choice(neighbors) if neighbors else current
+
+    weights = []
+    for nxt in neighbors:
+        if nxt == previous:
+            # 回到上一个节点：权重1/p
+            weights.append(1.0 / p)
+        elif graph.has_edge(nxt, previous):
+            # 与上一个节点也是邻居：权重1
+            weights.append(1.0)
+        else:
+            # 远离上一个节点：权重1/q
+            weights.append(1.0 / q)
+
+    return choices(neighbors, weights=weights, k=1)[0]
+</code></pre>
+
+        <h3>任务导向的嵌入</h3>
+
+        <p>Node2Vec 的一个实用技巧是：如果你对目标任务有一定了解，可以通过<strong>半监督方式</strong>来选择 p 和 q。比如，对于链接预测任务，你可以在验证集上搜索最优的 p 和 q 组合。通常来说，对于同质性较强的网络（同一社团的节点密集连接），q 值小一些（偏向DFS）效果好；对于结构等价性重要的网络（如蛋白质功能预测），p 值小一些（偏向BFS）效果好。</p>
+
+        <h2>结构嵌入——struc2vec</h2>
+
+        <p>DeepWalk 和 Node2Vec 都遵循同一个范式：<strong>相近的节点应有相近的嵌入。</strong>但在很多实际场景中，"相近"的定义不应该是"走得近"，而应该是"长得像"——即结构角色的相似性，而不论它们在网络中的距离有多远。</p>
+
+        <p>举个例子。在一个公司的组织架构网络中，不同部门的小组长可能处在网络的不同位置，但他们的"结构角色"是相似的——都是连接基层员工与管理层的桥梁。DeepWalk和Node2Vec很难捕捉这种跨位置的结构相似性，因为它们依赖的随机游走天然偏向地理位置的接近性。</p>
+
+        <p>struc2vec（Ribeiro等，2017年）就是为了解决这个问题而提出的。它的核心思路是：构建一个<strong>结构相似性层次图</strong>，在这个新图中，如果两个节点在原始网络中的度序列相似，它们之间就有边相连。然后在这个新图上运行随机游走+SkipGram。</p>
+
+        <p>具体来说，struc2vec 定义了 k 跳范围内的度序列距离：两个节点在 k 跳邻居内的度序列差异越小，它们的结构角色就越相似。通过在不同 k 值上分别构建相似度图，struc2vec 可以捕捉从局部（1跳）到全局（k跳）的多尺度结构相似性。</p>
+
+        <div class="tip">
+            <strong>何时用struc2vec？</strong>struc2vec的计算开销远大于DeepWalk和Node2Vec（O(N²logN) vs O(N)），所以它不是万能的。我推荐在以下场景尝试使用：(1) 节点分类任务中类别标签与"位置"无关、与"角色"有关（如判断一个节点是"桥梁"还是"枢纽"）；(2) 网络非常大但标签数据很少时；(3) 跨网络的节点类比任务（如两个不同社交网络中找出具有相似影响力的用户）。
+        </div>
+
+        <h2>嵌入评估</h2>
+
+        <p>学好了嵌入，怎么评估它的质量呢？通常从三个角度来评价：</p>
+
+        <h3>任务驱动评估</h3>
+
+        <p><strong>节点分类</strong>：将学到的节点嵌入作为特征，训练一个分类器（如逻辑回归），在标注数据上测试分类准确率。这是最常见的评估方式。</p>
+
+        <p><strong>链接预测</strong>：对每对节点 (u, v)，用它们的嵌入向量构造一个特征（如内积或余弦相似度），然后预测它们之间是否存在边。在测试集上与随机基线比较。</p>
+
+        <p><strong>聚类</strong>：对嵌入向量做K-means聚类，用NMI（归一化互信息）或ARI（调整兰德指数）与已知的社团划分进行比较。</p>
+
+        <h3>可视化评估</h3>
+
+        <p>将高维嵌入向量用t-SNE或UMAP降维到2D，然后按节点标签着色。如果同类节点在2D投影中形成紧密的簇，说明嵌入保留了区分不同类别的结构信息。可视化虽然不够"定量"，但能提供很好的直觉判断——一个"一团浆糊"的嵌入图通常意味着模型参数或数据有问题。</p>
+
+        <pre><code># 用t-SNE可视化节点嵌入
+from sklearn.manifold import TSNE
+import matplotlib.pyplot as plt
+
+def visualize_embeddings(embeddings, labels, title="Node Embeddings"):
+    """embeddings: dict {node: vector}, labels: dict {node: category}"""
+    nodes = list(embeddings.keys())
+    X = np.array([embeddings[n] for n in nodes])
+    y = [labels.get(n, -1) for n in nodes]
+
+    # t-SNE降维到2D
+    X_2d = TSNE(n_components=2, random_state=42).fit_transform(X)
+
+    # 绘图
+    plt.figure(figsize=(10, 8))
+    scatter = plt.scatter(X_2d[:, 0], X_2d[:, 1], c=y, cmap='tab10', alpha=0.7)
+    plt.colorbar(scatter)
+    plt.title(title)
+    plt.show()
+</code></pre>
+
+        <h2>工具与实践</h2>
+
+        <p>在实际项目中，我们通常不会从零实现嵌入算法，而是使用成熟的库。这里推荐两个最常用的实践方案。</p>
+
+        <h3>Gensim + NetworkX</h3>
+
+        <p>最轻量级的方式是用 NetworkX 生成随机游走序列，然后用 Gensim 的 Word2Vec 来训练嵌入。Gensim 的 Word2Vec 实现效率很高，支持多线程训练，而且内置了负采样和层次Softmax。</p>
+
+        <pre><code># 完整流程：NetworkX + Gensim 做Node2Vec
+import networkx as nx
+from gensim.models import Word2Vec
+
+# 1. 加载或生成图
+G = nx.karate_club_graph()
+walks = generate_walks(G, num_walks=10, walk_length=40)  # 假设已实现
+
+# 2. 训练嵌入
+# walks中的每个元素是一个节点ID列表（字符串形式）
+walk_strs = [[str(n) for n in walk] for walk in walks]
+model = Word2Vec(
+    sentences=walk_strs,
+    vector_size=128,      # 嵌入维度
+    window=5,             # SkipGram窗口大小
+    min_count=0,
+    sg=1,                 # SkipGram
+    workers=4,
+    epochs=5
+)
+
+# 3. 获取节点嵌入
+embedding = model.wv['0']  # 节点"0"的128维向量
+print(f"嵌入维度: {embedding.shape}")
+
+# 4. 找相似节点
+similar = model.wv.most_similar('0', topn=5)
+print("与节点0最相似的节点:", similar)
+</code></pre>
+
+        <h3>Node2Vec 专用库</h3>
+
+        <p>如果需要完整的有偏游走实现，推荐使用专门的 Node2Vec 包（<code>pip install node2vec</code>），它直接基于 NetworkX 和 Gensim，API 非常简洁：</p>
+
+        <pre><code>from node2vec import Node2Vec
+
+# 初始化Node2Vec
+node2vec = Node2Vec(G, dimensions=128, walk_length=30,
+                    num_walks=200, p=0.5, q=2.0, workers=4)
+
+# 训练
+model = node2vec.fit(window=5, min_count=1, batch_words=4)
+
+# 获取嵌入
+emb = model.wv
+node_vector = emb['node_id']
+</code></pre>
+
+        <div class="warning">
+            <strong>踩坑故事：</strong>我在实际项目中使用 Node2Vec 时犯过一个低级错误——没有对节点 ID 做类型统一。NetworkX 在加载某些数据集时默认将数字 ID 当作整数，而 Word2Vec 要求输入为字符串。这个类型不匹配导致所有节点都被 Word2Vec 视为"min_count 过滤"而丢弃，结果训练出来的嵌入全为零向量。我花了整整半天才找到问题所在。如果你在训练后发现所有向量都是零，第一件事就是检查数据类型。
+        </div>
+
+        <p>嵌入方法对比总结：</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>方法</th>
+                    <th>年份</th>
+                    <th>核心机制</th>
+                    <th>优势</th>
+                    <th>劣势</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>DeepWalk</td>
+                    <td>2014</td>
+                    <td>均匀随机游走 + SkipGram</td>
+                    <td>简单、可扩展</td>
+                    <td>无法调优探索模式</td>
+                </tr>
+                <tr>
+                    <td>Node2Vec</td>
+                    <td>2016</td>
+                    <td>有偏随机游走 (p, q)</td>
+                    <td>灵活控制BFS/DFS</td>
+                    <td>需要调参、对p/q敏感</td>
+                </tr>
+                <tr>
+                    <td>struc2vec</td>
+                    <td>2017</td>
+                    <td>结构相似度层次图</td>
+                    <td>捕捉远程结构角色</td>
+                    <td>计算开销大</td>
+                </tr>
+                <tr>
+                    <td>LINE</td>
+                    <td>2015</td>
+                    <td>一阶+二阶邻近度</td>
+                    <td>理论清晰、效率高</td>
+                    <td>缺乏高阶邻居信息</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>本章我们介绍了网络嵌入的基本思想——让机器自动学习节点的低维向量表示。从DeepWalk的均匀游走到Node2Vec的有偏控制，再到struc2vec的结构角色识别，这些方法在2014-2017年间推动了网络分析的范式转变。但浅层嵌入方法有一个共同的局限：它们无法利用节点的<strong>属性信息</strong>（如果节点有文本描述或其他特征），也无法很好地泛化到未见过的节点。解决这些问题的方案正是下一章的内容——<strong>图神经网络</strong>（GNN）。它将深度学习和图结构数据结合在一起，是目前网络科学中最活跃的研究方向之一。我们第22章见！</p>
+
+        <div class="footer-nav">
+            <a href="20.html">← 上一章</a>
+            <a href="index.html">📖 返回目录</a>
+            <a href="22.html">下一章 →</a>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

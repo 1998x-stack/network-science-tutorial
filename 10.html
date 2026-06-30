@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>第10章 社团检测（上）</title>
+    <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+<div class="double-border">
+<div class="container">
+    <div class="sidebar">
+        <h3>🌐 课程目录</h3>
+        <ul class="chapter-list">
+            <li><a href="01.html">第1章 网络科学导论</a></li>
+            <li><a href="02.html">第2章 图论基础</a></li>
+            <li><a href="03.html">第3章 网络基本度量</a></li>
+            <li><a href="04.html">第4章 随机网络模型</a></li>
+            <li><a href="05.html">第5章 小世界网络</a></li>
+            <li><a href="06.html">第6章 无标度网络</a></li>
+            <li><a href="07.html">第7章 度分布与网络异质性</a></li>
+            <li><a href="08.html">第8章 中心性分析</a></li>
+            <li><a href="09.html">第9章 PageRank与链接分析</a></li>
+            <li><a href="10.html" class="active">第10章 社团检测（上）</a></li>
+            <li><a href="11.html">第11章 社团检测（下）</a></li>
+            <li><a href="12.html">第12章 网络传播动力学</a></li>
+            <li><a href="13.html">第13章 信息与谣言传播</a></li>
+            <li><a href="14.html">第14章 网络上的博弈</a></li>
+            <li><a href="15.html">第15章 网络鲁棒性与脆弱性</a></li>
+            <li><a href="16.html">第16章 链路预测</a></li>
+            <li><a href="17.html">第17章 网络可视化</a></li>
+            <li><a href="18.html">第18章 网络数据采集</a></li>
+            <li><a href="19.html">第19章 多层网络</a></li>
+            <li><a href="20.html">第20章 时序与动态网络</a></li>
+            <li><a href="21.html">第21章 网络嵌入与表示学习</a></li>
+            <li><a href="22.html">第22章 图神经网络入门</a></li>
+            <li><a href="23.html">第23章 NetworkX实战</a></li>
+            <li><a href="24.html">第24章 社交网络分析案例</a></li>
+            <li><a href="25.html">第25章 大规模网络分析</a></li>
+            <li><a href="26.html">第26章 网络科学+机器学习</a></li>
+            <li><a href="27.html">第27章 网络科学前沿</a></li>
+            <li><a href="28.html">第28章 综合实战项目</a></li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <h1>第10章 社团检测（上）</h1>
+
+        <p>大家好，欢迎回到网络科学课程！在上一章中，我们学习了PageRank——它从全局视角对所有节点进行重要性排序。但网络的魅力不只在于找出"最关键"的节点，更在于发现其中隐藏的<strong>群落结构</strong>。</p>
+
+        <p>想象一下：你在Facebook上有三个不同的朋友群——大学同学、同事和徒步爱好者。这三个群内部连接紧密，但群之间的连接相对稀疏。这种"物以类聚，人以群分"的现象就是网络中的<strong>社团（Community）</strong>结构。自动发现这些社团，正是<strong>社团检测（Community Detection）</strong>的任务。本章和下章将用两讲的篇幅深入探讨这个核心话题。</p>
+
+        <h2>什么是社团</h2>
+
+        <p>在直观层面上，社团就是网络中"内部连接紧密、外部连接稀疏"的一组节点。但如果我们试图精确化这个定义，就会发现它并没有一个放之四海而皆准的数学定义。</p>
+
+        <p>常见的定义方式有三种：</p>
+
+        <ul>
+            <li><strong>局部定义</strong>：一个社团内的任意两个节点之间的边密度明显高于社团之间的边密度。</li>
+            <li><strong>全局定义</strong>：将网络划分成若干组，使得某个全局目标函数（如模块度）最大化。</li>
+            <li><strong>基于相似度的定义</strong>：根据节点的某种相似度度量进行聚类。</li>
+        </ul>
+
+        <p>社团检测的价值在于，社团往往对应着系统中具有特定<strong>功能或角色</strong>的模块。在社交网络中，社团可能是兴趣小组；在蛋白质相互作用网络中，社团可能是功能复合体；在引文网络中，社团可能是某个研究方向。</p>
+
+        <div class="highlight">
+            <strong>核心洞察：</strong>社团检测不仅是描述性的分析工具，它在实际应用中扮演着关键角色：推荐系统中发现兴趣群组提升推荐精度、生物网络中识别功能模块辅助药物靶点发现、安全领域中检测异常社团识别欺诈团伙。理解社团结构，是理解"网络如何组织自身功能"的关键一步。
+        </div>
+
+        <h2>模块度</h2>
+
+        <h3>Newman-Girvan Modularity Q</h3>
+
+        <p>2004年，Mark Newman和Michelle Girvan提出了一个革命性的概念——<strong>模块度（Modularity）</strong>，它首次为"网络划分的好坏"提供了一个定量指标。模块度的核心思想是：一个好的社团划分，应该使得社团内部的边数显著多于随机连接下的期望值。</p>
+
+        <p>其数学定义为：</p>
+
+        <pre><code>Q = (1/2m) × Σ_{ij} [A_{ij} - (k_i k_j / 2m)] × δ(c_i, c_j)</code></pre>
+
+        <p>其中：</p>
+        <ul>
+            <li>m 是网络中的总边数</li>
+            <li>A_{ij} 是邻接矩阵元素</li>
+            <li>k_i 是节点 i 的度数</li>
+            <li>c_i 是节点 i 所属的社团</li>
+            <li>δ(c_i, c_j) 当 i 和 j 在同一社团时为1，否则为0</li>
+        </ul>
+
+        <p>括号中的 <strong>k_i k_j / 2m</strong> 是"零模型"下的期望连接数——如果保持每个节点的度不变，但随机重连所有边，节点 i 和 j 之间恰好存在一条边的概率。因此，模块度衡量的是网络中实际的社团结构相比随机网络<strong>多出了多少</strong>。</p>
+
+        <p>模块度的取值范围通常在 [-1, 1] 之间。经验规则是：Q &gt; 0.3 通常表示存在显著的社团结构；Q &gt; 0.7 表示非常强烈的社团结构。</p>
+
+        <h3>分辨率极限</h3>
+
+        <p>模块度虽然应用广泛，但它有一个广为人知的缺陷——<strong>分辨率极限（Resolution Limit）</strong>。这是由Fortunato和Barthelemy在2007年发现的问题：</p>
+
+        <p>当网络规模很大时，基于模块度优化的方法可能无法识别出较小的社团。即使一个小社团内部连接非常紧密，但如果它的规模小于 O(√m) 的量级，模块度优化算法可能会将其合并到邻近的大社团中。</p>
+
+        <div class="warning">
+            <strong>实战教训：</strong>在我分析一个大型社交网络时，使用Louvain算法得到的结果中有一个"超级社团"包含了近60%的节点。直觉告诉我不对劲——我怀疑是分辨率极限导致的合并。改用RB（Resolution-Biased）模块度或InfoMap后，这个"超级社团"确实分解成了多个有意义的子社团。这个案例提醒我们：不要盲目信任模块度优化的输出，尤其是当网络中存在规模悬殊的社团时。
+        </div>
+
+        <h2>Girvan-Newman算法</h2>
+
+        <p>说到社团检测，就不能不提最具历史意义的算法之一——<strong>Girvan-Newman算法</strong>（GN算法）。</p>
+
+        <h3>边介数</h3>
+
+        <p>GN算法的核心概念是<strong>边介数（Edge Betweenness）</strong>，它衡量一条边在多大程度上充当了节点之间的"桥梁"。边介数的定义与节点介数类似：边 e 的介数等于所有节点对之间的最短路径中经过边 e 的比例。</p>
+
+        <p>直觉上，连接不同社团的"桥梁边"应该具有很高的边介数——因为两个社团之间的所有路径都要经过这少数几条边。</p>
+
+        <h3>分裂式层次聚类</h3>
+
+        <p>GN算法的流程非常直观：</p>
+
+        <ol>
+            <li>计算网络中所有边的边介数。</li>
+            <li>移除边介数最高的边。</li>
+            <li>重新计算剩余边的边介数（注意：边被移除后最短路径会变化，必须重算！）。</li>
+            <li>重复步骤2-3，直到所有边都被移除。</li>
+        </ol>
+
+        <p>这个过程中，网络会逐渐分裂成越来越小的连通分量。整个过程可以用一个<strong>树状图（Dendrogram）</strong>来可视化，从中可以选择最优的划分层次。</p>
+
+        <pre><code>import networkx as nx
+from networkx.algorithms.community import girvan_newman
+
+G = nx.karate_club_graph()
+
+# 运行Girvan-Newman算法
+comp = girvan_newman(G)
+# 获取前两层划分
+level1 = next(comp)
+level2 = next(comp)
+
+print("第一层划分的社团数:", len(level1))
+print("第二层划分的社团数:", len(level2))
+print("第一层社团大小:", [len(c) for c in level1])</code></pre>
+
+        <p>GN算法的问题在于它的计算复杂度非常高——每次移除一条边都要重新计算边介数，总体复杂度达到 O(m²n)，对大规模网络不实用。但它奠定了"分裂式"层次聚类的基本范式，其思想至今仍在启发新的算法。</p>
+
+        <h2>Louvain算法</h2>
+
+        <p>如果要给社团检测算法颁一个"最实用奖"，<strong>Louvain算法</strong>绝对是强有力的竞争者。它由Blondel等人在2008年提出，以其极致的效率和可扩展性而闻名——可以轻松处理数亿节点的大规模网络。</p>
+
+        <h3>贪心模块度优化</h3>
+
+        <p>Louvain算法是一个两阶段的迭代过程：</p>
+
+        <p><strong>第一阶段：局部优化。</strong>对每个节点 i，考虑将其从当前社团移动到每个邻居 j 所在的社团，计算移动后模块度 Q 的增量 ΔQ。如果存在正增量，将 i 移动到 ΔQ 最大的那个社团。重复这个过程直到所有节点的移动都不能再增加模块度。</p>
+
+        <p><strong>第二阶段：网络聚合。</strong>将第一阶段发现的每个社团"收缩"为一个超节点，超节点之间的边权重等于原社团之间所有边的权重之和。然后在新网络上重复第一阶段。</p>
+
+        <p>这两个阶段交替进行，直到模块度无法进一步提升。整个过程就像一种"粗糙化"过程——从微观节点开始，逐步合并成越来越大的社团层次。</p>
+
+        <div class="tip">
+            <strong>效率秘诀：</strong>Louvain算法的关键在于ΔQ的计算可以<strong>局部进行</strong>——只需考虑节点 i 及其邻居的度信息，无需重新计算全局模块度。这使得每次移动操作的时间复杂度为 O(1)，算法整体接近线性复杂度。在大多数真实网络上，它比GN算法快几个数量级。
+        </div>
+
+        <h3>Louvain的局限</h3>
+
+        <p>Louvain算法也并非完美。最著名的问题是<strong>分辨率极限</strong>（前面讨论过的），以及它可能产生<strong>不连通社团</strong>——算法将一个节点分配到某个社团后，这个社团内部可能分裂成了多个互不相连的连通分量（虽然模块度定义并不要求社团内部连通）。2011年Traag等人发现的这个问题在后续的Leiden算法中得到了修正。</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>特性</th>
+                    <th>Girvan-Newman</th>
+                    <th>Louvain</th>
+                    <th>Leiden</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>提出年份</td>
+                    <td>2002</td>
+                    <td>2008</td>
+                    <td>2019</td>
+                </tr>
+                <tr>
+                    <td>策略</td>
+                    <td>分裂式（自上而下）</td>
+                    <td>凝聚式（自下而上）</td>
+                    <td>凝聚式+细化</td>
+                </tr>
+                <tr>
+                    <td>目标函数</td>
+                    <td>边介数</td>
+                    <td>模块度Q</td>
+                    <td>模块度/CPM</td>
+                </tr>
+                <tr>
+                    <td>时间复杂度</td>
+                    <td>O(m²n)</td>
+                    <td>O(n log n)</td>
+                    <td>O(n log n)</td>
+                </tr>
+                <tr>
+                    <td>可扩展性</td>
+                    <td>差</td>
+                    <td>优秀</td>
+                    <td>优秀</td>
+                </tr>
+                <tr>
+                    <td>不连通社团问题</td>
+                    <td>不存在</td>
+                    <td>存在</td>
+                    <td>已修复</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>层次聚类对比</h2>
+
+        <p>社团检测中的层次聚类方法可以分为两大类，理解它们的区别有助于在不同场景下做出正确选择。</p>
+
+        <p><strong>凝聚式（Agglomerative）</strong>方法，如Louvain算法，从每个节点自成一个社团开始，反复合并最"相似"的社团。其优点是高效，但合并操作是不可逆的——一旦两个社团被合并，即使后续发现这是错误的决定，也无法撤销。</p>
+
+        <p><strong>分裂式（Divisive）</strong>方法，如Girvan-Newman算法，从整个网络作为一个社团开始，反复移除"桥梁边"。其优点是可以获得完整的层次结构，方便在不同粒度上看社团划分，但计算代价昂贵得多。</p>
+
+        <p>在实际项目中，我的建议是：</p>
+
+        <ul>
+            <li>对于探索性分析（还不知道是否有社团结构），先用Louvain跑一个快速结果。</li>
+            <li>如果关心多层次结构（子社团嵌套在更大社团中），尝试分裂式方法或Louvain的中间层结果。</li>
+            <li>如果需要精确控制社团大小，使用带分辨率参数的变体。</li>
+            <li>网络规模超过100万节点时，Louvain或Leiden几乎是唯一的选择。</li>
+        </ul>
+
+        <div class="highlight">
+            <strong>一个有趣的类比：</strong>社团检测就像整理一个混乱的房间。凝聚式方法像是先把所有物品按类型分成小堆，再把小堆合并成更大的类别；分裂式方法像是从整体开始，不断在自然断裂处进行分隔。哪种方式更好取决于房间（网络）的初始状态——如果物品天然形成了明确的分堆，凝聚式高效；如果房间本身有自然的隔断墙，分裂式更符合直觉。
+        </div>
+
+        <p>本章我们学习了社团检测的基础概念和三大核心工具：模块度为我们提供了量化社团划分好坏的标尺；Girvan-Newman算法通过边介数的思路打开了分裂式社团检测的大门；Louvain算法则以其高效率让大规模网络的社团检测成为可能。</p>
+
+        <p>但社团检测的故事远未结束。在下一章中，我们将继续深入——学习InfoMap这一基于信息论的强大算法，探索重叠社团（一个节点可以属于多个社团）的检测方法，以及如何用核心-边缘结构和各种评估指标来全面评价社团质量。我们第11章见！</p>
+
+        <div class="footer-nav">
+            <a href="09.html">← 上一章</a>
+            <a href="index.html">📖 返回目录</a>
+            <a href="11.html">下一章 →</a>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

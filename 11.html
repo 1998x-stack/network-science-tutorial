@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>第11章 社团检测（下）</title>
+    <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+<div class="double-border">
+<div class="container">
+    <div class="sidebar">
+        <h3>🌐 课程目录</h3>
+        <ul class="chapter-list">
+            <li><a href="01.html">第1章 网络科学导论</a></li>
+            <li><a href="02.html">第2章 图论基础</a></li>
+            <li><a href="03.html">第3章 网络基本度量</a></li>
+            <li><a href="04.html">第4章 随机网络模型</a></li>
+            <li><a href="05.html">第5章 小世界网络</a></li>
+            <li><a href="06.html">第6章 无标度网络</a></li>
+            <li><a href="07.html">第7章 度分布与网络异质性</a></li>
+            <li><a href="08.html">第8章 中心性分析</a></li>
+            <li><a href="09.html">第9章 PageRank与链接分析</a></li>
+            <li><a href="10.html">第10章 社团检测（上）</a></li>
+            <li><a href="11.html" class="active">第11章 社团检测（下）</a></li>
+            <li><a href="12.html">第12章 网络传播动力学</a></li>
+            <li><a href="13.html">第13章 信息与谣言传播</a></li>
+            <li><a href="14.html">第14章 网络上的博弈</a></li>
+            <li><a href="15.html">第15章 网络鲁棒性与脆弱性</a></li>
+            <li><a href="16.html">第16章 链路预测</a></li>
+            <li><a href="17.html">第17章 网络可视化</a></li>
+            <li><a href="18.html">第18章 网络数据采集</a></li>
+            <li><a href="19.html">第19章 多层网络</a></li>
+            <li><a href="20.html">第20章 时序与动态网络</a></li>
+            <li><a href="21.html">第21章 网络嵌入与表示学习</a></li>
+            <li><a href="22.html">第22章 图神经网络入门</a></li>
+            <li><a href="23.html">第23章 NetworkX实战</a></li>
+            <li><a href="24.html">第24章 社交网络分析案例</a></li>
+            <li><a href="25.html">第25章 大规模网络分析</a></li>
+            <li><a href="26.html">第26章 网络科学+机器学习</a></li>
+            <li><a href="27.html">第27章 网络科学前沿</a></li>
+            <li><a href="28.html">第28章 综合实战项目</a></li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <h1>第11章 社团检测（下）</h1>
+
+        <p>大家好，欢迎回到网络科学课程！上一章我们学习了社团检测的三大支柱——模块度、Girvan-Newman算法和Louvain算法。但这些方法都默认一个基本前提：每个节点<strong>只能属于一个社团</strong>。然而，现实世界中，一个人可以同时属于家庭群、工作群和兴趣爱好群——节点属于<strong>多个社团</strong>才更符合实际。</p>
+
+        <p>本章我们将继续社团检测的旅程，探索那些能够处理更复杂场景的高级方法：基于信息论的InfoMap算法、重叠社团检测、核心-边缘结构，以及如何科学地评估社团检测的结果。</p>
+
+        <h2>InfoMap算法</h2>
+
+        <p>2010年，Rosvall和Bergstrom在《美国科学院院报》上发表了一个令人耳目一新的社团检测算法——<strong>InfoMap</strong>。它的核心思想不是基于模块度优化，而是基于<strong>信息论</strong>中的<strong>最小描述长度（Minimum Description Length, MDL）</strong>原则。</p>
+
+        <h3>压缩原理</h3>
+
+        <p>InfoMap背后的直觉非常精彩：如果在网络上执行一个随机游走，游走的路径可以看作是一串"符号序列"。当网络中存在社团结构时，随机游走者会在社团内部停留很长时间，偶尔才跨社团移动。如果我们能够"压缩"这个随机游走的描述——用较短的编码表示社内的频繁移动，用较长的编码表示罕见的跨社团移动——那么<strong>总编码长度越短，说明社团结构越清晰</strong>。</p>
+
+        <p>想象一下你去世界各地旅游：如果你大部分时间都在中国境内活动（一个"社团"），偶尔才出国，那么用"省级编码+市级编码"来描述你在国内的移动，用"国家代码+省级编码+市级编码"来描述国际移动，可以大幅压缩旅行日志的总长度。</p>
+
+        <h3>Map Equation</h3>
+
+        <p>InfoMap的核心是<strong>Map Equation</strong>，它量化了给定社团划分下随机游走的平均描述长度：</p>
+
+        <pre><code>L(M) = q_↷ H(Q) + Σ_{i=1}^{m} p_{↺}^i H(P^i)</code></pre>
+
+        <p>公式分为两部分：</p>
+        <ul>
+            <li><strong>跨社团移动的编码</strong>：q_↷ 是随机游走跨出社团的概率，H(Q) 是社团代码的熵。</li>
+            <li><strong>社团内部移动的编码</strong>：p_{↺}^i 是在社团 i 内部移动的概率，H(P^i) 是社团内节点代码的熵。</li>
+        </ul>
+
+        <p>InfoMap算法通过<strong>随机优化</strong>（类似模拟退火或Louvain式的局部搜索）来寻找使 Map Equation 值最小的社团划分。</p>
+
+        <div class="highlight">
+            <strong>InfoMap vs 模块度：</strong>两者的哲学差异非常深刻。模块度回答的是"这个划分是否比随机连接更紧凑"，而InfoMap回答的是"这个划分是否最能揭示随机游走的结构"。在实际测试中，InfoMap在很多基准网络上表现优于基于模块度的方法，特别是在存在大量小社团的情况下——它不受模块度分辨率极限的困扰。
+        </div>
+
+        <p>InfoMap在NetworkX中的使用也非常简单：</p>
+
+        <pre><code>import networkx as nx
+from networkx.algorithms.community import asyn_fluidc
+
+# 对于InfoMap，可以使用python-infomap库
+# 这里展示NetworkX中的版本思路
+G = nx.karate_club_graph()
+
+# 使用asyn_fluidc作为替代示例
+communities = asyn_fluidc(G, k=2)
+for i, comm in enumerate(communities):
+    print(f"社团 {i+1}: {sorted(comm)}")</code></pre>
+
+        <h2>重叠社团检测</h2>
+
+        <p>前面提到的所有算法都假设社团是<strong>非重叠（disjoint）</strong>的——每个节点恰好属于一个社团。但现实世界中的节点往往扮演多重角色：一个Facebook用户可以同时在大学群、工作群和跑步群中活跃。检测这种重叠社团是网络科学中更具挑战性的问题。</p>
+
+        <h3>BigCLAM</h3>
+
+        <p><strong>BigCLAM（Cluster Affiliation Model for Big Networks）</strong>是2013年由Yahoo Research的Jaewon Yang和Jure Leskovec提出的重叠社团检测算法。它的核心是一个<strong>生成式模型</strong>：</p>
+
+        <ul>
+            <li>假设每个节点有一个"社团隶属度向量"F_u，F_u 的第 k 维表示节点 u 对社团 k 的隶属强度。</li>
+            <li>节点 u 和 v 之间存在边的概率为 p(u,v) = 1 - exp(-F_u · F_v)。</li>
+            <li>通过最大化所有已观察到的边的似然来学习隶属度矩阵 F。</li>
+        </ul>
+
+        <p>BigCLAM的优点在于它不仅可以检测重叠社团，还能给出每个节点对不同社团的"隶属度"（一个连续的软分数），而非简单的0/1归属。这对于理解节点在不同角色中的参与程度非常有价值。</p>
+
+        <h3>Clique Percolation</h3>
+
+        <p><strong>团渗流（Clique Percolation, CPM）</strong>是另一种经典的重叠社团检测方法，由Palla等人在2005年提出。其思路是：</p>
+
+        <ol>
+            <li>找出网络中所有的 k-团（大小为 k 的完全子图）。</li>
+            <li>如果两个 k-团共享 k-1 个节点，将它们合并到同一个社团中。</li>
+            <li>重复直到没有更多合并。</li>
+        </ol>
+
+        <p>CPM方法发现的一个非常著名的重叠社团案例是<strong>科学合作网络</strong>：一位研究者可以同时属于多个研究领域，因为不同领域的论文会涉及不同主题的合作团体。CPM的局限性在于，它在稀疏网络中可能效果不佳（因为难以形成足够的k-团），而且参数 k 的选择对结果影响很大。</p>
+
+        <div class="tip">
+            <strong>工程建议：</strong>如果确定你的网络应该有重叠社团（比如社交网络中一个人属于多个圈子），优先尝试 BigCLAM。它基于梯度下降优化，可以扩展到百万级节点。CPM 更适合做探索性分析——改变 k 值观察社团结构的变化，能够揭示网络的层次特性。
+        </div>
+
+        <h2>核心-边缘结构</h2>
+
+        <p>除了社团结构之外，网络中还存在另一种重要的宏观模式——<strong>核心-边缘（Core-Periphery）</strong>结构。与社团不同，核心-边缘结构不关注"划分"，而关注<strong>层级</strong>：网络中的节点可以排列成一个从"核心"到"边缘"的连续谱。</p>
+
+        <h3>K-Core分解</h3>
+
+        <p><strong>k-core</strong> 是网络中最核心的子图：反复移除度数小于 k 的节点后剩下的最大连通子图。这个过程被称为<strong>k-core分解</strong>。</p>
+
+        <p>算法非常直观：</p>
+
+        <ol>
+            <li>从当前网络中移除所有度数为 0 的节点（这些属于 0-core）。</li>
+            <li>然后移除所有度数为 1 的节点及其边——这可能产生新的度数为 1 的节点，递归移除——剩下的就是 2-core。</li>
+            <li>以此类推，得到 3-core、4-core……直到核心为空。</li>
+        </ol>
+
+        <p>每个节点在分解过程中获得的"层数"就是它的<strong>coreness</strong>值。Coreness 高的节点位于网络的核心区域，它们之间往往形成了高度互联的"核"。</p>
+
+        <pre><code>import networkx as nx
+
+G = nx.karate_club_graph()
+
+# 计算coreness
+coreness = nx.core_number(G)
+
+# 按coreness分组
+by_core = {}
+for node, core in coreness.items():
+    by_core.setdefault(core, []).append(node)
+
+for core in sorted(by_core.keys(), reverse=True):
+    print(f"{core}-core: {sorted(by_core[core])}")</code></pre>
+
+        <h3>Onion Layers</h3>
+
+        <p>传统k-core分解的一个局限是它丢失了节点在"层内"的精细结构。2011年，Hébert-Dufresne等人提出了<strong>Onion Decomposition</strong>：在k-core分解的每一步，不仅要记录节点最终所在的层，还要记录它是在该层的第几"轮"被移除的。这提供了更精细的核心-边缘分层，被形象地称为"洋葱层级"。</p>
+
+        <p>k-core分解在许多领域都有实用价值：</p>
+        <ul>
+            <li><strong>网络鲁棒性</strong>：核心节点对网络连通性至关重要。</li>
+            <li><strong>影响力传播</strong>：核心节点往往是更有效的传播者。</li>
+            <li><strong>可视化</strong>：coreness可以为布局算法提供有用的先验信息。</li>
+        </ul>
+
+        <h2>社团评估指标</h2>
+
+        <p>当你用一个算法得到了社团划分结果，接下来最关键的问题是：<strong>这个结果好吗？</strong>评估社团质量主要有两条路径——使用基准网络（有ground truth）进行外部评估，或者使用结构指标进行内部评估。</p>
+
+        <h3>外部评估指标</h3>
+
+        <p>当你知道网络的真实社团标签时（例如在LFR基准网络或Zachary's Karate Club等已知数据集上），可以使用以下指标：</p>
+
+        <p><strong>NMI（Normalized Mutual Information）</strong>：衡量检测到的社团划分与真实划分之间的信息重叠。NMI = 1 表示完全一致，NMI = 0 表示完全无关。NMI对划分的"粒度"不敏感——即使检测到的社团数不同，只要对应关系好，NMI也能给出合理的分数。</p>
+
+        <p><strong>Adjusted Rand Index（ARI）</strong>：衡量两个划分中节点对分类的一致性，并校正了随机分组的期望值。ARI的取值范围在 [-1, 1]，1 表示完全一致。</p>
+
+        <h3>内部评估指标</h3>
+
+        <p>当没有ground truth时——这通常是现实中的情况——我们只能依赖结构指标：</p>
+
+        <p><strong>Conductance</strong>：衡量一个社团与网络其他部分的"切割成本"。对于社团 S，其 conductance 定义为：离开 S 的边数除以 S 内部的总度数。值越低，社团越"封闭"，通常表示更好的社团质量。</p>
+
+        <p><strong>Coverage</strong>：最简单的指标——社团内部的边数占总边数的比例。但单独使用 coverage 没有意义（把所有节点放在一个社团里 coverage = 1）。</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>指标</th>
+                    <th>类型</th>
+                    <th>需ground truth</th>
+                    <th>取值范围</th>
+                    <th>说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>NMI</td>
+                    <td>外部</td>
+                    <td>是</td>
+                    <td>[0, 1]</td>
+                    <td>基于信息论，对粒度不敏感</td>
+                </tr>
+                <tr>
+                    <td>ARI</td>
+                    <td>外部</td>
+                    <td>是</td>
+                    <td>[-1, 1]</td>
+                    <td>基于配对计数，矫正随机</td>
+                </tr>
+                <tr>
+                    <td>Modularity Q</td>
+                    <td>内部</td>
+                    <td>否</td>
+                    <td>[-1, 1]</td>
+                    <td>最常用，但有分辨率极限</td>
+                </tr>
+                <tr>
+                    <td>Conductance</td>
+                    <td>内部</td>
+                    <td>否</td>
+                    <td>[0, 1]</td>
+                    <td>越低越好，可逐社团计算</td>
+                </tr>
+                <tr>
+                    <td>Coverage</td>
+                    <td>内部</td>
+                    <td>否</td>
+                    <td>[0, 1]</td>
+                    <td>越高越好，需结合其他指标</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>真实案例：政治博客网络</h2>
+
+        <p>让我们看一个经典的实盘案例——<strong>2004年美国政治博客网络</strong>。2004年美国总统选举期间，Lada Adamic和Natalie Glance收集了约1500个政治博客之间的超链接关系。这些博客按政治倾向分为"自由派"（蓝色）和"保守派"（红色）。</p>
+
+        <p>对这个网络运行Louvain和InfoMap两种算法，可以得到非常有趣的对比：</p>
+
+        <ul>
+            <li><strong>Louvain</strong> 识别出的两个主要社团恰好对应自由派和保守派博客群，模块度 Q ≈ 0.43，说明极化程度很高。</li>
+            <li><strong>InfoMap</strong> 则发现了更精细的结构——它在两大阵营内部又发现了多个子社团，对应不同的博客类型（个人博客、新闻聚合站、政党官网等）。</li>
+            <li>两种算法都验证了政治博客网络中的<strong>同质性（homophily）</strong>效应：人们更倾向于链接观点相近的博客，跨阵营的链接非常稀少。</li>
+        </ul>
+
+        <div class="highlight">
+            <strong>深刻教训：</strong>这个案例告诉我们，不同的社团检测算法可能揭示不同粒度的结构。Louvain擅长发现宏观的"大分裂"，InfoMap擅长发现微观的"子群体"。在实际分析中，<strong>不要只依赖一种算法</strong>——用多种方法从不同角度审视同一个网络，才能获得最全面的理解。这就像用广角镜头和微距镜头分别拍摄同一景观——没有哪种镜头是"更好"的，关键是你要看到什么。
+        </div>
+
+        <p>两章的社团检测内容到这里就结束了。我们不仅学习了从模块度优化到信息论压缩的多种算法，还理解了重叠社团、核心-边缘结构和科学评估方法。社团结构是理解网络功能的重要切入点——一个蛋白质功能复合体、一个社交圈子、一个研究领域——这些"模块"构成了复杂系统的组织骨架。</p>
+
+        <p>下一章，我们将视角从<strong>静态结构</strong>转向<strong>动态过程</strong>，开始研究网络上的传播动力学。当疾病、信息或行为在网络上传播时，网络的拓扑结构如何影响传播的速度和范围？我们第12章见！</p>
+
+        <div class="footer-nav">
+            <a href="10.html">← 上一章</a>
+            <a href="index.html">📖 返回目录</a>
+            <a href="12.html">下一章 →</a>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

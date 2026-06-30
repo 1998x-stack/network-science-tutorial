@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>第7章 度分布与网络异质性</title>
+    <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+<div class="double-border">
+<div class="container">
+    <div class="sidebar">
+        <h3>📈 课程目录</h3>
+        <ul class="chapter-list">
+            <li><a href="01.html">第1章 网络科学导论</a></li>
+            <li><a href="02.html">第2章 图论基础</a></li>
+            <li><a href="03.html">第3章 网络基本度量</a></li>
+            <li><a href="04.html">第4章 随机网络模型</a></li>
+            <li><a href="05.html">第5章 小世界网络</a></li>
+            <li><a href="06.html">第6章 无标度网络</a></li>
+            <li><a href="07.html" class="active">第7章 度分布与网络异质性</a></li>
+            <li><a href="08.html">第8章 中心性分析</a></li>
+            <li><a href="09.html">第9章 PageRank与链接分析</a></li>
+            <li><a href="10.html">第10章 社团检测（上）</a></li>
+            <li><a href="11.html">第11章 社团检测（下）</a></li>
+            <li><a href="12.html">第12章 网络传播动力学</a></li>
+            <li><a href="13.html">第13章 信息与谣言传播</a></li>
+            <li><a href="14.html">第14章 网络上的博弈</a></li>
+            <li><a href="15.html">第15章 网络鲁棒性与脆弱性</a></li>
+            <li><a href="16.html">第16章 链路预测</a></li>
+            <li><a href="17.html">第17章 网络可视化</a></li>
+            <li><a href="18.html">第18章 网络数据采集</a></li>
+            <li><a href="19.html">第19章 多层网络</a></li>
+            <li><a href="20.html">第20章 时序与动态网络</a></li>
+            <li><a href="21.html">第21章 网络嵌入与表示学习</a></li>
+            <li><a href="22.html">第22章 图神经网络入门</a></li>
+            <li><a href="23.html">第23章 NetworkX实战</a></li>
+            <li><a href="24.html">第24章 社交网络分析案例</a></li>
+            <li><a href="25.html">第25章 大规模网络分析</a></li>
+            <li><a href="26.html">第26章 网络科学+机器学习</a></li>
+            <li><a href="27.html">第27章 网络科学前沿</a></li>
+            <li><a href="28.html">第28章 综合实战项目</a></li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <h1>第7章 度分布与网络异质性</h1>
+
+        <p>大家好，欢迎回到网络科学课程！在前几章中，我们反复提到"度分布"这个概念：ER模型服从泊松分布，BA模型服从幂律分布。但度分布的内涵远不止画一张直方图那么简单。它是网络科学的"基因"——决定了网络的几乎所有其他性质。</p>
+
+        <p>然而，度分布只是描述网络异质性的起点。两个网络可以有完全相同的度分布，但在其他方面天差地别。比如，一种可能是高度数的节点倾向于连接在一起（"强强联合"），另一种可能是高度数节点倾向于连接低度数节点（"庇护"效应）——这两种网络的行为截然不同。</p>
+
+        <p>本章我们将深入探讨度分布的数学本质，学习如何量化网络的异质性，以及理解节点之间的度相关性如何塑造网络行为。</p>
+
+        <h2>度分布的数学刻画</h2>
+
+        <p><strong>度分布</strong> <code>P(k)</code> 定义为：从网络中随机选择一个顶点，其度数为 <code>k</code> 的概率。对于有 <code>n</code> 个顶点的网络，<code>P(k) = n_k / n</code>，其中 <code>n_k</code> 是度数为 <code>k</code> 的顶点数。</p>
+
+        <p>度分布是网络最基本的指纹（fingerprint）。两个不同类型的网络往往首先在度分布上表现出差异。但除了直接的 <code>P(k)</code> 之外，还有几种数学工具能够帮助我们更深入地理解度分布。</p>
+
+        <h3>累积度分布</h3>
+
+        <p>对于幂律分布等长尾分布，直接绘制 <code>P(k)</code> 在尾部会有大量噪声（因为尾部每个 <code>k</code> 值只有很少的样本点）。一个常用的替代方法是<strong>累积分布函数</strong>（Complementary Cumulative Distribution Function, CCDF）：</p>
+
+        <pre><code>P_cum(k) = Σ_{q=k}^{∞} P(q)
+</code></pre>
+
+        <p>即度数 <strong>不小于</strong> <code>k</code> 的顶点比例。如果 <code>P(k) ~ k^(-γ)</code>，那么 <code>P_cum(k) ~ k^(-(γ-1))</code>——仍然是幂律，指数小1。累积分布做了一次"平滑"，使得尾部数据更加稳定，方便我们在双对数坐标下通过直线拟合来估计幂指数 <code>γ</code>。</p>
+
+        <div class="tip">
+            <strong>实践技巧：</strong>在判断一个网络的度分布是否真的是幂律时，初学者常犯的错误是"看到双对数坐标下的直线就说是幂律"。实际上，许多分布（如对数正态分布、截断幂律分布、指数分布）在双对数坐标下也可能呈现"近似直线"。正确的做法是进行统计假设检验——例如使用Clauset-Shalizi-Newman方法（2009年提出），通过极大似然估计和Kolmogorov-Smirnov检验来严格区分幂律和其他分布。在论文审稿中，仅凭一张双对数图就声称"发现幂律"已经不被接受了。
+        </div>
+
+        <h3>度分布的矩（Moments）</h3>
+
+        <p>矩是统计学中用于描述概率分布形状的数学量，它在网络分析中扮演着重要角色。</p>
+
+        <p>度分布的第 <code>r</code> 阶矩定义为：</p>
+
+        <pre><code>⟨k^r⟩ = Σ_k k^r · P(k)
+</code></pre>
+
+        <ul>
+            <li><strong>一阶矩</strong> <code>⟨k⟩</code> 即平均度。这是最基本的信息，告诉我们一个典型节点有多少连接。</li>
+            <li><strong>二阶矩</strong> <code>⟨k²⟩</code> 在传播动力学和网络鲁棒性分析中极其重要。一个关键的量是 <code>⟨k²⟩ / ⟨k⟩</code>——它被称为网络的<strong>有效分支因子</strong>（effective branching factor），决定了传播过程的"繁殖率"。对于幂律分布，当 <code>γ ≤ 3</code> 时，<code>⟨k²⟩</code> 发散（趋近于无穷大）——这正是无标度网络具有"无阈值传播"特性的数学根源。</li>
+            <li><strong>三阶矩</strong> <code>⟨k³⟩</code> 与网络的聚类特性有关。在真实网络中，三阶矩通常反映了三角形结构的富集程度。</li>
+        </ul>
+
+        <p>更直观地说，二阶矩的大小反映了网络的<strong>异质性程度</strong>——它的值越大，说明网络中度数的分布越不平均。</p>
+
+        <h2>异质性度量</h2>
+
+        <p>我们需要量化的核心问题是：一个网络的度数分布到底有多"不均匀"？除了直接看度分布的形状外，还有几个量化的指标。</p>
+
+        <h3>方差</h3>
+
+        <p>度数的方差 <code>σ² = ⟨k²⟩ - ⟨k⟩²</code> 是最直接的异质性度量。方差越大，节点之间的度数差异越大。</p>
+
+        <ul>
+            <li>在ER随机图中，<code>σ² ≈ ⟨k⟩</code>（因为泊松分布的方差等于均值）。例如，若 <code>⟨k⟩ = 10</code>，则 <code>σ ≈ 3.2</code>——大多数节点的度数在7到13之间。</li>
+            <li>在BA无标度网络中，<code>σ²</code> 可能比 <code>⟨k⟩</code> 大几个数量级。例如，一个 <code>⟨k⟩ = 6</code> 的BA网络，其度方差可能高达数千——枢纽节点的度数可能为普通节点的上千倍。</li>
+        </ul>
+
+        <h3>基尼系数</h3>
+
+        <p><strong>基尼系数</strong>（Gini Coefficient）原本是经济学中用于衡量收入不平等程度的指标，现在也被借用来衡量网络中的度数不平等程度。它的值介于0（完全平等，所有节点度数相同）和1（完全不平等，一个节点拥有所有连接）之间。</p>
+
+        <p>基尼系数的计算方法是基于洛伦兹曲线（Lorenz Curve）——将节点按度数从小到大排序，绘制累积节点比例对应的累积度数比例。曲线越偏离对角线（平等线），基尼系数越大。</p>
+
+        <p>有趣的是，将一个ER网络（基尼系数约0.1-0.2）与一个BA网络（基尼系数约0.5-0.7）对比，你会看到这种差异清晰地反映在基尼系数上。在一些极端的真实网络中（如全球航空网络），基尼系数甚至可高达0.8以上。</p>
+
+        <h3>异质性参数</h3>
+
+        <p>特伦托大学的Vito Latora等人提出了一个简单的<strong>异质性参数</strong>（Heterogeneity Parameter）：</p>
+
+        <pre><code>κ = ⟨k²⟩ / ⟨k⟩
+</code></pre>
+
+        <p>这个参数衡量的是：从一条随机边的端点出发，期望看到的度数是多少？对于规则网络（所有节点度数相同），<code>κ = ⟨k⟩</code>。对于ER图，<code>κ = ⟨k⟩ + 1</code>（稍微大于平均度）。对于无标度网络，<code>κ</code> 远大于 <code>⟨k⟩</code>，而且随网络规模增长而增长。这个参数在后来的传播动力学分析中扮演着核心角色。</p>
+
+        <pre><code>import networkx as nx
+import numpy as np
+
+def heterogeneity(G):
+    """计算网络异质性参数 κ = ⟨k²⟩/⟨k⟩"""
+    degrees = np.array([d for _, d in G.degree()])
+    avg_k = np.mean(degrees)
+    avg_k2 = np.mean(degrees ** 2)
+    kappa = avg_k2 / avg_k
+    return kappa, avg_k, avg_k2
+
+# 比较三个模型
+n = 5000
+G_er = nx.erdos_renyi_graph(n, 6/(n-1))
+G_ws = nx.watts_strogatz_graph(n, 6, 0.05)
+G_ba = nx.barabasi_albert_graph(n, 3)
+
+for name, G in [("ER随机图", G_er), ("WS小世界", G_ws), ("BA无标度", G_ba)]:
+    kappa, avg_k, avg_k2 = heterogeneity(G)
+    print(f"{name}: ⟨k⟩={avg_k:.2f}, ⟨k²⟩={avg_k2:.2f}, κ={kappa:.2f}")
+</code></pre>
+
+        <h2>同配性与异配性</h2>
+
+        <p>度分布本身只告诉我们"度数如何分布"，但没有告诉我们"谁和谁相连"。两个拥有完全相同度分布的网络，其连接模式可能截然不同。同配性（Assortativity）正是用来刻画"谁连着谁"的核心指标。</p>
+
+        <h3>同配混合 vs 异配混合</h3>
+
+        <p>在社会网络中，有一个众所周知的观察：<strong>相似的人更容易形成连接</strong>——这叫<strong>同质性</strong>（Homophily）。在社会学中，这被称为"物以类聚，人以群分"。在度数的语境下，同配性表现为：高度数的节点倾向于连接到其他高度数的节点；低度数的节点倾向于连接到低度数的节点。这种模式被称为<strong>同配混合</strong>（Assortative Mixing）。</p>
+
+        <p>与之相反的模式是<strong>异配混合</strong>（Disassortative Mixing）：高度数节点倾向于连接低度数节点。这在某些技术网络和生物网络中更为常见。</p>
+
+        <p>这里有一个直观的例子：在学术合作网络中，高产出的研究者（高度数）倾向于和其他高产研究者合作——这符合同配混合。而在互联网路由器层面，核心路由器（高度数）往往通过连接大量边缘路由器（低度数）来实现覆盖——这更接近于异配混合。</p>
+
+        <h3>Newman同配性系数</h3>
+
+        <p>Newman在2002年提出了一个量化同配性的指标，即<strong>同配性系数</strong>（Assortativity Coefficient）<code>r</code>。它的定义类似于皮尔逊相关系数，衡量的是每条边两端节点的度数之间的相关性：</p>
+
+        <pre><code>r = [Σ_ij (A_ij - k_i·k_j/2m) · k_i·k_j] / [Σ_ij (k_i·δ_ij - k_i·k_j/2m) · k_i·k_j]
+</code></pre>
+
+        <p>这个公式看起来复杂，但在NetworkX中只需一行代码即可计算：</p>
+
+        <pre><code>import networkx as nx
+
+# 计算同配性系数
+r = nx.degree_assortativity_coefficient(G)
+print(f"同配性系数 r = {r:.3f}")
+# r > 0: 同配混合 (同类型相连)
+# r < 0: 异配混合 (不同类型相连)
+# r = 0: 无相关性（随机连接）
+</code></pre>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>网络类型</th>
+                    <th>同配性系数 r</th>
+                    <th>混合模式</th>
+                    <th>典型特征</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>学术合作网络</td>
+                    <td>+0.13 ~ +0.36</td>
+                    <td>同配混合</td>
+                    <td>高产研究者互相合作</td>
+                </tr>
+                <tr>
+                    <td>电影演员网络</td>
+                    <td>+0.21</td>
+                    <td>同配混合</td>
+                    <td>大牌演员与大牌演员合作</td>
+                </tr>
+                <tr>
+                    <td>互联网（路由器层）</td>
+                    <td>-0.19 ~ -0.25</td>
+                    <td>异配混合</td>
+                    <td>核心路由器连接边缘路由器</td>
+                </tr>
+                <tr>
+                    <td>蛋白质相互作用</td>
+                    <td>-0.04 ~ -0.16</td>
+                    <td>弱异配混合</td>
+                    <td>枢纽蛋白连接特异性蛋白</td>
+                </tr>
+                <tr>
+                    <td>万维网</td>
+                    <td>-0.06 ~ -0.10</td>
+                    <td>弱异配混合</td>
+                    <td>热门页面的链接指向多样化</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="highlight">
+            <strong>解读技巧：</strong>同配性系数不仅仅是一个学术数字——它对预测网络行为很有实际价值。一个高度同配的网络（如学术合作网络）往往具有更强的"社团分化"——不同的"圈子"相对独立，信息在圈子内部传播快但跨越圈子慢。而一个高度异配的网络（如路由器网络）往往更"一体"——极少数核心节点承担了大部分连接功能，信息可以快速跨越整个网络，但核心节点一旦失效影响巨大。
+        </div>
+
+        <h2>度相关性</h2>
+
+        <p>同配性系数给出了一个综合性的全局指标，但有时候我们需要更精细的信息：不同度数的节点之间的连接倾向究竟如何？这通常通过<strong>平均邻居度</strong>（Average Neighbor Degree）函数 <code>k_nn(k)</code> 来分析。</p>
+
+        <p><strong>平均邻居度</strong> <code>k_nn(k)</code> 定义为所有度数为 <code>k</code> 的节点的邻居的平均度数。如果 <code>k_nn(k)</code> 随着 <code>k</code> 增大而增大（递增函数），说明高度数节点倾向于连接高度数节点——同配混合。如果 <code>k_nn(k)</code> 随着 <code>k</code> 增大而减小（递减函数），说明高度数节点倾向于连接低度数节点——异配混合。</p>
+
+        <pre><code>import networkx as nx
+import matplotlib.pyplot as plt
+
+# 计算 k_nn(k)
+G = nx.barabasi_albert_graph(2000, 3)
+k_nn = nx.average_degree_connectivity(G)
+
+# 按度数排序并绘制
+k_values = sorted(k_nn.keys())
+nn_values = [k_nn[k] for k in k_values]
+
+plt.loglog(k_values, nn_values, 'o-')
+plt.xlabel('k')
+plt.ylabel('k_nn(k)')
+plt.grid(True, alpha=0.3)
+# 对于BA网络，k_nn(k) 通常随 k 增大而下降（异配混合）
+# 因为枢纽节点连接了大量叶子节点
+</code></pre>
+
+        <h3>富者更富俱乐部</h3>
+
+        <p>如果高度数节点之间不仅互相连接，而且它们之间的连接密度远超随机水平——这种现象被称为<strong>富俱乐部</strong>（Rich-Club）现象。量化的方法是计算"富俱乐部系数" <code>φ(k)</code>：在度数大于某个阈值 <code>k</code> 的节点子集中，实际存在的边数除以该子集可能的最大边数。如果 <code>φ(k)</code> 高于随机基准值，就说明存在富俱乐部效应。</p>
+
+        <p>富俱乐部的重要性在于：如果网络的核心节点之间紧密互连，那么它们就形成了一个强强联合的"指挥中心"，对网络的整体控制和信息传输效率都有显著影响。例如，全球航空网络中的枢纽机场（如迪拜、亚特兰大、希思罗）之间通常有直飞航线——这就是典型的富俱乐部结构。</p>
+
+        <h2>度分布对网络行为的影响</h2>
+
+        <p>我们现在已经理解了度分布的各种数学刻画和相关性特征。但最重要的可能是这个问题：这些结构特征如何转化为网络的实际行为？</p>
+
+        <p><strong>流行病阈值</strong>：在经典的SIR（易感-感染-恢复）传播模型中，流行病有一个基本再生数 <code>R₀</code>。在网络上，传播阈值 <code>λ_c</code> 大约为 <code>λ_c = ⟨k⟩ / ⟨k²⟩</code>。对于ER图，<code>⟨k²⟩ = ⟨k⟩(⟨k⟩+1)</code>，所以 <code>λ_c ≈ 1/(⟨k⟩+1)</code>——存在一个有限的正阈值。但对于无标度网络（<code>γ ≤ 3</code>），当网络规模趋于无穷时 <code>⟨k²⟩ → ∞</code>，因此 <code>λ_c → 0</code>。这意味着在无限大的无标度网络中，即使传播率极低，流行病也无法自然消亡——这解释了为什么在高度互联的现代社会中，新出现的传染病非常难以控制。</p>
+
+        <p><strong>网络鲁棒性</strong>：我们上一章已经讨论过，无标度网络对随机故障鲁棒但对定向攻击脆弱。现在我们可以从度矩的角度理解这个现象：随机故障影响的是"普通节点"（即 <code>⟨k⟩</code> 附近的节点），而去除这些节点对 <code>⟨k²⟩</code> 影响不大。但定向攻击直接移除枢纽节点——这是 <code>⟨k²⟩</code> 的主要贡献者。一旦 <code>⟨k²⟩</code> 大幅下降，网络的有效分支因子也会急剧下降，导致网络迅速解体。</p>
+
+        <p><strong>信息传播速度</strong>：在异配混合的网络中（如许多技术网络），信息从枢纽节点传播到大量边缘节点的速度非常快——因为枢纽节点与许多节点直接相连。而在同配混合的网络中（如一些社交网络），信息传播更依赖于"圈子之间的桥梁"，速度可能更慢但持久性更强。</p>
+
+        <div class="warning">
+            <strong>实战案例：</strong>我曾参与一个社交电商的传播分析项目，目标是预测一个营销活动能在用户网络中扩散多快。初始模型假设度分布是泊松的（使用了ER模型），结果预测在10天内触达50万用户。但实际活动在3天内就触达了超过100万用户。分析发现，真实用户网络是典型的无标度网络——少数"关键意见领袖"（KOL）拥有大量关注者，他们一旦参与活动就会立即触达成千上万的粉丝。最终我们改用考虑了度分布异质性和枢纽节点效应的传播模型，才做出了准确的预测。这个教训是：<strong>网络模型假设的错误可能导致预测偏差几个数量级</strong>。
+        </div>
+
+        <p>本章的内容可以概括为三个层次。第一层：度分布本身——它告诉我们网络的基本"基因"（泊松还是幂律，均匀还是异质）。第二层：异质性度量——方差、基尼系数、异质性参数，它们量化了"不均匀"的程度。第三层：度相关性和同配性——它们告诉我们度数和度数之间如何"配对"，也就是网络的结构组织方式。</p>
+
+        <p>这三个层次叠加在一起，构成了"谁是网络的中心"这个核心问题的部分答案。但度分布本身只能告诉我们"谁有最多的连接"，并不能告诉我们"谁是最关键的节点"——因为重要性不仅仅取决于连接数量，还取决于你连接了<strong>谁</strong>。一个连接了100个"小角色"的节点，和一个连接了10个"大人物"的节点——谁更重要？这就是我们下一章要讨论的主题：中心性分析。</p>
+
+        <p>我们第8章见！</p>
+
+        <div class="footer-nav">
+            <a href="06.html">← 上一章</a>
+            <a href="index.html">📖 返回目录</a>
+            <a href="08.html">下一章 →</a>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>第9章 PageRank与链接分析</title>
+    <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+<div class="double-border">
+<div class="container">
+    <div class="sidebar">
+        <h3>🌐 课程目录</h3>
+        <ul class="chapter-list">
+            <li><a href="01.html">第1章 网络科学导论</a></li>
+            <li><a href="02.html">第2章 图论基础</a></li>
+            <li><a href="03.html">第3章 网络基本度量</a></li>
+            <li><a href="04.html">第4章 随机网络模型</a></li>
+            <li><a href="05.html">第5章 小世界网络</a></li>
+            <li><a href="06.html">第6章 无标度网络</a></li>
+            <li><a href="07.html">第7章 度分布与网络异质性</a></li>
+            <li><a href="08.html">第8章 中心性分析</a></li>
+            <li><a href="09.html" class="active">第9章 PageRank与链接分析</a></li>
+            <li><a href="10.html">第10章 社团检测（上）</a></li>
+            <li><a href="11.html">第11章 社团检测（下）</a></li>
+            <li><a href="12.html">第12章 网络传播动力学</a></li>
+            <li><a href="13.html">第13章 信息与谣言传播</a></li>
+            <li><a href="14.html">第14章 网络上的博弈</a></li>
+            <li><a href="15.html">第15章 网络鲁棒性与脆弱性</a></li>
+            <li><a href="16.html">第16章 链路预测</a></li>
+            <li><a href="17.html">第17章 网络可视化</a></li>
+            <li><a href="18.html">第18章 网络数据采集</a></li>
+            <li><a href="19.html">第19章 多层网络</a></li>
+            <li><a href="20.html">第20章 时序与动态网络</a></li>
+            <li><a href="21.html">第21章 网络嵌入与表示学习</a></li>
+            <li><a href="22.html">第22章 图神经网络入门</a></li>
+            <li><a href="23.html">第23章 NetworkX实战</a></li>
+            <li><a href="24.html">第24章 社交网络分析案例</a></li>
+            <li><a href="25.html">第25章 大规模网络分析</a></li>
+            <li><a href="26.html">第26章 网络科学+机器学习</a></li>
+            <li><a href="27.html">第27章 网络科学前沿</a></li>
+            <li><a href="28.html">第28章 综合实战项目</a></li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <h1>第9章 PageRank与链接分析</h1>
+
+        <p>大家好，欢迎回到网络科学课程！上一章我们系统学习了中心性分析的各种方法，从简单的度中心性到优雅的特征向量中心性。但有一个中心性指标实在太重要了，值得用一整章来深入探讨——没错，就是<strong>PageRank</strong>。</p>
+
+        <p>PageRank不仅是Google搜索引擎的基石算法，更是一个深刻的思想：网络上的"重要性"可以从节点的连接关系中通过随机游走的稳态分布来自然推导。在当今这个信息过载的时代，理解PageRank的原理和变体，对于任何一个做网络分析的人都是必修课。</p>
+
+        <h2>搜索引擎的挑战</h2>
+
+        <p>让我们回到1990年代末的互联网。那时候搜索引擎已经存在——Altavista、Lycos、Yahoo!——但它们普遍面临一个核心困境：如何判断哪些网页与用户的搜索词最相关？</p>
+
+        <p>早期的搜索引擎主要依赖<strong>基于内容的排序</strong>：统计搜索词在页面中出现的频率、位置(heading、title等)，然后返回得分最高的页面。但这个方法有一个致命缺陷——容易被操纵。站长们很快学会了在页面上大量堆砌热门关键词（甚至用白色文字写在白色背景上），从而欺骗搜索引擎。</p>
+
+        <p>1996年，斯坦福大学的两位博士生——Larry Page和Sergey Brin——提出了一个截然不同的思路：<strong>不要看网页自己说什么，看别人怎么评价它</strong>。每个指向网页A的链接，就是其他网页对A的一张"投票"。但这个投票不是等权的——如果投票的网页本身也很重要，它的投票权重就更高。</p>
+
+        <div class="highlight">
+            <strong>核心思想：</strong>链接是推荐。一个网页的重要性，等于所有指向它的网页的重要性之和（经过出度衰减）。这个递归定义——你有多重要取决于谁认为你重要——正是PageRank的精髓所在。
+        </div>
+
+        <h2>PageRank原理</h2>
+
+        <h3>随机游走模型</h3>
+
+        <p>PageRank最优雅之处在于它可以用一个非常直观的<strong>随机游走（Random Walk）</strong>模型来解释。想象一个"随机冲浪者"（random surfer）在网页之间漫游：</p>
+
+        <ul>
+            <li>他从一个随机网页出发。</li>
+            <li>每次点击，他以概率 d（通常 d=0.85）沿着当前网页上的一个超链接随机跳转。</li>
+            <li>以概率 1-d，他感到无聊了，随机跳到一个全新的网页（teleportation）。</li>
+        </ul>
+
+        <p>经过足够多的跳转后，这个随机冲浪者在每个网页上逗留的<strong>稳态概率</strong>，就是该网页的PageRank值。换言之，PageRank = 一个随机上网者在任意时刻正在浏览该网页的概率。</p>
+
+        <h3>数学公式</h3>
+
+        <p>PageRank的数学定义简洁而优美。对于网页 v，其PageRank值为：</p>
+
+        <pre><code>PR(v) = (1-d)/N + d × Σ_{u∈B(v)} PR(u) / L(u)</code></pre>
+
+        <p>其中：</p>
+        <ul>
+            <li>d 是阻尼因子（damping factor），通常取 0.85</li>
+            <li>N 是网页总数</li>
+            <li>B(v) 是所有指向 v 的网页集合</li>
+            <li>L(u) 是从页面 u 出发的超链接数量</li>
+            <li>PR(u) / L(u) 是 u 将自己的PageRank平均分配给所有出链</li>
+        </ul>
+
+        <p>这个公式可以通过<strong>幂迭代法（Power Iteration）</strong>高效求解：将所有网页的PageRank初始化为 1/N，然后反复应用上述公式直到收敛。</p>
+
+        <pre><code># PageRank的幂迭代实现（简化版）
+import numpy as np
+
+def pagerank(adj_matrix, d=0.85, max_iter=100, tol=1e-6):
+    n = adj_matrix.shape[0]
+    # 出度归一化
+    out_degree = adj_matrix.sum(axis=1)
+    M = adj_matrix / out_degree[:, np.newaxis]
+    M = np.nan_to_num(M)  # 处理dead ends
+
+    pr = np.ones(n) / n
+    teleport = (1 - d) / n
+
+    for i in range(max_iter):
+        new_pr = teleport + d * M.T @ pr
+        if np.linalg.norm(new_pr - pr, 1) < tol:
+            break
+        pr = new_pr
+
+    return pr</code></pre>
+
+        <h2>实战技巧</h2>
+
+        <p>理论看起来简单，但在真实世界的网页图上实现PageRank时，你会遇到几个棘手的工程问题。</p>
+
+        <h3>Dead Ends（死胡同）</h3>
+
+        <p>如果一个网页没有任何出链（dead end），随机冲浪者到了这里就会陷入困境。不处理这个问题，概率质量会从这里"泄漏"出系统，无法形成稳态分布。</p>
+
+        <p><strong>解决方案：</strong>在计算前，先递归地移除所有dead ends，或者将dead ends的转移概率设为 1/N（即它们以概率1进行teleport）。NetworkX中的pagerank函数默认会进行这种处理。</p>
+
+        <h3>Spider Traps（蜘蛛陷阱）</h3>
+
+        <p>比dead ends更隐蔽的问题是spider traps——一组页面虽然内部互相链接，但没有指向外部的连接。随机冲浪者一旦掉入这个"陷阱"，就永远无法出来，所有PageRank值都会被"吸"到这个陷阱组中。</p>
+
+        <p><strong>解决方案：</strong>这就是 damping factor d 存在的意义！即使陷入了spider trap，随机冲浪者仍有 1-d 的概率通过teleport跳出。这保证了PageRank不会被困在任何局部区域。</p>
+
+        <div class="warning">
+            <strong>踩坑经历：</strong>我早期做PageRank实验时，设 d=1.0（不teleport），结果所有PageRank值都收敛到了一个错误的分布上。调试了整整半天才发现是图中有几个小spider trap，把所有的概率质量都吸走了。从此我深刻理解了damping factor不是锦上添花，而是从数学上保证收敛的<strong>必要条件</strong>。
+        </div>
+
+        <h3>收敛性</h3>
+
+        <p>PageRank的收敛速度由阻尼因子 d 和邻接矩阵的第二大特征值决定。事实上，幂迭代法的收敛速度与 d 直接相关——d 越大，收敛越慢。d=0.85 是一个精心选择的折中值：它既能保证足够的teleport概率来驯服spider traps，又能使收敛速度接受（通常几十次迭代就够了）。</p>
+
+        <h2>HITS算法</h2>
+
+        <p>在PageRank问世的同一时期，康奈尔大学的Jon Kleinberg提出了另一个经典的链接分析算法——<strong>HITS（Hyperlink-Induced Topic Search）</strong>。它也被称为"Hub and Authority"算法。</p>
+
+        <p>HITS的核心洞察是：网页可以扮演两种不同的角色：</p>
+
+        <ul>
+            <li><strong>Authority（权威）</strong>：提供高质量内容的页面。被越多高质量hub引用，authority分数越高。</li>
+            <li><strong>Hub（枢纽）</strong>：指向高质量authority的页面。指向越多的高质量authority，hub分数越高。</li>
+        </ul>
+
+        <p>这形成一个相互加强的定义——好的hub指向好的authority，好的authority被好的hub指向。数学上是一个耦合的迭代系统：</p>
+
+        <pre><code>a(v) = Σ_{u: u→v} h(u)    (权威分 = 指向它的hub分之和)
+h(v) = Σ_{w: v→w} a(w)    (枢纽分 = 它指向的权威分之和)</code></pre>
+
+        <p>写成矩阵形式：</p>
+        <ul>
+            <li>Authority向量 a 是 AᵀA 的主特征向量</li>
+            <li>Hub向量 h 是 AAᵀ 的主特征向量</li>
+        </ul>
+
+        <p>其中 A 是图的邻接矩阵。</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>特性</th>
+                    <th>PageRank</th>
+                    <th>HITS</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>输出</td>
+                    <td>单一重要性分数</td>
+                    <td>Authority + Hub 双分数</td>
+                </tr>
+                <tr>
+                    <td>计算方式</td>
+                    <td>全局离线计算</td>
+                    <td>查询时在线计算</td>
+                </tr>
+                <tr>
+                    <td>对噪声敏感度</td>
+                    <td>较低（阻尼因子过滤）</td>
+                    <td>较高（容易受垃圾链接影响）</td>
+                </tr>
+                <tr>
+                    <td>适用场景</td>
+                    <td>大规模网页排序</td>
+                    <td>特定主题的权威发现</td>
+                </tr>
+                <tr>
+                    <td>稳定性</td>
+                    <td>非常稳定</td>
+                    <td>计算结果可能波动</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>在实际应用中，PageRank由于计算稳定性和工程可扩展性而胜出，成为了Google的核心技术。但HITS在学术领域和特定场景下仍有其独特价值——比如在引文网络中识别"综述论文"（hub）和"奠基性论文"（authority）。</p>
+
+        <h2>PageRank变体</h2>
+
+        <p>PageRank的思想极具普适性，催生了众多变体。以下是两个最重要的版本。</p>
+
+        <h3>Topic-Sensitive PageRank</h3>
+
+        <p>原始的PageRank对所有网页一视同仁——在所有话题上，一个网页只有一个PageRank值。但现实中，一个网页的重要性是<strong>话题相关</strong>的。比如一个关于机器学习的数据集页面对"深度学习"查询很重要，但对"烹饪食谱"查询毫无价值。</p>
+
+        <p>Topic-Sensitive PageRank的思路是：不从一个均匀分布进行teleport，而是从一个<strong>话题相关的偏好分布</strong>进行teleport。事先为每个话题（如体育、科技、健康等）计算一个PageRank向量。查询时，根据查询词的话题分布，对多个PageRank向量做加权组合。</p>
+
+        <h3>Personalized PageRank</h3>
+
+        <p>进一步推广，teleport分布可以针对<strong>特定用户</strong>进行个性化。如果你是一个机器学习研究者，你的teleport分布可能偏向机器学习的知名网页。这在推荐系统中有着广泛应用——比如Twitter的"Who to Follow"推荐系统就使用了Personalized PageRank来发现与用户兴趣相似的其它用户。</p>
+
+        <div class="tip">
+            <strong>实用技巧：</strong>在NetworkX中实现Personalized PageRank非常容易，只需传入一个personalization参数字典：
+            <pre><code>nx.pagerank(G, alpha=0.85, personalization={'user_A': 1.0})</code></pre>
+            这会从user_A出发进行有偏随机游走，找到与user_A"接近"的其他节点。
+        </div>
+
+        <h2>应用场景</h2>
+
+        <p>PageRank的影响力早已远远超出了搜索引擎。以下是几个典型的应用场景。</p>
+
+        <p><strong>推荐系统。</strong>这是PageRank在搜索之外最成功的应用。基本原理是构建一个"user-item"二分图，然后运行Personalized PageRank——从目标用户出发进行随机游走，游走过程中频繁"访问"的item即为推荐候选。与传统的协同过滤相比，PageRank方法天然能处理冷启动问题（新用户只要有点击行为就能游走）和间接关联（通过物品-物品的转移）。</p>
+
+        <p><strong>引文分析。</strong>学术论文的引用网络本质上和网页链接网络一样。一篇论文被越多的重要论文引用，它的影响力就越大。使用PageRank对论文排序，可以识别出高影响力的"经典论文"，这在某种程度上比单纯统计被引次数更可靠（因为它考虑了"谁引用了你"）。</p>
+
+        <p><strong>社交网络影响力分析。</strong>PageRank可以用于识别社交网络中有影响力的用户。Twitter的"Who to Follow"推荐就是一个著名的案例。微信的"看一看"功能也使用了类似算法进行内容推荐。</p>
+
+        <p><strong>生物网络。</strong>在蛋白质相互作用网络中，PageRank可以用于识别关键蛋白质（essential proteins）。那些被很多关键蛋白质"指向"（相互作用）的蛋白质本身也很可能是关键的。</p>
+
+        <div class="highlight">
+            <strong>一个发人深省的思考：</strong>PageRank的成功告诉我们，在网络中，"重要性"不是一个天然属性——它来自于其他人的"投票"，但这些投票必须是真实的、难以操纵的。这就是为什么Google早期如此重视链接质量——PageRank的本质是一个<strong>去中心化的信任机制</strong>。在社交网络和推荐系统中，防止垃圾信息和操控排名始终是一个持续的战斗。
+        </div>
+
+        <p>本章我们深入学习了PageRank——从随机游走模型的直观理解，到幂迭代的数值计算，再到dead ends和spider traps等工程陷阱，最后是Topic-Sensitive PageRank和Personalized PageRank等变体。PageRank的思想已经渗透到网络科学的方方面面，任何做链接分析的人都必须深入理解它的原理和局限。</p>
+
+        <p>下一章，我们将从全局的重要性排序转向局部的<strong>社团结构</strong>。大局已定的二分结构识别固然重要，但真实网络往往是多社团的——Facebook用户会属于家庭群、工作群、兴趣群等不同圈子。我们将学习如何用模块度和Louvain算法自动发现这些社团。我们第10章见！</p>
+
+        <div class="footer-nav">
+            <a href="08.html">← 上一章</a>
+            <a href="index.html">📖 返回目录</a>
+            <a href="10.html">下一章 →</a>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

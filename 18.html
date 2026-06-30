@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>第18章 网络数据采集</title>
+    <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+<div class="double-border">
+<div class="container">
+    <div class="sidebar">
+        <h3>🕸️ 课程目录</h3>
+        <ul class="chapter-list">
+            <li><a href="01.html">第1章 网络科学导论</a></li>
+            <li><a href="02.html">第2章 图论基础</a></li>
+            <li><a href="03.html">第3章 网络基本度量</a></li>
+            <li><a href="04.html">第4章 随机网络模型</a></li>
+            <li><a href="05.html">第5章 小世界网络</a></li>
+            <li><a href="06.html">第6章 无标度网络</a></li>
+            <li><a href="07.html">第7章 度分布与网络异质性</a></li>
+            <li><a href="08.html">第8章 中心性分析</a></li>
+            <li><a href="09.html">第9章 PageRank与链接分析</a></li>
+            <li><a href="10.html">第10章 社团检测（上）</a></li>
+            <li><a href="11.html">第11章 社团检测（下）</a></li>
+            <li><a href="12.html">第12章 网络传播动力学</a></li>
+            <li><a href="13.html">第13章 信息与谣言传播</a></li>
+            <li><a href="14.html">第14章 网络上的博弈</a></li>
+            <li><a href="15.html">第15章 网络鲁棒性与脆弱性</a></li>
+            <li><a href="16.html">第16章 链路预测</a></li>
+            <li><a href="17.html">第17章 网络可视化</a></li>
+            <li><a href="18.html" class="active">第18章 网络数据采集</a></li>
+            <li><a href="19.html">第19章 多层网络</a></li>
+            <li><a href="20.html">第20章 时序与动态网络</a></li>
+            <li><a href="21.html">第21章 网络嵌入与表示学习</a></li>
+            <li><a href="22.html">第22章 图神经网络入门</a></li>
+            <li><a href="23.html">第23章 NetworkX实战</a></li>
+            <li><a href="24.html">第24章 社交网络分析案例</a></li>
+            <li><a href="25.html">第25章 大规模网络分析</a></li>
+            <li><a href="26.html">第26章 网络科学+机器学习</a></li>
+            <li><a href="27.html">第27章 网络科学前沿</a></li>
+            <li><a href="28.html">第28章 综合实战项目</a></li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <h1>第18章 网络数据采集</h1>
+
+        <p>在前17章中，大部分例子都用的是现成的数据集——Zachary的空手道俱乐部、Les Miserables的人物关系网、网络上公开发布的AS级互联网拓扑。但到了实战阶段，你需要面对一个更现实的问题：我要分析的网络数据从哪来？</p>
+
+        <p>网络数据的获取和清洗是网络科学实战中最不性感但最重要的环节。很多时候，80%的时间花在了数据采集和清洗上，剩下20%才是分析和建模。这一章我们来系统地梳理网络数据的来源、采集方法和清洗流程——学会这些，你才算真正具备了独立开展网络分析的能力。</p>
+
+        <h2>网络数据来源</h2>
+
+        <p>如果你需要网络数据来完成课程作业、做实验验证算法、或者为分析报告寻找素材，下面几个公开数据集是起步的最佳选择。</p>
+
+        <p><strong>SNAP（Stanford Network Analysis Project）</strong>是斯坦福大学维护的网络数据集宝库，收录了超过100个来自不同领域的大规模网络——社交网络（Facebook、Twitter）、引文网络、道路网络、协作网络等。格式统一，文档齐全，是网络科学领域引用最多的数据集。所有数据均可通过http://snap.stanford.edu/data/ 免费下载。</p>
+
+        <p><strong>Konect</strong>（Koblenz Network Collection）由科布伦茨大学维护，收录了超过250个网络数据集，按领域分类（社交、生物、经济、通信等）。它还提供了一些其他平台上不常见的独特网络，比如维基百科的编辑网络、Stack Overflow的用户互动网络。</p>
+
+        <p><strong>Network Repository</strong>是一个交互式的网络数据集和图分析平台，提供了超过3000个网络的可视化和交互式查询功能。在做大规模网络的算法测试时，你可以在线运行基本的网络分析，而无需将全部数据下载到本地。</p>
+
+        <p>下表总结了这三个主要数据源的特点：</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>数据源</th>
+                    <th>数据集数量</th>
+                    <th>数据格式</th>
+                    <th>特色</th>
+                    <th>适合场景</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>SNAP</td>
+                    <td>100+</td>
+                    <td>边列表（.txt）</td>
+                    <td>大规模网络，文档详细</td>
+                    <td>学术研究、算法测试</td>
+                </tr>
+                <tr>
+                    <td>Konect</td>
+                    <td>250+</td>
+                    <td>边列表 + GEXF</td>
+                    <td>领域覆盖面广</td>
+                    <td>跨领域比较分析</td>
+                </tr>
+                <tr>
+                    <td>Network Repository</td>
+                    <td>3000+</td>
+                    <td>多种格式 + 在线查询</td>
+                    <td>数量最多，交互式探索</td>
+                    <td>算法基准测试</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>除了这些公开数据集，真实世界的网络分析往往需要你自己动手采集数据。下面介绍两种最常用的方法：API获取和网页爬虫。</p>
+
+        <h2>社交媒体API</h2>
+
+        <p>社交平台通常会提供应用程序编程接口（API），允许开发者获取用户在平台上的公开数据。这些API是构建社交网络数据的重要渠道。但在开始之前，请记住最重要的一点：<strong>遵守平台的使用条款和API限制</strong>。过快的请求频率会触发速率限制（rate limiting），过度抓取甚至可能导致你的账号被封禁。</p>
+
+        <h3>Twitter/X API</h3>
+
+        <p>Twitter（现X）的API是网络科学研究中最常用的数据来源之一。通过API可以获取用户的粉丝列表、关注列表、推文互动关系等——这些都可以用来构建和分析社交网络。</p>
+
+        <pre><code># 使用Tweepy库获取Twitter关注关系网络
+import tweepy
+
+# 使用v2 API端点（需要先申请Bearer Token）
+client = tweepy.Client(bearer_token="YOUR_BEARER_TOKEN")
+
+# 获取指定用户的粉丝和关注列表
+user_id = 123456789  # 替换为目标用户的ID
+followers = client.get_users_followers(id=user_id, max_results=100)
+following = client.get_users_following(id=user_id, max_results=100)
+
+# 构建用户关系网络（简化示例）
+followers_ids = [u.id for u in followers.data] if followers.data else []
+following_ids = [u.id for u in following.data] if following.data else []
+
+# 对于每个粉丝，进一步获取其关注列表（BFS方式扩展）
+# 注意：需要控制请求速率，避免触发rate limit
+print(f"用户 {user_id} 有 {len(followers_ids)} 个粉丝和 {len(following_ids)} 个关注")
+</code></pre>
+
+        <div class="warning">
+            <strong>踩坑记录：</strong>Twitter API的速率限制非常严格——免费版的v2 API每15分钟只能获取500个粉丝。我有一次写了一个"爬取2000名用户社交图谱"的脚本，满心欢喜地跑了半个小时回来一看，只爬了200个用户就被限流了。解决方案是：实现一个智能的速率限制管理器，计算每次API调用的剩余配额，动态调整休眠时间。另外，一定要在代码里捕获HTTP 429错误（Too Many Requests），优雅地等待配额恢复。
+        </div>
+
+        <h3>GitHub API</h3>
+
+        <p>GitHub的API对网络科学研究来说是一个宝藏。GitHub上的协作网络——谁关注了谁、谁给谁的仓库点星、谁在谁的代码上提PR——这些都是天然的社交网络结构。</p>
+
+        <pre><code># 使用PyGithub获取GitHub协作网络
+from github import Github
+
+g = Github("YOUR_GITHUB_TOKEN")
+
+# 获取一个仓库的贡献者列表，构建Star关系网络
+repo = g.get_repo("networkx/networkx")
+stargazers = repo.get_stargazers().get_page(0)  # 第一页
+
+# 对每个star用户，获取其关注的其他用户
+# 这可以构建一个"开发者-关注"的有向图
+for star_user in stargazers[:10]:  # 限制数量，避免耗时过长
+    print(f"用户: {star_user.login}")
+    try:
+        following = star_user.get_following()
+        for follow in following[:5]:
+            print(f"  关注了: {follow.login}")
+    except Exception as e:
+        print(f"  获取关注列表失败: {e}")
+</code></pre>
+
+        <p>GitHub API的一大优势是它的速率限制相对宽松——未经认证的请求每小时60次，使用Personal Access Token后提高到每小时5000次。对于大多数研究项目来说，这个配额已经非常充裕。</p>
+
+        <h2>网页爬虫基础</h2>
+
+        <p>不是所有网站都提供方便的API。有时候，你需要的数据只以HTML页面的形式存在。这时候，网页爬虫（web scraping）就是必要的技术手段。</p>
+
+        <p>在Python中，最常用的爬虫组合是<code>requests</code> + <code>BeautifulSoup</code>。前者负责下载网页内容，后者负责从HTML中提取数据。一套基本的爬虫流程如下：</p>
+
+        <pre><code>import requests
+from bs4 import BeautifulSoup
+import time
+
+# 步骤1：发送HTTP请求
+url = "https://example.com/some-page"
+headers = {
+    "User-Agent": "Mozilla/5.0 (compatible; NetworkScienceCourse/1.0)"
+}
+response = requests.get(url, headers=headers)
+
+if response.status_code == 200:
+    # 步骤2：解析HTML
+    soup = BeautifulSoup(response.text, "html.parser")
+
+    # 步骤3：提取链接关系
+    links = []
+    for a_tag in soup.find_all("a", href=True):
+        href = a_tag["href"]
+        text = a_tag.get_text(strip=True)
+        links.append((text, href))
+
+    print(f"从页面中提取了 {len(links)} 个链接")
+
+    # 步骤4：BFS方式爬取更深层的页面
+    # 关键：设置合理的爬取间隔！
+    time.sleep(1)  # 每次请求间隔1秒，避免对服务器造成压力
+else:
+    print(f"请求失败: HTTP {response.status_code}")
+</code></pre>
+
+        <div class="highlight">
+            <strong>爬虫礼仪：</strong>不要做一个"野蛮"的爬虫。第一，检查<code>robots.txt</code>文件（在网站的根目录下），这个文件告诉爬虫哪些页面允许访问、哪些不允许。第二，在请求头中设置合理的User-Agent，让网站知道你是谁。第三，控制请求频率——在两次请求之间至少间隔1秒，最好能模拟人类浏览的速度。第四，如果网站提供API，优先使用API而不是爬虫。
+        </div>
+
+        <p>在构建网络数据时，网页爬虫的一个典型用途是爬取维基百科的链接关系：从一篇文章出发，爬取它的所有超链接，再从这些链接指向的文章出发继续爬取——这就是一个典型的"网络爬虫 + 网络构建"复合任务。爬取完成后，你就得到了一个"维基百科文章引用网络"。</p>
+
+        <h2>数据清洗</h2>
+
+        <p>不管你从哪个来源获得数据，原始数据几乎总是"脏"的。数据清洗是网络科学实践中不可或缺的一步。常见的脏数据问题包括：</p>
+
+        <p><strong>重复边。</strong>数据集合中可能存在多条相同的边（比如因为数据抓取过程中的多次记录）。重复边的处理很简单——在构建网络时去重即可。用pandas的<code>drop_duplicates()</code>或NetworkX的<code>nx.Graph()</code>默认行为（自动去重）都可以解决。</p>
+
+        <p><strong>自环。</strong>在大部分网络分析场景下，自环（self-loop，节点指向自己的边）没有意义——一个人不会和自己构成社交关系。清理时直接移除。</p>
+
+        <p><strong>孤立节点。</strong>没有任何连接的节点往往是被错误引入的，或者已经退出了系统的活跃部分。根据分析目标不同，可以选择保留或移除。</p>
+
+        <p><strong>节点标识不一致。</strong>这是最棘手的问题之一。同一个实体在不同的数据源中可能使用了不同的ID（比如"John Smith"、"J. Smith"、"john.smith@email.com"都指向同一个人）。节点去重需要结合实体解析（entity resolution）技术，通常是一个独立的研究领域。</p>
+
+        <pre><code>import pandas as pd
+import networkx as nx
+
+# 原始边列表（通常从API或爬虫获得）
+raw_edges = pd.DataFrame({
+    "source": ["A", "B", "A", "C", "A", "D"],
+    "target": ["B", "A", "B", "D", "C", "A"],
+    "weight": [1, 1, 1, 1, 1, 1]
+})
+
+# 步骤1：去重（对无向图，移除(A,B)和(B,A)的重复）
+edges_dedup = raw_edges.copy()
+edges_dedup["sorted_pair"] = edges_dedup.apply(
+    lambda row: tuple(sorted([row["source"], row["target"]])), axis=1
+)
+edges_dedup = edges_dedup.drop_duplicates(subset="sorted_pair")
+
+# 步骤2：移除自环
+edges_clean = edges_dedup[edges_dedup["source"] != edges_dedup["target"]]
+
+# 步骤3：移除空值
+edges_clean = edges_clean.dropna(subset=["source", "target"])
+
+print(f"原始边数: {len(raw_edges)}")
+print(f"去重后边数: {len(edges_dedup)}")
+print(f"清洗后边数: {len(edges_clean)}")
+
+# 步骤4：清理节点列表
+all_nodes = set(edges_clean["source"]) | set(edges_clean["target"])
+print(f"节点总数: {len(all_nodes)}")
+</code></pre>
+
+        <p>一张好的数据清洗检查清单：</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>检查项</th>
+                    <th>检查方法</th>
+                    <th>处理方式</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>重复边</td>
+                    <td>统计 (source, target) 出现次数</td>
+                    <td>保留第一条或合并权重</td>
+                </tr>
+                <tr>
+                    <td>自环</td>
+                    <td>查询 source == target 的行</td>
+                    <td>直接删除</td>
+                </tr>
+                <tr>
+                    <td>缺失值</td>
+                    <td>检查 source/target 列的NaN</td>
+                    <td>删除该行或尝试补全</td>
+                </tr>
+                <tr>
+                    <td>孤立节点</td>
+                    <td>计算每个节点的度</td>
+                    <td>视情况保留或删除</td>
+                </tr>
+                <tr>
+                    <td>度异常</td>
+                    <td>查看度分布统计数据</td>
+                    <td>检查数据采集过程是否出错</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>导入NetworkX</h2>
+
+        <p>数据清洗完毕之后，最后一步就是将数据导入NetworkX（或其他图分析工具）进行分析。NetworkX支持多种数据格式的导入，我们介绍几种最常用的方式。</p>
+
+        <h3>从边列表导入</h3>
+
+        <p>边列表是最简单的网络数据格式——每一行代表一条边，通常包含源节点和目标节点，第三列可以包含权重。</p>
+
+        <pre><code>import networkx as nx
+
+# 从CSV格式的边列表导入
+# 假设network.csv有两列: source, target
+G = nx.read_edgelist("network.csv", delimiter=",", nodetype=str)
+
+# 如果边列表包含权重
+G_weighted = nx.read_weighted_edgelist("weighted_network.csv", delimiter=",")
+
+# 从pandas DataFrame导入
+import pandas as pd
+df = pd.read_csv("edges.csv")
+G_from_df = nx.from_pandas_edgelist(df, source="source", target="target",
+                                     edge_attr="weight")
+</code></pre>
+
+        <h3>从邻接矩阵导入</h3>
+
+        <p>如果你的数据是以邻接矩阵形式存在的（例如，行和列都是节点，单元格表示连接关系），可以直接导入为numpy数组或scipy稀疏矩阵：</p>
+
+        <pre><code>import numpy as np
+
+# 假设我们有一个3x3的邻接矩阵
+adj_matrix = np.array([
+    [0, 1, 1],
+    [1, 0, 0],
+    [1, 0, 0]
+])
+
+G = nx.from_numpy_array(adj_matrix)
+# 或从scipy稀疏矩阵导入
+# G = nx.from_scipy_sparse_array(sparse_matrix)
+
+# 为节点添加标签
+node_labels = {0: "Alice", 1: "Bob", 2: "Charlie"}
+G = nx.relabel_nodes(G, node_labels)
+</code></pre>
+
+        <h3>从GraphML/GML导入</h3>
+
+        <p>如果你从SNAP或Gephi等工具中导出了标准的图文件格式，NetworkX也支持直接读取：</p>
+
+        <pre><code># 读取GraphML格式（Gephi的默认导出格式之一）
+G = nx.read_graphml("network.graphml")
+
+# 读取GML格式
+G = nx.read_gml("network.gml")
+</code></pre>
+
+        <div class="tip">
+            <strong>性能提示：</strong>当你处理大规模网络（节点数超过10万）时，使用<code>nx.read_edgelist()</code>而不是读取GraphML会快得多。GraphML虽然携带更丰富的节点/边属性信息，但文件解析的开销也更大。对于大数据集，我建议将节点属性和边结构分开存储：结构用边列表，属性用单独的CSV文件，然后在Python中通过DataFrame合并。
+        </div>
+
+        <p>数据采集和清洗是网络科学中最"接地气"但也最容易被忽视的环节。很多人急于跳到分析建模阶段而轻视数据准备，结果后续所有的分析结果都可能因为数据质量问题而被质疑。记住一句老话：garbage in, garbage out。花在数据清洗上的时间永远值得。</p>
+
+        <p>下一章我们将回到理论层面，探讨一个重要的拓展方向——多层网络。在现实中，大多数网络并不是孤立存在的：一个人同时属于社交网络、工作网络和家庭网络；一个城市的交通系统同时包含地铁网络、公交网络和道路网络。这些不同的"层"之间如何相互作用？多层网络中的传播和博弈行为与单层网络有何不同？第19章将为你揭开这个迷人领域的神秘面纱。</p>
+
+        <div class="footer-nav">
+            <a href="17.html">← 上一章</a>
+            <a href="index.html">📖 返回目录</a>
+            <a href="19.html">下一章 →</a>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

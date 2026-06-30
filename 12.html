@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>第12章 网络传播动力学</title>
+    <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+<div class="double-border">
+<div class="container">
+    <div class="sidebar">
+        <h3>🌐 课程目录</h3>
+        <ul class="chapter-list">
+            <li><a href="01.html">第1章 网络科学导论</a></li>
+            <li><a href="02.html">第2章 图论基础</a></li>
+            <li><a href="03.html">第3章 网络基本度量</a></li>
+            <li><a href="04.html">第4章 随机网络模型</a></li>
+            <li><a href="05.html">第5章 小世界网络</a></li>
+            <li><a href="06.html">第6章 无标度网络</a></li>
+            <li><a href="07.html">第7章 度分布与网络异质性</a></li>
+            <li><a href="08.html">第8章 中心性分析</a></li>
+            <li><a href="09.html">第9章 PageRank与链接分析</a></li>
+            <li><a href="10.html">第10章 社团检测（上）</a></li>
+            <li><a href="11.html">第11章 社团检测（下）</a></li>
+            <li><a href="12.html" class="active">第12章 网络传播动力学</a></li>
+            <li><a href="13.html">第13章 信息与谣言传播</a></li>
+            <li><a href="14.html">第14章 网络上的博弈</a></li>
+            <li><a href="15.html">第15章 网络鲁棒性与脆弱性</a></li>
+            <li><a href="16.html">第16章 链路预测</a></li>
+            <li><a href="17.html">第17章 网络可视化</a></li>
+            <li><a href="18.html">第18章 网络数据采集</a></li>
+            <li><a href="19.html">第19章 多层网络</a></li>
+            <li><a href="20.html">第20章 时序与动态网络</a></li>
+            <li><a href="21.html">第21章 网络嵌入与表示学习</a></li>
+            <li><a href="22.html">第22章 图神经网络入门</a></li>
+            <li><a href="23.html">第23章 NetworkX实战</a></li>
+            <li><a href="24.html">第24章 社交网络分析案例</a></li>
+            <li><a href="25.html">第25章 大规模网络分析</a></li>
+            <li><a href="26.html">第26章 网络科学+机器学习</a></li>
+            <li><a href="27.html">第27章 网络科学前沿</a></li>
+            <li><a href="28.html">第28章 综合实战项目</a></li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <h1>第12章 网络传播动力学</h1>
+
+        <p>大家好，欢迎回到网络科学课程！在前面的章节中，我们主要关注网络的<strong>静态结构</strong>——节点的中心性、PageRank、社团划分。但从这一章开始，我们将迈入一个全新的领域：当网络中运行着<strong>动态过程</strong>时，结构如何影响系统的行为？</p>
+
+        <p>传播动力学（Spreading Dynamics）是网络科学中应用最广泛的分支之一。无论是传染病的扩散、计算机病毒的蔓延、新技术的采纳，还是谣言在社交媒体上的传播，本质上都是同一个问题：<strong>一个"东西"如何在网络的节点之间传播？</strong>本章和下一章将分别探讨疾病传播和信息传播——虽然它们共享相似的数学框架，但在行为机制和防控策略上有着根本的不同。</p>
+
+        <h2>传染病建模基础</h2>
+
+        <h3>仓室模型</h3>
+
+        <p>传染病建模的核心是<strong>仓室模型（Compartmental Models）</strong>，它将人群划分为若干个"仓室"，根据个体在疾病进程中所处的状态进行分类。最基本的仓室模型有三种：</p>
+
+        <p><strong>SIR模型</strong>是最经典的模型，包含三个状态：</p>
+        <ul>
+            <li><strong>S（Susceptible，易感者）</strong>：尚未感染，但有可能被感染。</li>
+            <li><strong>I（Infected，感染者）</strong>：已感染，具有传染性。</li>
+            <li><strong>R（Recovered/Removed，移除者）</strong>：已康复（获得免疫力）或死亡，不再参与传播。</li>
+        </ul>
+
+        <p>SIR模型适用于那些感染后能获得持久免疫力的疾病，比如麻疹、水痘、COVID-19（初期版本）。</p>
+
+        <p><strong>SIS模型</strong>只有两个状态——易感者和感染者——感染者康复后再次变为易感者。这适用于没有免疫力的疾病，比如普通感冒、流感（短期内）、性传播疾病。</p>
+
+        <p><strong>SEIR模型</strong>在SIR基础上增加了一个<strong>E（Exposed，暴露者）</strong>状态，代表已感染但尚未具有传染性的潜伏期。这对于有较长潜伏期的疾病非常重要（如COVID-19、埃博拉）。</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>模型</th>
+                    <th>状态</th>
+                    <th>状态转移</th>
+                    <th>适用疾病</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>SIR</td>
+                    <td>S → I → R</td>
+                    <td>S→I：感染，I→R：康复/死亡</td>
+                    <td>麻疹、水痘（有免疫力）</td>
+                </tr>
+                <tr>
+                    <td>SIS</td>
+                    <td>S → I → S</td>
+                    <td>S→I：感染，I→S：康复</td>
+                    <td>普通感冒、流感</td>
+                </tr>
+                <tr>
+                    <td>SEIR</td>
+                    <td>S → E → I → R</td>
+                    <td>S→E：感染，E→I：发病，I→R：康复</td>
+                    <td>COVID-19、埃博拉</td>
+                </tr>
+                <tr>
+                    <td>SI</td>
+                    <td>S → I</td>
+                    <td>只感染，永不康复</td>
+                    <td>HIV（简化模型）</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>平均场方程</h3>
+
+        <p>在均匀混合（well-mixed）假设下——即每个人与其他人等概率接触——SIR模型的动力学可以用微分方程描述：</p>
+
+        <pre><code>dS/dt = -βSI
+dI/dt = βSI - γI
+dR/dt = γI</code></pre>
+
+        <p>其中 β 是感染率（每次接触的传播概率），γ 是康复率。这两个参数之比 R₀ = β/γ 就是著名的<strong>基本再生数（Basic Reproduction Number）</strong>——一个感染者在全部易感人群中平均能传染给多少人。R₀ > 1 意味着疫情会爆发，R₀ &lt; 1 意味着疫情会自然消退。</p>
+
+        <div class="highlight">
+            <strong>关键概念：</strong>R₀ 是传染病学的核心指标，但很多人误解了它。R₀ 不是一个"病毒固有属性"——它取决于人口密度、社交模式、干预措施等。COVID-19的R₀在武汉封城前约为2.5-3.0，但大规模核酸检测和社交距离措施可以将其降到1.0以下。换句话说，R₀ 是<strong>病毒 + 社会系统</strong>的复合属性，而非单纯的生物学属性。
+        </div>
+
+        <h2>网络上的传播</h2>
+
+        <p>均匀混合假设虽然数学上便利，但在现实中几乎从未成立过。一个人的接触对象是有限的、结构化的——家庭、同事、朋友——这些关系构成了一个网络。当传播发生在网络上时，一切都会变得不同。</p>
+
+        <h3>网络结构如何改变传播</h3>
+
+        <p>在网络上建模传播时，每个节点占据一个仓室状态，传播沿着边进行。一个易感节点以概率 β 被其每个感染邻居"感染"。网络的拓扑结构从根本上影响了传播的动力学：</p>
+
+        <ul>
+            <li><strong>度分布</strong>：在无标度网络中，高度数的枢纽节点一旦被感染，会迅速将疾病传播给大量邻居。</li>
+            <li><strong>聚类系数</strong>：高聚类网络中的传播速度较慢，因为邻居之间互为邻居——感染从同一个源出发会"重复拜访"已感染的区域。</li>
+            <li><strong>社团结构</strong>：传播会在社团内部迅速扩散，然后在不同社团之间缓慢"跳跃"。</li>
+        </ul>
+
+        <h3>异质性平均场理论</h3>
+
+        <p>为了将网络的异质性纳入分析，研究人员发展了<strong>异质性平均场（Heterogeneous Mean-Field, HMF）</strong>理论。HMF放弃了"所有人等概率接触"的假设，而是按照<strong>度</strong>对节点进行分类——认为所有度数为 k 的节点具有相同的动力学行为。</p>
+
+        <p>在HMF框架下，度数为 k 的节点的感染概率 θ_k 满足：</p>
+
+        <pre><code>dθ_k/dt = -θ_k + β k (1 - θ_k) Σ_{k'} P(k'|k) θ_{k'}</code></pre>
+
+        <p>其中 P(k'|k) 是度相关性——度数为 k 的节点连接到度数为 k' 的节点的条件概率。这个方程虽然复杂，但它揭示了一个至关重要的结论。</p>
+
+        <h2>传播阈值</h2>
+
+        <p>在均匀混合模型中，传播阈值（epidemic threshold）是 λ_c = 1/R₀——当传染力超过该值时，疾病才能流行。但在网络上，这个阈值完全变了。</p>
+
+        <p>对于SIS模型在配置模型网络（给定度分布，随机连接）上的传播，传播阈值为：</p>
+
+        <pre><code>λ_c = ⟨k⟩ / ⟨k²⟩</code></pre>
+
+        <p>其中 ⟨k⟩ 是平均度，⟨k²⟩ 是二阶矩（度的平方的平均值）。这个公式的意义深远：</p>
+
+        <ul>
+            <li>对于<strong>ER随机图</strong>（泊松度分布），⟨k²⟩ = ⟨k⟩² + ⟨k⟩，所以 λ_c ≈ 1/⟨k⟩——与均匀混合模型一致。</li>
+            <li>对于<strong>无标度网络</strong>（幂律度分布），当幂指数 γ ≤ 3 时，⟨k²⟩ → ∞，因此<strong>传播阈值 λ_c → 0</strong>！</li>
+        </ul>
+
+        <div class="highlight">
+            <strong>震撼的结论：</strong>在无标度网络上——也就是大多数真实网络（社交网络、互联网、生物网络）——传播阈值趋近于零。这意味着，即使是传染力极低的病原体（或者影响力极小的信息），只要有足够多的时间，就能在网络上持续存在并传播开。这就是为什么高度异质的网络如此"危险"——它们天生就是传播的温床。
+        </div>
+
+        <h2>渗流视角</h2>
+
+        <p>传播动力学与<strong>渗流理论（Percolation Theory）</strong>有着深刻的数学联系。渗流理论原本是统计物理学中研究流体在多孔介质中扩散的理论，但它在网络科学中找到了出人意料的广泛应用。</p>
+
+        <p><strong>边渗流（Bond Percolation）</strong>：每条边以概率 p 保留（"开放"），以概率 1-p 移除（"封闭"）。SIR模型的最终感染规模等价于边渗流中开放边形成的连通分量大小——感染概率 β 对应着保留边的概率。</p>
+
+        <p><strong>点渗流（Site Percolation）</strong>：每个节点以概率 p 保留。免疫策略的本质就是在网络上进行点渗流——移除（免疫）一部分节点，观察网络是否还能支持传播。</p>
+
+        <p>渗流理论中最核心的概念是<strong>渗流阈值（percolation threshold）p_c</strong>：当 p &gt; p_c 时，网络中会出现一个跨越整个网络的"巨连通分量"（giant connected component）。在传染病的语境下，这意味着疾病可以扩散到整个网络。</p>
+
+        <h2>免疫策略</h2>
+
+        <p>理解了网络传播的理论之后，最自然的后续问题就是：如何有效地阻止传播？这就是<strong>免疫策略（Immunization Strategy）</strong>要解决的问题。</p>
+
+        <h3>随机免疫</h3>
+
+        <p>最简单的策略——随机选择一定比例的节点进行免疫。根据渗流理论，需要免疫的比例达到 1 - 1/R₀ 才能实现"群体免疫"。对于高传染力的疾病（如麻疹的R₀可达12-18），这意味着需要免疫超过90%的人口。在无标度网络上，情况更糟——由于传播阈值趋近于零，<strong>随机免疫的效率极低</strong>。</p>
+
+        <h3>目标免疫</h3>
+
+        <p>既然枢纽节点贡献了大部分传播，那么<strong>优先免疫高度数节点</strong>应该更有效率。这就是目标免疫（Targeted Immunization）的核心思路。在BA无标度网络上，只需要免疫很少比例的枢纽节点（如总节点的百分之几），就能有效破坏传播通路。</p>
+
+        <p>目标免疫的问题在于，它要求我们知道所有节点的度数。在大型社交网络中，获取全局度信息可能不现实或成本过高。此外，在网络演化的早期阶段，还不能准确识别哪些节点将成为枢纽。</p>
+
+        <h3>熟人免疫</h3>
+
+        <p><strong>熟人免疫（Acquaintance Immunization）</strong>是由Cohen等人在2003年提出的一个极其巧妙的策略：随机选择一部分节点，不直接免疫它们，而是<strong>免疫它们随机一个邻居</strong>。为什么这样有效？因为随机节点的邻居"更有可能"是高度数节点——这就是著名的<strong>"朋友悖论"</strong>（Friendship Paradox）：在社交网络中，你的朋友平均比你拥有更多的朋友。</p>
+
+        <p>熟人免疫的惊人之处在于，（1）它不需要全局度信息；（2）它几乎达到了目标免疫的效率；（3）实现极其简单。这是网络科学中"用结构智慧代替信息成本"的绝佳范例。</p>
+
+        <pre><code>import networkx as nx
+import random
+
+def acquaintance_immunization(G, fraction):
+    """熟人免疫：随机选节点，免疫其随机一个邻居"""
+    n_immunized = int(len(G) * fraction)
+    candidates = set()
+    while len(candidates) < n_immunized:
+        node = random.choice(list(G.nodes()))
+        neighbors = list(G.neighbors(node))
+        if neighbors:
+            candidates.add(random.choice(neighbors))
+    return candidates
+
+G = nx.barabasi_albert_graph(10000, 3)
+immunized = acquaintance_immunization(G, 0.1)
+print(f"免疫 {len(immunized)} 个节点")
+print(f"被免疫节点的平均度: {sum(G.degree(n) for n in immunized) / len(immunized):.1f}")</code></pre>
+
+        <h2>COVID-19案例：网络科学的视角</h2>
+
+        <p>没有任何一个案例比COVID-19更能说明网络传播动力学的实际价值。2020年开始的新冠疫情是全球性的挑战，而网络科学在理解和管理疫情中发挥了重要作用。</p>
+
+        <ul>
+            <li><strong>超级传播者事件</strong>：COVID-19的传播呈现出明显的"超扩散"特征——80%的传播由20%的感染者造成。这正好符合无标度网络的预测：少数枢纽节点（超级传播者）驱动了大多数传播。</li>
+            <li><strong>多层网络视角</strong>：COVID-19同时在多个"层"上传播——家庭网络（核心层）、工作场所网络、公共交通网络、社交活动网络。不同层的传播速度不同，控制策略也应该不同。</li>
+            <li><strong>非药物干预的效果</strong>：社交距离、戴口罩、封城等干预措施本质上是<strong>重新连接网络</strong>——减少边数、降低平均度、破坏传播路径。网络科学提供了量化这些干预效果的数学工具。</li>
+        </ul>
+
+        <div class="warning">
+            <strong>反思：</strong>COVID-19暴露了许多国家在接触者追踪（contact tracing）上的缺陷。传统的"回溯两天"策略在网络科学看来是不够的——因为无标度网络中的传播可能由一次短暂的接触触发级联效应。更有效的策略是将接触者追踪与<strong>网络拓扑分析</strong>结合：不仅追踪直接接触者，还要关注接触者的接触者（2-hop tracing），尤其是在高度数节点周围。
+        </div>
+
+        <p>本章我们从传染病建模的仓室模型出发，深入探讨了网络结构如何从根本上改变传播动力学——最震撼的结论莫过于无标度网络上传播阈值趋近于零。基于这些理论认识，我们学习了从随机免疫到熟人免疫的防控策略。COVID-19的全球经验更是生动地印证了网络科学在应对现实传播挑战中的价值。</p>
+
+        <p>下一章，我们将把传播动力学的视角从疾病转向<strong>信息与谣言</strong>。虽然两者都遵循类似的扩散模式，但信息传播有其独特的复杂性——比如社会增强效应、弱关系优势和信息级联。我们第13章见！</p>
+
+        <div class="footer-nav">
+            <a href="11.html">← 上一章</a>
+            <a href="index.html">📖 返回目录</a>
+            <a href="13.html">下一章 →</a>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>第23章 NetworkX实战</title>
+    <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+<div class="double-border">
+<div class="container">
+    <div class="sidebar">
+        <h3>🐍 课程目录</h3>
+        <ul class="chapter-list">
+            <li><a href="01.html">第1章 网络科学导论</a></li>
+            <li><a href="02.html">第2章 图论基础</a></li>
+            <li><a href="03.html">第3章 网络基本度量</a></li>
+            <li><a href="04.html">第4章 随机网络模型</a></li>
+            <li><a href="05.html">第5章 小世界网络</a></li>
+            <li><a href="06.html">第6章 无标度网络</a></li>
+            <li><a href="07.html">第7章 度分布与网络异质性</a></li>
+            <li><a href="08.html">第8章 中心性分析</a></li>
+            <li><a href="09.html">第9章 PageRank与链接分析</a></li>
+            <li><a href="10.html">第10章 社团检测（上）</a></li>
+            <li><a href="11.html">第11章 社团检测（下）</a></li>
+            <li><a href="12.html">第12章 网络传播动力学</a></li>
+            <li><a href="13.html">第13章 信息与谣言传播</a></li>
+            <li><a href="14.html">第14章 网络上的博弈</a></li>
+            <li><a href="15.html">第15章 网络鲁棒性与脆弱性</a></li>
+            <li><a href="16.html">第16章 链路预测</a></li>
+            <li><a href="17.html">第17章 网络可视化</a></li>
+            <li><a href="18.html">第18章 网络数据采集</a></li>
+            <li><a href="19.html">第19章 多层网络</a></li>
+            <li><a href="20.html">第20章 时序与动态网络</a></li>
+            <li><a href="21.html">第21章 网络嵌入与表示学习</a></li>
+            <li><a href="22.html">第22章 图神经网络入门</a></li>
+            <li><a href="23.html" class="active">第23章 NetworkX实战</a></li>
+            <li><a href="24.html">第24章 社交网络分析案例</a></li>
+            <li><a href="25.html">第25章 大规模网络分析</a></li>
+            <li><a href="26.html">第26章 网络科学+机器学习</a></li>
+            <li><a href="27.html">第27章 网络科学前沿</a></li>
+            <li><a href="28.html">第28章 综合实战项目</a></li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <h1>第23章 NetworkX实战</h1>
+
+        <p>欢迎来到实战篇！前面22章我们打下了坚实的理论基础，从图论到社团检测，从传播动力学到图神经网络。但理论再漂亮，最终要能写代码跑出来才有意义。从本章开始，我们要动手了。</p>
+
+        <p>今天的主角是NetworkX——Python生态中最流行的网络分析库。如果你做网络科学却没用过NetworkX，就好像学炒菜没碰过锅铲。它是我们工具箱里最趁手的家伙，值得花一整章来好好掌握。</p>
+
+        <p>我当年刚开始做网络分析的时候，对着官方文档翻了半天，结果发现90%的日常工作只需要不到10个函数。本章的目标就是让你快速掌握这关键的20%，然后直接上手干活。</p>
+
+        <h2>NetworkX简介</h2>
+
+        <p>NetworkX是一个用Python编写的图论与复杂网络建模库，由Los Alamos国家实验室的Aric Hagberg等人于2002年发起。它的核心是提供一套统一的数据结构和算法接口，让你能够方便地创建、操作和研究各种网络。</p>
+
+        <p>安装非常轻松，一行命令搞定：</p>
+
+        <pre><code>pip install networkx
+
+# 如果需要可视化功能，建议一并安装 matplotlib
+pip install matplotlib</code></pre>
+
+        <p>NetworkX内置了三种主要的图类型，分别对应不同的网络场景：</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>类名</th>
+                    <th>边方向</th>
+                    <th>多重边</th>
+                    <th>适用场景</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>nx.Graph</code></td>
+                    <td>无向</td>
+                    <td>否</td>
+                    <td>社交网络（好友关系）、合作网络、道路网络</td>
+                </tr>
+                <tr>
+                    <td><code>nx.DiGraph</code></td>
+                    <td>有向</td>
+                    <td>否</td>
+                    <td>网页链接、Twitter关注、引用网络、知识图谱</td>
+                </tr>
+                <tr>
+                    <td><code>nx.MultiGraph</code></td>
+                    <td>无向</td>
+                    <td>是</td>
+                    <td>交通网络（多条航线）、多种关系并存</td>
+                </tr>
+                <tr>
+                    <td><code>nx.MultiDiGraph</code></td>
+                    <td>有向</td>
+                    <td>是</td>
+                    <td>多通道通信、时序交互记录</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>选择哪种类型取决于你的数据特性。举个实际例子：如果你在分析微信好友关系（加好友是双向确认），用<code>Graph</code>就够了；但如果是微博关注（A关注B不意味着B关注A），那就必须上<code>DiGraph</code>。</p>
+
+        <div class="highlight">
+            <strong>关键概念：</strong>NetworkX使用字典的字典（dict-of-dicts）作为底层数据结构。每个节点是一个键，对应的值是一个字典，记录了该节点的所有邻居及边属性。这种设计使得对单个节点和边的增删改查操作非常高效，但整图级别的遍历在大规模图上会有性能瓶颈——我们第25章会讨论这个问题。
+        </div>
+
+        <h2>创建图</h2>
+
+        <p>创建一张图的方式多种多样，我们从最基础的开始。</p>
+
+        <h3>手动添加节点和边</h3>
+
+        <p>最直观的方式就是一个个加：</p>
+
+        <pre><code>import networkx as nx
+
+G = nx.Graph()
+
+# 添加节点
+G.add_node("Alice")
+G.add_node("Bob")
+G.add_node("Charlie")
+
+# 批量添加节点
+G.add_nodes_from(["David", "Eve", "Frank"])
+
+# 添加边
+G.add_edge("Alice", "Bob")
+G.add_edge("Bob", "Charlie")
+
+# 批量添加边
+G.add_edges_from([
+    ("Alice", "David"),
+    ("Bob", "Eve"),
+    ("Charlie", "Frank"),
+    ("David", "Eve"),
+])
+
+print(f"节点数: {G.number_of_nodes()}")
+print(f"边数: {G.number_of_edges()}")
+print(f"邻居: {list(G.neighbors('Alice'))}")</code></pre>
+
+        <p>输出结果：</p>
+
+        <pre><code>节点数: 6
+边数: 6
+邻居: ['Bob', 'David']</code></pre>
+
+        <h3>从Pandas DataFrame创建</h3>
+
+        <p>实际工作中，你的数据大概率来自CSV或者数据库，用Pandas读进来之后直接转成NetworkX图：</p>
+
+        <pre><code>import pandas as pd
+import networkx as nx
+
+# 边列表（edge list）格式
+df_edges = pd.DataFrame({
+    "source": ["A", "B", "C", "D"],
+    "target": ["B", "C", "D", "A"],
+    "weight": [0.5, 1.2, 0.8, 0.3]
+})
+
+# 从DataFrame创建图
+G = nx.from_pandas_edgelist(df_edges, source="source",
+                            target="target", edge_attr="weight")
+
+# 也可以通过邻接矩阵创建
+import numpy as np
+adj_matrix = np.array([
+    [0, 1, 0, 0],
+    [1, 0, 1, 1],
+    [0, 1, 0, 1],
+    [0, 1, 1, 0],
+])
+G = nx.from_numpy_array(adj_matrix)
+# 默认节点标签为整数，可以后续重命名
+mapping = {i: name for i, name in enumerate(["N1", "N2", "N3", "N4"])}
+G = nx.relabel_nodes(G, mapping)</code></pre>
+
+        <h3>读取常见格式文件</h3>
+
+        <p>NetworkX支持多种文件格式的读写，极大方便了与现有工具的对接：</p>
+
+        <pre><code># GEXF格式 —— Gephi的标准格式，保留颜色、大小等视觉属性
+G = nx.read_gexf("network.gexf")
+nx.write_gexf(G, "output.gexf")
+
+# GML格式 —— yED等图编辑工具常用
+G = nx.read_gml("network.gml")
+
+# GraphML —— 基于XML的格式，跨平台兼容性好
+G = nx.read_graphml("network.graphml")
+
+# 边列表 —— 最简单的文本格式，两列（源节点 目标节点）
+G = nx.read_edgelist("edges.txt")
+
+# 邻接列表
+G = nx.read_adjlist("adjacency.txt")</code></pre>
+
+        <p>说到格式转换踩过的坑，我必须分享一个教训。有一次我从Gephi导出GEXF文件后再用NetworkX读取，结果中文节点名全部变成了乱码。原因很简单：GEXF默认编码是UTF-8，但Windows版的Gephi有时候会用GBK编码导出。解决方案是手动指定编码：<code>nx.read_gexf("file.gexf", encoding="utf-8")</code>。这一类编码问题在跨平台协作时尤其常见，值得警惕。</p>
+
+        <h2>网络分析函数</h2>
+
+        <p>图建好之后，我们直奔主题——用NetworkX的计算能力提取网络的结构特征。</p>
+
+        <h3>基本度量</h3>
+
+        <pre><code># 度（Degree）
+degrees = dict(G.degree())
+print(f"平均度: {sum(degrees.values()) / G.number_of_nodes():.2f}")
+
+# 度分布
+degree_sequence = [d for n, d in G.degree()]
+
+# 聚类系数（Clustering Coefficient）
+# 局部聚类系数
+print(f"Alice的聚类系数: {nx.clustering(G, 'Alice'):.3f}")
+# 全局平均聚类系数
+print(f"平均聚类系数: {nx.average_clustering(G):.3f}")
+# 全局聚类系数（传递性）
+print(f"全局聚类系数: {nx.transitivity(G):.3f}")</code></pre>
+
+        <h3>路径与连通性</h3>
+
+        <pre><code># 最短路径
+path = nx.shortest_path(G, source="Alice", target="Frank")
+print(f"最短路径: {path}")
+print(f"路径长度: {len(path) - 1}")
+
+# 如果图中有权重，可以用Dijkstra算法求加权最短路径
+path_weighted = nx.dijkstra_path(G, source="Alice", target="Frank", weight="weight")
+
+# 平均最短路径长度（只对连通图有意义）
+if nx.is_connected(G):
+    print(f"平均路径长度: {nx.average_shortest_path_length(G):.3f}")
+
+# 连通分量
+components = list(nx.connected_components(G))
+print(f"连通分量数量: {len(components)}")
+print(f"最大连通分量大小: {len(max(components, key=len))}")</code></pre>
+
+        <h3>中心性分析</h3>
+
+        <p>前面第8章我们详细讲过各种中心性指标，现在用代码算出来：</p>
+
+        <pre><code># 度中心性
+deg_cent = nx.degree_centrality(G)
+
+# 介数中心性 —— 计算最慢，大图上注意
+bet_cent = nx.betweenness_centrality(G)
+
+# 接近中心性
+clo_cent = nx.closeness_centrality(G)
+
+# 特征向量中心性
+eig_cent = nx.eigenvector_centrality(G, max_iter=1000)
+
+# 可以排个序，看看谁是最重要的节点
+sorted_nodes = sorted(deg_cent.items(), key=lambda x: x[1], reverse=True)
+print("Top-3 度中心性节点:")
+for node, val in sorted_nodes[:3]:
+    print(f"  {node}: {val:.4f}")</code></pre>
+
+        <div class="warning">
+            <strong>踩坑提醒：</strong>介数中心性（betweenness_centrality）的计算复杂度是O(N*E)，对于超过一万个节点的图会非常慢。有一次我跑一个两万节点的社交网络，没注意复杂度，直接调用了<code>betweenness_centrality(G)</code>，结果等了半小时还没出结果。后来换成<code>betweenness_centrality(G, k=500)</code>——使用Brandes算法的近似版本，只随机采样500个源节点计算——几秒钟就出结果了，排序前几十名和全量计算几乎一致。在大规模图上，<strong>近似计算是你的朋友</strong>。
+        </div>
+
+        <h2>网络生成器</h2>
+
+        <p>NetworkX内置了我们在前几章学过的所有经典网络模型生成器，这在做仿真实验时非常方便：</p>
+
+        <pre><code>import networkx as nx
+import matplotlib.pyplot as plt
+
+# ER随机图 —— 1000节点，连接概率0.01
+G_er = nx.erdos_renyi_graph(1000, 0.01)
+print(f"ER: N={G_er.number_of_nodes()}, E={G_er.number_of_edges()}")
+print(f"  平均度: {2 * G_er.number_of_edges() / G_er.number_of_nodes():.1f}")
+
+# WS小世界网络 —— 1000节点，每个节点与20个邻居相连，重连概率0.1
+G_ws = nx.watts_strogatz_graph(1000, 20, 0.1)
+print(f"WS: 平均聚类={nx.average_clustering(G_ws):.3f}, "
+      f"平均路径={nx.average_shortest_path_length(G_ws):.3f}")
+
+# BA无标度网络 —— 1000节点，每次新增节点连3条边
+G_ba = nx.barabasi_albert_graph(1000, 3)
+print(f"BA: N={G_ba.number_of_nodes()}, E={G_ba.number_of_edges()}")
+
+# 验证幂律度分布
+degree_seq = [d for n, d in G_ba.degree()]
+max_deg = max(degree_seq)
+print(f"  BA最大度: {max_deg}, 最小度: {min(degree_seq)}")</code></pre>
+
+        <p>除了这三个经典模型，NetworkX还提供了许多其他生成器：</p>
+
+        <pre><code># 完全图
+K_5 = nx.complete_graph(5)
+
+# 路径图
+P_10 = nx.path_graph(10)
+
+# 轮图（一个中心连接周围一圈）
+W_6 = nx.wheel_graph(6)
+
+# 随机规则图 —— 每个节点恰有k个邻居
+G_reg = nx.random_regular_graph(4, 100)
+
+# 幂律图 —— 更灵活地控制度分布指数
+G_pl = nx.powerlaw_cluster_graph(500, 3, 0.1)
+
+# 配置模型 —— 给定度序列生成随机图
+degree_sequence = [3, 3, 2, 2, 2, 2, 1, 1]  # 度序列之和必须为偶数
+G_cm = nx.configuration_model(degree_sequence)
+G_cm = nx.Graph(G_cm)  # 去掉多重边
+G_cm.remove_edges_from(nx.selfloop_edges(G_cm))  # 去掉自环</code></pre>
+
+        <div class="tip">
+            <strong>小贴士：</strong>使用<code>configuration_model</code>生成图时，生成的结果默认是<code>MultiGraph</code>，可能包含自环和重边。在大多数实验中，你需要调用<code>nx.Graph(G)</code>去重后再分析。另外一定要检查度序列的总和是否为偶数，否则配置模型算法无法收敛——这是新手最容易忽略的问题。
+        </div>
+
+        <h2>可视化</h2>
+
+        <p>NetworkX本身不做渲染，它通过<code>draw_networkx</code>系列函数调用matplotlib来绘图。虽然不如Gephi那么精美，但对于快速查看网络结构已经足够了。</p>
+
+        <h3>基本绘图</h3>
+
+        <pre><code>import matplotlib.pyplot as plt
+
+G = nx.karate_club_graph()  # NetworkX内置的空手道俱乐部数据
+
+# 最简单的绘图
+nx.draw(G, with_labels=True)
+plt.show()
+
+# 稍微精致一点的版本
+plt.figure(figsize=(10, 8))
+pos = nx.spring_layout(G, seed=42)  # 布局算法，seed保证可复现
+nx.draw_networkx_nodes(G, pos, node_color="lightblue",
+                       node_size=300, alpha=0.9)
+nx.draw_networkx_edges(G, pos, alpha=0.4, width=0.5)
+nx.draw_networkx_labels(G, pos, font_size=9)
+plt.axis("off")
+plt.title("Zachary's Karate Club", fontsize=14)
+plt.tight_layout()
+plt.show()</code></pre>
+
+        <h3>布局算法</h3>
+
+        <p>选择不同的布局算法会极大影响可视化效果：</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>布局函数</th>
+                    <th>算法原理</th>
+                    <th>适用场景</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>spring_layout</code></td>
+                    <td>力导向布局（Fruchterman-Reingold）</td>
+                    <td>通用，社团结构明显时效果最好</td>
+                </tr>
+                <tr>
+                    <td><code>kamada_kawai_layout</code></td>
+                    <td>基于最短路径的弹簧模型</td>
+                    <td>对称性好的图，收敛更快</td>
+                </tr>
+                <tr>
+                    <td><code>circular_layout</code></td>
+                    <td>节点均匀分布在圆周上</td>
+                    <td>展示环路结构或全局连通性</td>
+                </tr>
+                <tr>
+                    <td><code>shell_layout</code></td>
+                    <td>同心圆布局</td>
+                    <td>按中心性分组展示</td>
+                </tr>
+                <tr>
+                    <td><code>spectral_layout</code></td>
+                    <td>基于拉普拉斯矩阵的特征向量</td>
+                    <td>展示图的代数连通性</td>
+                </tr>
+                <tr>
+                    <td><code>spiral_layout</code></td>
+                    <td>螺旋排列</td>
+                    <td>树状结构或时序图</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>按属性着色与缩放</h3>
+
+        <pre><code>G = nx.karate_club_graph()
+
+# 计算度数，用于控制节点大小和颜色
+degrees = dict(G.degree())
+node_sizes = [degrees[n] * 50 for n in G.nodes()]
+node_colors = [degrees[n] for n in G.nodes()]
+
+# 按俱乐部成员分裂后的归属着色
+club_colors = ["red" if G.nodes[n]["club"] == "Mr. Hi"
+               else "blue" for n in G.nodes()]
+
+plt.figure(figsize=(10, 8))
+pos = nx.spring_layout(G, seed=42, k=0.3)
+
+nx.draw_networkx_nodes(G, pos, node_size=node_sizes,
+                       node_color=club_colors, alpha=0.85)
+nx.draw_networkx_edges(G, pos, alpha=0.3, width=0.5)
+nx.draw_networkx_labels(G, pos, font_size=8)
+
+plt.axis("off")
+plt.title("Karate Club — 颜色代表分裂后的归属", fontsize=13)
+plt.tight_layout()
+plt.show()</code></pre>
+
+        <p>关于可视化，当年我在做一个合著网络分析项目时，天真地想画出全部5000个节点和3万条边。结果图一出来，屏幕上全是黑乎乎的一团——完全看不出任何结构。后来我做了三件事才让图变得可读：第一，只显示度大于等于5的节点；第二，用节点大小表示发文量；第三，用不同颜色标识不同的研究领域。这个经验告诉我们：<strong>网络可视化不是"越多越好"，而是"少即是多"</strong>。</p>
+
+        <h2>完整数据分析流程</h2>
+
+        <p>现在我们把上面学到的所有技能串联起来，做一个端到端的网络分析实战——以空手道俱乐部数据为例，完成数据加载、结构分析、可视化和结果解读的完整流程。</p>
+
+        <pre><code>import networkx as nx
+import matplotlib.pyplot as plt
+import numpy as np
+
+# ===== 1. 加载数据 =====
+G = nx.karate_club_graph()
+print(f"图信息: {G}")
+print(f"节点数: {G.number_of_nodes()}, 边数: {G.number_of_edges()}")
+
+# ===== 2. 结构分析 =====
+# 基本度量
+print(f"\n--- 基本度量 ---")
+print(f"平均度: {np.mean([d for n, d in G.degree()]):.2f}")
+print(f"平均聚类系数: {nx.average_clustering(G):.3f}")
+print(f"传递性: {nx.transitivity(G):.3f}")
+
+# 中心性分析
+print(f"\n--- 中心性 Top-5 ---")
+deg_cent = nx.degree_centrality(G)
+bet_cent = nx.betweenness_centrality(G)
+eig_cent = nx.eigenvector_centrality(G, max_iter=1000)
+
+print("度中心性:", sorted(deg_cent.items(),
+      key=lambda x: x[1], reverse=True)[:5])
+print("介数中心性:", sorted(bet_cent.items(),
+      key=lambda x: x[1], reverse=True)[:5])
+print("特征向量中心性:", sorted(eig_cent.items(),
+      key=lambda x: x[1], reverse=True)[:5])
+
+# 社团检测（使用Girvan-Newman算法）
+from networkx.algorithms.community import girvan_newman
+comp = girvan_newman(G)
+top_level_comms = next(comp)
+print(f"\nGirvan-Newman检测到的社团数: {len(top_level_comms)}")
+for i, comm in enumerate(top_level_comms):
+    print(f"  社团{i+1}: {sorted(comm)}")
+
+# ===== 3. 可视化 =====
+plt.figure(figsize=(12, 10))
+pos = nx.spring_layout(G, seed=42, k=0.3)
+
+degrees = dict(G.degree())
+node_sizes = [degrees[n] * 80 for n in G.nodes()]
+
+# 用不同颜色表示实际分裂后的两个群体
+color_map = []
+for node in G.nodes():
+    if G.nodes[node]["club"] == "Mr. Hi":
+        color_map.append("#ff6b6b")  # 红色
+    else:
+        color_map.append("#4ecdc4")  # 青色
+
+nx.draw_networkx_nodes(G, pos, node_size=node_sizes,
+                       node_color=color_map, alpha=0.85,
+                       edgecolors="#333", linewidths=0.5)
+nx.draw_networkx_edges(G, pos, alpha=0.25, width=0.8)
+nx.draw_networkx_labels(G, pos, font_size=9, font_weight="bold")
+
+plt.axis("off")
+plt.title("Zachary's Karate Club — 网络分析与社团结构", fontsize=14, pad=15)
+plt.tight_layout()
+plt.savefig("karate_analysis.png", dpi=150, bbox_inches="tight")
+plt.show()
+
+# ===== 4. 结果解读 =====
+print(f"\n--- 关键发现 ---")
+print("1. 俱乐部成员在分裂后形成了两个清晰的社团结构")
+print("2. 节点0（教练Mr. Hi）和节点33（管理员）是关键枢纽节点")
+print("3. 介数中心性高的节点是连接两个社团的桥梁人物")
+print("4. Girvan-Newman算法检测到的社团与实际分裂结果高度吻合")</code></pre>
+
+        <p>这个流程看起来复杂，但抽象出来就是一个可复用的四步模式：<strong>加载 → 分析 → 可视化 → 解读</strong>。无论你面对的是社交网络、生物网络还是交通网络，这个框架都适用。区别只在于具体分析时关注的指标不同——社交网络更看重社区结构，生物网络更看重功能模块，交通网络更看重关键节点和路径。</p>
+
+        <div class="highlight">
+            <strong>实战要点：</strong>在真实项目中，别忘了把分析结果结构化地保存下来。我通常的做法是：用<code>nx.write_gexf()</code>保存图结构（方便后续在Gephi中调整可视化），用CSV保存中心性指标（方便Excel查看），关键统计量保存为JSON（方便报告生成）。数据管好，后续怎么写报告都不慌。
+        </div>
+
+        <p>好了，本章我们亲手用NetworkX过了一遍从建图到分析的完整流程。但这些都还是在"玩具数据"上练手。下一章，我们将把这些技能应用到真实世界的社交网络数据集中——分析空手道俱乐部的分裂、arXiv上的合著关系，以及微博上的信息传播。数据变大了，故事也更精彩了。</p>
+
+        <p>我们第24章见！</p>
+
+        <div class="footer-nav">
+            <a href="22.html">← 上一章</a>
+            <a href="index.html">📖 返回目录</a>
+            <a href="24.html">下一章 →</a>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>
