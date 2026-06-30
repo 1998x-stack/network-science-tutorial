@@ -133,6 +133,12 @@ th {
     background: #fef9c3; border: 1px solid #facc15;
 }
 
+/* === Inline term highlight === */
+.main-content .term-highlight {
+    color: #6d28d9;
+    font-weight: 700;
+}
+
 /* === Footer Navigation === */
 .footer-nav {
     margin-top: 45px; padding-top: 20px;
