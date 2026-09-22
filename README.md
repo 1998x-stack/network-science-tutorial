@@ -1,17 +1,23 @@
 # 🌐 网络科学 · 从入门到精通
 
-> 📘 28章 实战体系
-
-一套完整的 **网络科学 · 从入门到精通** 全中文实战课程体系，共 **28 章**。本课程以 HTML 可视化的形式呈现，从基础原理到工程实践循序渐进，适合系统性学习与复习。
+一套 **28 章全中文网络科学课程**，以静态 HTML 提供原理、案例与实战内容，从图论基础逐步介绍复杂网络、网络分析与图机器学习。
 
 ## 🚀 快速开始
 
-无需安装任何依赖，直接用浏览器打开 `index.html` 即可在线阅读全部章节：
+课程目录已预渲染，不再依赖从 `file://` 页面调用 `fetch()`：直接用浏览器打开 `index.html` 即可查看所有章节，也可以直接打开 `01.html` 至 `28.html` 阅读正文。课程无需安装依赖，也不要求联网。
 
 ```bash
-open index.html   # macOS
-# 或在浏览器中直接打开 index.html
+# macOS
+open index.html
+# Linux 桌面环境
+xdg-open index.html
+# Windows（PowerShell）
+start index.html
 ```
+
+如需以 HTTP 方式预览，也可以在仓库目录运行 `python3 -m http.server 8000`，然后打开 `http://localhost:8000/`。本地服务器仅用于预览，不是课程运行所必需的。
+
+目录支持按标题、章节编号或知识点搜索。可以手动勾选“已学完”，并通过“继续上次阅读”返回最近从目录打开的章节。进度仅存于当前浏览器的 `localStorage`；它不会跨浏览器或设备同步。浏览器禁用本地存储时，目录和搜索仍可使用，但进度不会持久保存。关闭 JavaScript 时，28 个静态章节链接仍可使用。
 
 ## 📖 章节目录
 
@@ -49,19 +55,27 @@ open index.html   # macOS
 ## 📂 项目结构
 
 ```text
-network-science-tutorial/
-├── index.html      # 课程主入口（在线阅读全部章节）
-├── 01.html ~ 28.html   # 各章节正文
-├── courses.json    # 课程元数据（标题/章节/主题）
-└── theme.css       # 统一主题样式
+index.html                 离线可用的课程目录、搜索与本机学习进度
+01.html ... 28.html        章节正文与章节导航
+courses.json               课程标题、编号、文件名、主题元数据
+theme.css                  目录与正文的共享样式
+scripts/check_site.py      课程元数据、章节导航与本地链接检查
+tests/test_site.py         检查器的回归测试
+.github/workflows/site-check.yml    GitHub Actions 自动检查
+ERRATA.md                  已确认、尚未写回章节正文的勘误
 ```
 
-## ✨ 课程特色
+## ✅ 开发与验证
 
-- **全中文实战体系**：面向中文读者，由浅入深，覆盖原理与工程实践
-- **28 章完整内容**：系统化章节编排，形成完整知识闭环
-- **可视化呈现**：HTML 图文并茂，适合快速浏览与重点回顾
-- **即开即用**：无需构建、无需服务器，纯静态页面随开随看
+只需要 Python 3，无第三方依赖。修改标题或增删章节时，请同步更新 `courses.json`、`index.html` 和各章节导航；检查器会检测相关文件、编号和链接是否一致。
 
----
-*本课程由 `network-science-tutorial/` 项目维护。*
+```bash
+python3 -m unittest discover -s tests -v
+python3 scripts/check_site.py .
+```
+
+Pull Request 和主分支推送会触发相同的 GitHub Actions 检查。检查器只验证站点结构与本地链接，**不等价于** 浏览器端到端测试、外部链接可用性验证或全部课程科学内容审稿。
+
+## 📌 勘误
+
+阅读第 01 章前请参阅 [ERRATA.md](ERRATA.md)：原七桥图的四个顶点全是奇数度，而非三个。本次工程优化没有直接改动 28 章正文，正文里的这处表述暂时仍待修订。

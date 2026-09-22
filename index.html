@@ -1,370 +1,131 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
-    <title>课程目录</title>
-    <link rel="stylesheet" href="theme.css">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            background: linear-gradient(145deg, #f9fcf5 0%, #e8f3e8 100%);
-            font-family: 'Segoe UI', 'PingFang SC', Roboto, 'Helvetica Neue', system-ui, -apple-system, sans-serif;
-            padding: 2rem 1.5rem 1rem;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .container {
-            display: block;
-            max-width: 1400px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.70);
-            backdrop-filter: blur(2px);
-            border-radius: 48px 48px 32px 32px;
-            padding: 2rem 2rem 1.5rem;
-            box-shadow: 0 20px 40px rgba(90, 140, 100, 0.15), 0 8px 20px rgba(0, 30, 20, 0.08);
-            border: 1px solid rgba(255, 245, 200, 0.5);
-        }
-
-        .header {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: baseline;
-            justify-content: space-between;
-            margin-bottom: 2rem;
-            border-bottom: 4px solid #f7d44a;
-            padding-bottom: 0.75rem;
-        }
-
-        .header h1 {
-            font-size: 2.4rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            background: linear-gradient(135deg, #2b7a4b, #3f9e6b);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 2px 8px rgba(60, 140, 80, 0.12);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .header h1 .emoji {
-            font-size: 2.2rem;
-            filter: drop-shadow(0 2px 4px rgba(255, 200, 50, 0.3));
-        }
-
-        .header .sub {
-            font-size: 1rem;
-            background: #fef7e0;
-            padding: 0.3rem 1.2rem;
-            border-radius: 40px;
-            color: #3f6b4a;
-            font-weight: 600;
-            border: 1px solid #f3d98a;
-            box-shadow: 0 2px 6px rgba(200, 160, 50, 0.1);
-            white-space: nowrap;
-        }
-
-        .course-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.2rem;
-            margin: 1.8rem 0 1.2rem;
-        }
-
-        .card {
-            background: #ffffff;
-            border-radius: 28px;
-            padding: 1rem 1.2rem 1rem 1.2rem;
-            box-shadow: 0 6px 14px rgba(70, 120, 80, 0.08), 0 2px 6px rgba(0, 0, 0, 0.02);
-            transition: all 0.2s ease;
-            border: 1px solid rgba(210, 230, 200, 0.5);
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            backdrop-filter: blur(2px);
-        }
-
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 14px 24px rgba(70, 140, 90, 0.15), 0 4px 12px rgba(40, 100, 60, 0.05);
-            border-color: #b8d9b0;
-            background: #fefefc;
-        }
-
-        .card-header {
-            display: flex;
-            align-items: baseline;
-            gap: 0.4rem;
-            margin-bottom: 0.4rem;
-            flex-wrap: wrap;
-        }
-
-        .chapter-num {
-            font-size: 1.1rem;
-            font-weight: 700;
-            background: #f5d142;
-            color: #2a5a3a;
-            padding: 0 0.6rem;
-            border-radius: 40px;
-            line-height: 1.6;
-            display: inline-block;
-            box-shadow: inset 0 -2px 0 #dbb42c;
-            letter-spacing: 0.3px;
-            min-width: 2.2rem;
-            text-align: center;
-        }
-
-        .card-title {
-            font-size: 1.2rem;
-            font-weight: 650;
-            color: #1f4d33;
-            letter-spacing: -0.3px;
-            line-height: 1.3;
-            flex: 1;
-        }
-
-        .topic-list {
-            list-style: none;
-            margin-top: 0.3rem;
-            padding-left: 0.2rem;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.2rem 0.6rem;
-        }
-
-        .topic-list li {
-            font-size: 0.8rem;
-            color: #2d543a;
-            background: #f1f9ee;
-            padding: 0.1rem 0.7rem 0.2rem 1.2rem;
-            border-radius: 30px;
-            line-height: 1.6;
-            position: relative;
-            border: 1px solid #dcebd4;
-            box-shadow: inset 0 1px 2px white;
-        }
-
-        .topic-list li::before {
-            content: "⚡";
-            position: absolute;
-            left: 4px;
-            top: 0px;
-            font-size: 0.7rem;
-            color: #e5b13b;
-        }
-
-        .card-footer {
-            margin-top: 0.6rem;
-            display: flex;
-            justify-content: flex-end;
-            border-top: 1px dashed #d4e8d0;
-            padding-top: 0.5rem;
-        }
-
-        .card-footer a {
-            background: #b7d8b0;
-            color: #1f452b;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.85rem;
-            padding: 0.2rem 1.2rem;
-            border-radius: 40px;
-            transition: 0.15s;
-            border: 1px solid #8fb88a;
-            box-shadow: 0 2px 4px rgba(60, 120, 60, 0.1);
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .card-footer a::after {
-            content: "→";
-            font-size: 1rem;
-            transition: transform 0.1s;
-        }
-
-        .card-footer a:hover {
-            background: #f7d44a;
-            border-color: #dbb42c;
-            color: #1f3d28;
-            box-shadow: 0 4px 8px rgba(200, 160, 40, 0.2);
-            transform: scale(1.02);
-        }
-
-        .card-footer a:active {
-            transform: scale(0.96);
-        }
-
-        .footer {
-            margin-top: 2.5rem;
-            text-align: center;
-            font-size: 1rem;
-            color: #3b6b47;
-            background: #f2fcee;
-            padding: 0.8rem 2rem;
-            border-radius: 60px;
-            display: inline-block;
-            border: 1px solid #c6dfbe;
-            box-shadow: 0 2px 8px rgba(80, 130, 70, 0.08);
-            font-weight: 500;
-            letter-spacing: 0.3px;
-            backdrop-filter: blur(2px);
-        }
-
-        .footer span {
-            background: #f9eec1;
-            padding: 0.1rem 0.8rem;
-            border-radius: 30px;
-            margin: 0 4px;
-        }
-
-        @media (max-width: 640px) {
-            body { padding: 1rem 0.8rem; }
-            .container { padding: 1.2rem 1rem; border-radius: 32px; }
-            .header h1 { font-size: 1.8rem; }
-            .header .sub { font-size: 0.75rem; padding: 0.2rem 0.8rem; }
-            .course-grid { grid-template-columns: 1fr; gap: 1rem; }
-            .card-title { font-size: 1.05rem; }
-            .topic-list li { font-size: 0.7rem; }
-        }
-
-        @media (min-width: 768px) and (max-width: 1024px) {
-            .course-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-
-        .container::before {
-            content: "";
-            display: block;
-            height: 6px;
-            width: 120px;
-            background: linear-gradient(90deg, #f7d44a, #7fc47c, #4aa0b0, #f7b07a);
-            border-radius: 10px;
-            margin-bottom: 0.2rem;
-        }
-
-        .card:nth-child(6n+1) .chapter-num { background: #f7b07a; color: #3d2e1a; }
-        .card:nth-child(6n+2) .chapter-num { background: #a7d4a0; color: #1f452b; }
-        .card:nth-child(6n+3) .chapter-num { background: #f5d44a; color: #2f4d2a; }
-        .card:nth-child(6n+4) .chapter-num { background: #b3d9e8; color: #1a3f4a; }
-        .card:nth-child(6n+5) .chapter-num { background: #f7c6c6; color: #5a2e2e; }
-        .card:nth-child(6n) .chapter-num { background: #c4b3e0; color: #2f2a4a; }
-
-        .state-msg {
-            text-align: center;
-            padding: 3rem;
-            color: #5f7f66;
-            font-size: 1.1rem;
-        }
-        .state-msg.error {
-            color: #b91c1c;
-            background: #fef2f2;
-            border-radius: 20px;
-            margin: 1rem 0;
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="28 章中文网络科学课程：图论、复杂网络、传播动力学、图机器学习及实战。">
+  <title>网络科学 · 从入门到精通 | 课程目录</title>
+  <link rel="stylesheet" href="theme.css">
+  <style>
+    :root { color-scheme: light; }
+    body { background: linear-gradient(135deg, #f5f3ff, #e8f5f0); min-height: 100vh; color: #1e293b; }
+    .catalog { max-width: 1160px; margin: auto; padding: clamp(1rem, 4vw, 3rem); }
+    .catalog-header { background: #fff; padding: clamp(1.25rem, 3vw, 2.5rem); border-radius: 22px; border: 1px solid #ddd6fe; }
+    .catalog-header h1 { font-size: clamp(1.65rem, 4vw, 2.6rem); color: #4c1d95; line-height: 1.3; }
+    .catalog-header p { color: #475569; margin: .7rem 0; }
+    .catalog-tools { display: flex; flex-wrap: wrap; align-items: center; gap: .8rem; margin: 1.3rem 0; }
+    .catalog-tools label { font-weight: 600; }
+    .catalog-tools input { flex: 1 1 230px; min-width: 0; padding: .8rem 1rem; border: 2px solid #a78bfa; border-radius: 12px; font: inherit; background: white; }
+    .catalog-tools a { color: #5b21b6; font-weight: 600; }
+    .catalog-tools [hidden], .chapter-card[hidden] { display: none !important; }
+    .catalog-status { min-height: 1.5em; color: #475569; margin: 0 0 1rem; }
+    .chapter-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr)); gap: 1rem; }
+    .chapter-card { background: #fff; border: 1px solid #ddd6fe; border-radius: 16px; padding: 1.2rem; display: flex; flex-direction: column; gap: .65rem; box-shadow: 0 4px 16px #4c1d950d; }
+    .chapter-card h2 { font-size: 1.1rem; margin: 0; padding: 0; border: 0; line-height: 1.45; }
+    .chapter-card h2 a { color: #4c1d95; text-decoration-thickness: .08em; text-underline-offset: .2em; }
+    .chapter-card p { margin: 0; color: #475569; font-size: .92rem; line-height: 1.6; }
+    .chapter-card .progress-control { margin-top: auto; display: flex; align-items: center; gap: .5rem; font-size: .9rem; cursor: pointer; }
+    .progress-control input { width: 1.1rem; height: 1.1rem; accent-color: #6d28d9; }
+    a:focus-visible, input:focus-visible { outline: 3px solid #0f766e; outline-offset: 4px; }
+    .catalog-footer { margin: 2rem 0; color: #475569; }
+    .catalog-footer a { color: #5b21b6; }
+    @media (prefers-reduced-motion: no-preference) { .chapter-card { transition: box-shadow .15s ease, transform .15s ease; } .chapter-card:hover { transform: translateY(-2px); box-shadow: 0 8px 22px #4c1d951a; } }
+    @media (max-width: 600px) { body { padding: 0; } .catalog { padding: .75rem; } }
+  </style>
 </head>
 <body>
-<div class="container">
-    <div class="header">
-        <h1><span class="emoji"></span><span class="title-text"></span></h1>
-        <div class="sub"></div>
-    </div>
-
-    <div id="cardContainer" class="course-grid"></div>
-
-    <div style="text-align:center;">
-        <div class="footer"></div>
-    </div>
-</div>
-
+<main class="catalog" id="main">
+  <header class="catalog-header">
+    <h1>🌐 网络科学 · 从入门到精通</h1>
+    <p>📘 28 章中文课程，从图论基础到复杂网络、图机器学习与综合实战。</p>
+    <p>课程目录无需联网，也无需安装依赖；学习进度仅保存在当前浏览器中。</p>
+  </header>
+  <div class="catalog-tools" role="search">
+    <label for="chapter-search">查找章节</label>
+    <input id="chapter-search" type="search" placeholder="搜索标题、章节编号或知识点" autocomplete="off" aria-controls="chapter-list">
+    <a id="resume-link" href="01.html" hidden>继续上次阅读</a>
+  </div>
+  <p id="catalog-status" class="catalog-status" role="status" aria-live="polite">共 28 章</p>
+  <ol id="chapter-list" class="chapter-grid">
+    <li class="chapter-card"><h2><a href="01.html">01 · 网络科学导论</a></h2><p>学科定义 · 发展简史 · 应用领域 · 课程概览</p></li>
+    <li class="chapter-card"><h2><a href="02.html">02 · 图论基础</a></h2><p>节点与边 · 有向/无向图 · 邻接矩阵 · 二分图</p></li>
+    <li class="chapter-card"><h2><a href="03.html">03 · 网络基本度量</a></h2><p>度分布 · 路径与距离 · 聚集系数 · 网络密度</p></li>
+    <li class="chapter-card"><h2><a href="04.html">04 · 随机网络模型</a></h2><p>Erdős–Rényi模型 · 相变现象 · 泊松度分布 · 连通性</p></li>
+    <li class="chapter-card"><h2><a href="05.html">05 · 小世界网络</a></h2><p>Watts-Strogatz模型 · 六度分隔 · 高聚集性 · 短路径</p></li>
+    <li class="chapter-card"><h2><a href="06.html">06 · 无标度网络</a></h2><p>Barabási–Albert模型 · 幂律分布 · 优先连接 · 枢纽节点</p></li>
+    <li class="chapter-card"><h2><a href="07.html">07 · 度分布与网络异质性</a></h2><p>度分布矩 · 异质性度量 · 度相关性 · 同配性</p></li>
+    <li class="chapter-card"><h2><a href="08.html">08 · 中心性分析</a></h2><p>度/介数/接近中心性 · 特征向量中心性 · Katz中心性 · LeaderRank</p></li>
+    <li class="chapter-card"><h2><a href="09.html">09 · PageRank与链接分析</a></h2><p>PageRank原理 · 随机游走 · HITS算法 · 主题敏感PR</p></li>
+    <li class="chapter-card"><h2><a href="10.html">10 · 社团检测（上）</a></h2><p>模块度 · Girvan-Newman算法 · Louvain算法 · 层次聚类</p></li>
+    <li class="chapter-card"><h2><a href="11.html">11 · 社团检测（下）</a></h2><p>InfoMap算法 · 重叠社团 · 核心-边缘结构 · 社团评估</p></li>
+    <li class="chapter-card"><h2><a href="12.html">12 · 网络传播动力学</a></h2><p>SIR/SIS模型 · 渗流理论 · 传播阈值 · 免疫策略</p></li>
+    <li class="chapter-card"><h2><a href="13.html">13 · 信息与谣言传播</a></h2><p>信息级联 · 社会增强效应 · 弱关系优势 · 影响力最大化</p></li>
+    <li class="chapter-card"><h2><a href="14.html">14 · 网络上的博弈</a></h2><p>演化博弈论 · 合作涌现 · 意见动力学 · 选举模型</p></li>
+    <li class="chapter-card"><h2><a href="15.html">15 · 网络鲁棒性与脆弱性</a></h2><p>随机故障vs蓄意攻击 · 级联失效 · 鲁棒性优化 · 案例研究</p></li>
+    <li class="chapter-card"><h2><a href="16.html">16 · 链路预测</a></h2><p>相似性指标 · 概率模型 · 评估方法 · 应用场景</p></li>
+    <li class="chapter-card"><h2><a href="17.html">17 · 网络可视化</a></h2><p>力导向布局 · Gephi实战 · 大规模可视 · 可视化伦理</p></li>
+    <li class="chapter-card"><h2><a href="18.html">18 · 网络数据采集</a></h2><p>API数据获取 · 爬虫技术 · 数据清洗 · NetworkX导入</p></li>
+    <li class="chapter-card"><h2><a href="19.html">19 · 多层网络</a></h2><p>跨层耦合 · 相互依赖网络 · 多层中心性 · muxViz</p></li>
+    <li class="chapter-card"><h2><a href="20.html">20 · 时序与动态网络</a></h2><p>时间演化图 · 快照聚合 · 时态路径 · 动态社团</p></li>
+    <li class="chapter-card"><h2><a href="21.html">21 · 网络嵌入与表示学习</a></h2><p>DeepWalk · Node2Vec · struc2vec · 嵌入可视化</p></li>
+    <li class="chapter-card"><h2><a href="22.html">22 · 图神经网络入门</a></h2><p>GCN原理 · GAT注意力 · GraphSAGE · PyG实战</p></li>
+    <li class="chapter-card"><h2><a href="23.html">23 · NetworkX实战</a></h2><p>图创建 · 遍历与分析 · 网络生成器 · 可视化</p></li>
+    <li class="chapter-card"><h2><a href="24.html">24 · 社交网络分析案例</a></h2><p>空手道俱乐部 · arXiv合著 · 微博分析 · 对比研究</p></li>
+    <li class="chapter-card"><h2><a href="25.html">25 · 大规模网络分析</a></h2><p>igraph优化 · 图数据库 · 采样技术 · 性能比较</p></li>
+    <li class="chapter-card"><h2><a href="26.html">26 · 网络科学+机器学习</a></h2><p>推荐系统 · 知识图谱 · Graph Foundation Model · 网络正则化</p></li>
+    <li class="chapter-card"><h2><a href="27.html">27 · 网络科学前沿</a></h2><p>网络医学 · 脑网络 · 计算社会科学 · AI公平性</p></li>
+    <li class="chapter-card"><h2><a href="28.html">28 · 综合实战项目</a></h2><p>数据获取 · 网络构建 · 分析流水线 · 报告撰写</p></li>
+  </ol>
+  <p id="empty-state" hidden>未找到匹配的章节，请尝试其他关键词。</p>
+  <footer class="catalog-footer">课程元数据：<a href="courses.json">courses.json</a>。章节正文可直接离线阅读。</footer>
+</main>
 <script>
-    (function() {
-        var container = document.getElementById('cardContainer');
-        var emojiEl = document.querySelector('.header .emoji');
-        var titleEl = document.querySelector('.header .title-text');
-        var subEl = document.querySelector('.header .sub');
-        var footerEl = document.querySelector('.footer');
-
-        function showError(msg) {
-            container.innerHTML = '<div class="state-msg error">' + msg + '</div>';
-        }
-
-        fetch('courses.json')
-            .then(function(res) {
-                if (!res.ok) throw new Error('HTTP ' + res.status);
-                return res.json();
-            })
-            .then(function(data) {
-                document.title = data.title + ' · 课程目录';
-                emojiEl.textContent = data.emoji;
-                titleEl.textContent = data.title;
-                subEl.textContent = data.subtitle;
-                footerEl.innerHTML = '<span>' + data.chapterCount + '章</span> 实战体系 · 从入门到精通';
-
-                if (!data.chapters || data.chapters.length === 0) {
-                    showError('暂无课程数据');
-                    return;
-                }
-
-                container.innerHTML = '';
-                data.chapters.forEach(function(course) {
-                    var card = document.createElement('div');
-                    card.className = 'card';
-
-                    var headerDiv = document.createElement('div');
-                    headerDiv.className = 'card-header';
-
-                    var numSpan = document.createElement('span');
-                    numSpan.className = 'chapter-num';
-                    numSpan.textContent = course.num;
-
-                    var titleSpan = document.createElement('span');
-                    titleSpan.className = 'card-title';
-                    titleSpan.textContent = course.title;
-
-                    headerDiv.appendChild(numSpan);
-                    headerDiv.appendChild(titleSpan);
-                    card.appendChild(headerDiv);
-
-                    if (course.topics && course.topics.length > 0) {
-                        var topicUl = document.createElement('ul');
-                        topicUl.className = 'topic-list';
-                        course.topics.forEach(function(topic) {
-                            var li = document.createElement('li');
-                            li.textContent = topic;
-                            topicUl.appendChild(li);
-                        });
-                        card.appendChild(topicUl);
-                    }
-
-                    var footerDiv = document.createElement('div');
-                    footerDiv.className = 'card-footer';
-                    var link = document.createElement('a');
-                    link.href = course.file;
-                    link.textContent = '开始学习 ';
-                    footerDiv.appendChild(link);
-                    card.appendChild(footerDiv);
-
-                    container.appendChild(card);
-                });
-            })
-            .catch(function(err) {
-                showError('课程数据加载失败: ' + err.message + '。请刷新页面重试。');
-            });
-    })();
+(function () {
+  'use strict';
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.chapter-card'));
+  var search = document.getElementById('chapter-search');
+  var status = document.getElementById('catalog-status');
+  var empty = document.getElementById('empty-state');
+  var resume = document.getElementById('resume-link');
+  var prefix = 'network-science-tutorial:v1:';
+  function read(key) { try { return localStorage.getItem(prefix + key); } catch (_) { return null; } }
+  function write(key, value) { try { localStorage.setItem(prefix + key, value); } catch (_) { /* Browsers may disable storage. */ } }
+  function refreshProgress() {
+    var complete = cards.filter(function (card) { return read('done:' + card.querySelector('a').getAttribute('href')) === '1'; }).length;
+    var visible = cards.filter(function (card) { return !card.hidden; }).length;
+    status.textContent = '显示 ' + visible + ' / ' + cards.length + ' 章 · 已完成 ' + complete + ' 章';
+    empty.hidden = visible !== 0;
+  }
+  cards.forEach(function (card) {
+    var link = card.querySelector('a');
+    var file = link.getAttribute('href');
+    link.addEventListener('click', function () { write('last', file); });
+    var label = document.createElement('label');
+    label.className = 'progress-control';
+    var check = document.createElement('input');
+    check.type = 'checkbox';
+    check.checked = read('done:' + file) === '1';
+    check.setAttribute('aria-label', '标记 ' + link.textContent + ' 已完成');
+    check.addEventListener('change', function () {
+      write('done:' + file, check.checked ? '1' : '0');
+      refreshProgress();
+    });
+    label.appendChild(check);
+    label.appendChild(document.createTextNode('已学完'));
+    card.appendChild(label);
+  });
+  search.addEventListener('input', function () {
+    var term = search.value.trim().toLocaleLowerCase();
+    cards.forEach(function (card) { card.hidden = !card.textContent.toLocaleLowerCase().includes(term); });
+    refreshProgress();
+  });
+  var last = read('last');
+  if (last && cards.some(function (card) { return card.querySelector('a').getAttribute('href') === last; })) {
+    resume.href = last;
+    resume.hidden = false;
+  }
+  refreshProgress();
+}());
 </script>
-
-<noscript>
-    <div style="background:#fcf0d9; padding:1rem; border-radius:20px; text-align:center; color:#92400e;">
-        请启用 JavaScript 以浏览课程目录。
-    </div>
-</noscript>
 </body>
 </html>
