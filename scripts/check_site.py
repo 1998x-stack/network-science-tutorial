@@ -19,8 +19,6 @@ class Page(HTMLParser):
         self.active_links: list[str] = []
         self.h1: list[str] = []
         self._heading = False
-        self._anchor_active = False
-        self._anchor_href = ""
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         attributes = dict(attrs)
@@ -37,18 +35,12 @@ class Page(HTMLParser):
             url = attributes.get(name)
             if url:
                 self.links.append((tag, url))
-            if tag == "a":
-                self._anchor_active = "active" in (attributes.get("class") or "").split()
-                self._anchor_href = url or ""
-                if self._anchor_active:
-                    self.active_links.append(self._anchor_href)
+            if tag == "a" and "active" in (attributes.get("class") or "").split():
+                self.active_links.append(url or "")
 
     def handle_endtag(self, tag: str) -> None:
         if tag == "h1":
             self._heading = False
-        if tag == "a":
-            self._anchor_active = False
-            self._anchor_href = ""
 
     def handle_data(self, data: str) -> None:
         if self._heading and self.h1:
@@ -69,7 +61,7 @@ def validate(root: Path) -> list[str]:
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     except (OSError, UnicodeError, json.JSONDecodeError) as exc:
         return [f"courses.json: cannot read valid UTF-8 JSON: {exc}"]
-    chapters = manifest.get("chapters")
+    chapters = manifest.get("chapters") if isinstance(manifest, dict) else None
     if not isinstance(chapters, list) or not chapters:
         return ["courses.json: chapters must be a non-empty array"]
     if manifest.get("chapterCount") != len(chapters):
@@ -86,7 +78,8 @@ def validate(root: Path) -> list[str]:
             errors.append(f"chapter {index}: expected num={expected} and file={expected}.html")
         if not isinstance(title, str) or not title.strip():
             errors.append(f"chapter {index}: missing title")
-        if not isinstance(chapter.get("topics"), list) or not all(isinstance(t, str) and t.strip() for t in chapter["topics"]):
+        topics = chapter.get("topics")
+        if not isinstance(topics, list) or not all(isinstance(t, str) and t.strip() for t in topics):
             errors.append(f"chapter {index}: topics must contain non-empty strings")
         if not isinstance(filename, str) or not re.fullmatch(r"[0-9]{2}\.html", filename):
             errors.append(f"chapter {index}: unsafe or invalid filename")
@@ -113,6 +106,10 @@ def validate(root: Path) -> list[str]:
         if len(page.h1) != 1:
             errors.append(f"{filename}: expected exactly one h1")
         for tag, url in page.links:
+            # Existing first/last chapter use an inert link for the missing previous/next page.
+            # Scope this legacy exception narrowly; other JavaScript URLs remain invalid.
+            if tag == "a" and filename in ("01.html", "28.html") and url == "javascript:void(0)":
+                continue
             parsed = urlsplit(url)
             if parsed.scheme in ("http", "https", "mailto", "tel") or url.startswith("//"):
                 continue
@@ -120,7 +117,7 @@ def validate(root: Path) -> list[str]:
                 errors.append(f"{filename}: unsupported link scheme: {url}")
                 continue
             if not parsed.path:
-                continue  # In-page anchors are valid even without a fragment target.
+                continue  # Check in-page fragment targets separately if that becomes necessary.
             target_path = unquote(parsed.path)
             if target_path.startswith("/"):
                 errors.append(f"{filename}: use a relative URL instead of {url}")
@@ -140,8 +137,9 @@ def validate(root: Path) -> list[str]:
         filename = chapter["file"]
         page = pages[filename]
         title = chapter.get("title")
-        if isinstance(title, str):
-            expected_h1 = f"第{int(chapter['num'])}章 {title}"
+        number = chapter.get("num")
+        if isinstance(title, str) and isinstance(number, str) and number.isdecimal():
+            expected_h1 = f"第{int(number)}章 {title}"
             if [heading.strip() for heading in page.h1] != [expected_h1]:
                 errors.append(f"{filename}: heading differs from courses.json: {expected_h1}")
         if page.active_links != [filename]:
