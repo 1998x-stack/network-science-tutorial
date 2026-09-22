@@ -1,0 +1,21 @@
+name: Course site checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Run validator unit tests
+        run: python3 -m unittest discover -s tests -v
+      - name: Check course metadata, navigation, and local files
+        run: python3 scripts/check_site.py .
