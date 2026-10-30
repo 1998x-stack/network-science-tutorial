@@ -40,3 +40,17 @@ python3 scripts/inventory_legacy.py --repo /path/to/original/network-science-tut
 ```
 
 比较脚本以**期望平均度**对齐 ER/WS/BA，输出每个种子的明细、均值与样本标准差，暂不声称统计显著性。旧站审计只读原仓库文件，记录每章的哈希、章节标题和代码块数量。
+
+## S02 · Web 门户与组件化可视化（新增）
+
+已在 `apps/web/` 建立可生成的 28 章课程门户、Graph Lab、ER/WS/BA 多种子比较页与数据集注册表。算法相关可视化复用 `apps/shared/{contract,layout,canvas,comparison,progress}.js`；旧版 `apps/graph-lab/` 也使用共享 Canvas 实现。完整 28 章正文尚未迁移，详见 [S02 交付与限制](docs/S02-WEB.md)。
+
+```bash
+python3 scripts/build_web.py           # 从内容注册表和 Python 实验记录构建静态 Web 资源
+python3 scripts/build_web.py --check   # 纯检查模式（CI）
+python3 scripts/check_web.py           # 本地页面链接检查
+node --test tests/web/*.test.cjs       # JavaScript 组件逻辑测试
+python3 -m http.server 8000           # http://localhost:8000/apps/web/index.html
+```
+
+S02 本地浏览器交互测试：`python3 tests/web/e2e.py`，需要 Python Playwright 和本机 Chromium。当前受限环境采用内联资源 E2E，详见 S02 文档的验收说明。
