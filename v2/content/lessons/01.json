@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "chapter": "01",
+  "title": "网络科学导论",
+  "source_path": "01.html",
+  "source_git_blob": "4db516b372829d4bf92870583158d3d73965f21e",
+  "review_status": "migrated_unreviewed",
+  "headings": [
+    {
+      "depth": 2,
+      "title": "什么是网络科学"
+    },
+    {
+      "depth": 2,
+      "title": "发展简史"
+    },
+    {
+      "depth": 3,
+      "title": "1736年：欧拉与哥尼斯堡七桥问题"
+    },
+    {
+      "depth": 3,
+      "title": "1959年：Erdos–Renyi随机图模型"
+    },
+    {
+      "depth": 3,
+      "title": "1998年：Watts-Strogatz小世界模型"
+    },
+    {
+      "depth": 3,
+      "title": "1999年：Barabasi–Albert无标度网络模型"
+    },
+    {
+      "depth": 2,
+      "title": "现实世界中的网络"
+    },
+    {
+      "depth": 2,
+      "title": "为什么研究网络"
+    },
+    {
+      "depth": 2,
+      "title": "课程概览"
+    }
+  ],
+  "examples": [
+    {
+      "id": "01",
+      "path": "content/examples/01/01.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    }
+  ]
+}

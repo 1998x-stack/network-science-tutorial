@@ -1,0 +1,17 @@
+# 一个简单示例：用NetworkX比较随机删除与定向攻击的效果
+import networkx as nx
+import random
+
+G = nx.barabasi_albert_graph(1000, 3)  # 无标度网络
+
+# 随机删除50%的节点
+nodes_remove = random.sample(list(G.nodes()), 500)
+G1 = G.copy()
+G1.remove_nodes_from(nodes_remove)
+print(f"随机删除后最大连通分量占比: {max(len(c) for c in nx.connected_components(G1)) / 500:.2f}")
+
+# 定向删除度最大的50个节点
+nodes_by_degree = sorted(G.nodes(), key=lambda n: G.degree(n), reverse=True)[:50]
+G2 = G.copy()
+G2.remove_nodes_from(nodes_by_degree)
+print(f"定向删除后最大连通分量占比: {max(len(c) for c in nx.connected_components(G2)) / 950:.2f}")

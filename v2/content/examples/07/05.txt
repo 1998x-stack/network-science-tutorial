@@ -1,0 +1,1 @@
+r = [Σ_ij (A_ij - k_i·k_j/2m) · k_i·k_j] / [Σ_ij (k_i·δ_ij - k_i·k_j/2m) · k_i·k_j]

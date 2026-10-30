@@ -1,0 +1,16 @@
+# Python中使用NetworkX创建和查看图
+import networkx as nx
+
+# 创建一个无向图
+G = nx.Graph()
+G.add_edge("你", "朋友A")
+G.add_edge("你", "朋友B")
+G.add_edge("朋友A", "朋友C")
+
+# 查看邻接表
+print(dict(G.adjacency()))
+# 输出: {'你': {'朋友A': {}, '朋友B': {}}, '朋友A': {'你': {}, '朋友C': {}}, ...}
+
+# 查看邻接矩阵（作为numpy数组）
+A = nx.adjacency_matrix(G).todense()
+print(A)

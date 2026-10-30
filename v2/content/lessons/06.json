@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "chapter": "06",
+  "title": "无标度网络",
+  "source_path": "06.html",
+  "source_git_blob": "44ebf362f4dfc458e76769d7b327127e5cf1362d",
+  "review_status": "migrated_unreviewed",
+  "headings": [
+    {
+      "depth": 2,
+      "title": "从随机到偏好"
+    },
+    {
+      "depth": 2,
+      "title": "幂律分布"
+    },
+    {
+      "depth": 2,
+      "title": "优先连接机制"
+    },
+    {
+      "depth": 2,
+      "title": "BA模型算法"
+    },
+    {
+      "depth": 2,
+      "title": "BA模型性质"
+    },
+    {
+      "depth": 2,
+      "title": "无标度网络的意义"
+    }
+  ],
+  "examples": [
+    {
+      "id": "01",
+      "path": "content/examples/06/01.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "02",
+      "path": "content/examples/06/02.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "03",
+      "path": "content/examples/06/03.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    }
+  ]
+}

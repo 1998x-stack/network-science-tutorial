@@ -1,0 +1,28 @@
+import networkx as nx
+import numpy as np
+
+# 生成一个ER随机图：n=1000, p=0.01
+G_er = nx.erdos_renyi_graph(1000, 0.01)
+
+# 加载一个真实网络的替代（用BA模型模拟）
+G_ba = nx.barabasi_albert_graph(1000, 3)
+
+# 计算各项度量
+def network_profile(G, name):
+    n = G.number_of_nodes()
+    m = G.number_of_edges()
+    degrees = [d for _, d in G.degree()]
+    print(f"=== {name} ===")
+    print(f"节点数: {n}, 边数: {m}")
+    print(f"密度: {nx.density(G):.6f}")
+    print(f"平均度: {np.mean(degrees):.2f}")
+    print(f"度方差: {np.var(degrees):.2f}")
+    print(f"平均聚集系数: {nx.average_clustering(G):.4f}")
+    # 对于大规模图，使用采样估算平均路径长度
+    if n <= 2000:
+        print(f"平均路径长度: {nx.average_shortest_path_length(G):.2f}")
+        print(f"直径: {nx.diameter(G)}")
+    print()
+
+network_profile(G_er, "ER随机图")
+network_profile(G_ba, "BA无标度网络")

@@ -1,0 +1,17 @@
+import networkx as nx
+import matplotlib.pyplot as plt
+
+# 计算 k_nn(k)
+G = nx.barabasi_albert_graph(2000, 3)
+k_nn = nx.average_degree_connectivity(G)
+
+# 按度数排序并绘制
+k_values = sorted(k_nn.keys())
+nn_values = [k_nn[k] for k in k_values]
+
+plt.loglog(k_values, nn_values, 'o-')
+plt.xlabel('k')
+plt.ylabel('k_nn(k)')
+plt.grid(True, alpha=0.3)
+# 对于BA网络，k_nn(k) 通常随 k 增大而下降（异配混合）
+# 因为枢纽节点连接了大量叶子节点

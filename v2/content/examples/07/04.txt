@@ -1,0 +1,20 @@
+import networkx as nx
+import numpy as np
+
+def heterogeneity(G):
+    """计算网络异质性参数 κ = ⟨k²⟩/⟨k⟩"""
+    degrees = np.array([d for _, d in G.degree()])
+    avg_k = np.mean(degrees)
+    avg_k2 = np.mean(degrees ** 2)
+    kappa = avg_k2 / avg_k
+    return kappa, avg_k, avg_k2
+
+# 比较三个模型
+n = 5000
+G_er = nx.erdos_renyi_graph(n, 6/(n-1))
+G_ws = nx.watts_strogatz_graph(n, 6, 0.05)
+G_ba = nx.barabasi_albert_graph(n, 3)
+
+for name, G in [("ER随机图", G_er), ("WS小世界", G_ws), ("BA无标度", G_ba)]:
+    kappa, avg_k, avg_k2 = heterogeneity(G)
+    print(f"{name}: ⟨k⟩={avg_k:.2f}, ⟨k²⟩={avg_k2:.2f}, κ={kappa:.2f}")

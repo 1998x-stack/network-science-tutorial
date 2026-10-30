@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "chapter": "05",
+  "title": "小世界网络",
+  "source_path": "05.html",
+  "source_git_blob": "e644b6dcb733ff731b09c996b66be77aa5d00525",
+  "review_status": "migrated_unreviewed",
+  "headings": [
+    {
+      "depth": 2,
+      "title": "六度分隔的故事"
+    },
+    {
+      "depth": 2,
+      "title": "小世界悖论"
+    },
+    {
+      "depth": 2,
+      "title": "Watts-Strogatz模型"
+    },
+    {
+      "depth": 2,
+      "title": "WS模型的性质"
+    },
+    {
+      "depth": 2,
+      "title": "真实网络中的小世界"
+    },
+    {
+      "depth": 2,
+      "title": "小世界与搜索"
+    }
+  ],
+  "examples": [
+    {
+      "id": "01",
+      "path": "content/examples/05/01.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    }
+  ]
+}

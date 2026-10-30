@@ -1,0 +1,23 @@
+# 在双对数坐标下观察幂律分布
+import networkx as nx
+import numpy as np
+import matplotlib.pyplot as plt
+
+# 生成一个BA无标度网络
+n, m = 10000, 3
+G = nx.barabasi_albert_graph(n, m)
+degrees = [d for _, d in G.degree()]
+
+# 统计度分布
+from collections import Counter
+deg_counts = Counter(degrees)
+k_values = sorted(deg_counts.keys())
+pk_values = [deg_counts[k] / n for k in k_values]
+
+# 绘制双对数图
+plt.loglog(k_values, pk_values, 'o')
+plt.xlabel('k (degree)')
+plt.ylabel('P(k)')
+plt.title('BA无标度网络的度分布 (双对数坐标)')
+plt.grid(True, alpha=0.3)
+# 在双对数坐标下，幂律分布应该表现为一条直线

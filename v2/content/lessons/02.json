@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "chapter": "02",
+  "title": "图论基础",
+  "source_path": "02.html",
+  "source_git_blob": "04aa6ae534f6170384910f734b67593dabaa02d7",
+  "review_status": "migrated_unreviewed",
+  "headings": [
+    {
+      "depth": 2,
+      "title": "从哥尼斯堡七桥到现代图论"
+    },
+    {
+      "depth": 2,
+      "title": "图的基本概念"
+    },
+    {
+      "depth": 2,
+      "title": "图的分类"
+    },
+    {
+      "depth": 3,
+      "title": "无向图与有向图"
+    },
+    {
+      "depth": 3,
+      "title": "加权图与无权图"
+    },
+    {
+      "depth": 3,
+      "title": "二分图"
+    },
+    {
+      "depth": 2,
+      "title": "图的表示方法"
+    },
+    {
+      "depth": 3,
+      "title": "邻接矩阵（Adjacency Matrix）"
+    },
+    {
+      "depth": 3,
+      "title": "邻接表（Adjacency List）"
+    },
+    {
+      "depth": 3,
+      "title": "边列表（Edge List）"
+    },
+    {
+      "depth": 2,
+      "title": "特殊图结构"
+    },
+    {
+      "depth": 3,
+      "title": "树（Tree）"
+    },
+    {
+      "depth": 3,
+      "title": "完全图（Complete Graph）"
+    },
+    {
+      "depth": 3,
+      "title": "平面图（Planar Graph）"
+    },
+    {
+      "depth": 2,
+      "title": "路径与连通性"
+    }
+  ],
+  "examples": [
+    {
+      "id": "01",
+      "path": "content/examples/02/01.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    }
+  ]
+}
