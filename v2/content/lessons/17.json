@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "chapter": "17",
+  "title": "网络可视化",
+  "source_path": "17.html",
+  "source_git_blob": "bb49650e903f49ac336a4e26e30eeb0481442046",
+  "review_status": "migrated_unreviewed",
+  "headings": [
+    {
+      "depth": 2,
+      "title": "可视化的目的"
+    },
+    {
+      "depth": 2,
+      "title": "布局算法"
+    },
+    {
+      "depth": 3,
+      "title": "力导向布局（Force-Directed Layout）"
+    },
+    {
+      "depth": 3,
+      "title": "环形布局（Circular Layout）"
+    },
+    {
+      "depth": 3,
+      "title": "层次布局（Hierarchical Layout）"
+    },
+    {
+      "depth": 2,
+      "title": "Gephi实战"
+    },
+    {
+      "depth": 2,
+      "title": "大规模网络可视化"
+    },
+    {
+      "depth": 2,
+      "title": "可视化规范与伦理"
+    }
+  ],
+  "examples": [
+    {
+      "id": "01",
+      "path": "content/examples/17/01.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    }
+  ]
+}

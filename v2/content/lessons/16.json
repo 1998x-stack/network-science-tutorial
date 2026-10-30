@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "chapter": "16",
+  "title": "链路预测",
+  "source_path": "16.html",
+  "source_git_blob": "0f03d904eecfe835bec8a46077294699b8b941d8",
+  "review_status": "migrated_unreviewed",
+  "headings": [
+    {
+      "depth": 2,
+      "title": "链路预测问题"
+    },
+    {
+      "depth": 2,
+      "title": "基于相似性的方法"
+    },
+    {
+      "depth": 3,
+      "title": "共同邻居（Common Neighbors, CN）"
+    },
+    {
+      "depth": 3,
+      "title": "Jaccard系数"
+    },
+    {
+      "depth": 3,
+      "title": "Adamic-Adar指数（AA）"
+    },
+    {
+      "depth": 3,
+      "title": "Resource Allocation（RA）"
+    },
+    {
+      "depth": 2,
+      "title": "基于路径的方法"
+    },
+    {
+      "depth": 3,
+      "title": "Katz指数"
+    },
+    {
+      "depth": 3,
+      "title": "Local Path指数（LP）"
+    },
+    {
+      "depth": 3,
+      "title": "Random Walk with Restart（RWR）"
+    },
+    {
+      "depth": 2,
+      "title": "概率模型"
+    },
+    {
+      "depth": 2,
+      "title": "评估指标"
+    },
+    {
+      "depth": 2,
+      "title": "应用案例"
+    }
+  ],
+  "examples": [
+    {
+      "id": "01",
+      "path": "content/examples/16/01.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    }
+  ]
+}

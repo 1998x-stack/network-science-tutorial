@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "chapter": "18",
+  "title": "网络数据采集",
+  "source_path": "18.html",
+  "source_git_blob": "f2967524841c0089688d6432f42dfccef4289d16",
+  "review_status": "migrated_unreviewed",
+  "headings": [
+    {
+      "depth": 2,
+      "title": "网络数据来源"
+    },
+    {
+      "depth": 2,
+      "title": "社交媒体API"
+    },
+    {
+      "depth": 3,
+      "title": "Twitter/X API"
+    },
+    {
+      "depth": 3,
+      "title": "GitHub API"
+    },
+    {
+      "depth": 2,
+      "title": "网页爬虫基础"
+    },
+    {
+      "depth": 2,
+      "title": "数据清洗"
+    },
+    {
+      "depth": 2,
+      "title": "导入NetworkX"
+    },
+    {
+      "depth": 3,
+      "title": "从边列表导入"
+    },
+    {
+      "depth": 3,
+      "title": "从邻接矩阵导入"
+    },
+    {
+      "depth": 3,
+      "title": "从GraphML/GML导入"
+    }
+  ],
+  "examples": [
+    {
+      "id": "01",
+      "path": "content/examples/18/01.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "02",
+      "path": "content/examples/18/02.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "03",
+      "path": "content/examples/18/03.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "04",
+      "path": "content/examples/18/04.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "05",
+      "path": "content/examples/18/05.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "06",
+      "path": "content/examples/18/06.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "07",
+      "path": "content/examples/18/07.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    }
+  ]
+}

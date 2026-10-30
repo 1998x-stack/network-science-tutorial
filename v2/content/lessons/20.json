@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "chapter": "20",
+  "title": "时序与动态网络",
+  "source_path": "20.html",
+  "source_git_blob": "9adf6394a25871e9fad838b8baf13fbdbdca9d71",
+  "review_status": "migrated_unreviewed",
+  "headings": [
+    {
+      "depth": 2,
+      "title": "为什么时序重要"
+    },
+    {
+      "depth": 2,
+      "title": "时序网络表示"
+    },
+    {
+      "depth": 3,
+      "title": "快照序列（Snapshot Sequence）"
+    },
+    {
+      "depth": 3,
+      "title": "时间接触序列（Contact Sequence）"
+    },
+    {
+      "depth": 3,
+      "title": "时间接触间隔（Inter-Event Times）"
+    },
+    {
+      "depth": 2,
+      "title": "时态路径"
+    },
+    {
+      "depth": 3,
+      "title": "定义与可达性"
+    },
+    {
+      "depth": 3,
+      "title": "实际影响"
+    },
+    {
+      "depth": 2,
+      "title": "动态社团检测"
+    },
+    {
+      "depth": 3,
+      "title": "进化聚类（Evolutionary Clustering）"
+    },
+    {
+      "depth": 3,
+      "title": "演化事件分类"
+    },
+    {
+      "depth": 2,
+      "title": "时间尺度效应"
+    },
+    {
+      "depth": 3,
+      "title": "爆发性（Burstiness）"
+    },
+    {
+      "depth": 3,
+      "title": "昼夜节律（Circadian Rhythms）"
+    },
+    {
+      "depth": 3,
+      "title": "时序模体（Temporal Motifs）"
+    }
+  ],
+  "examples": [
+    {
+      "id": "01",
+      "path": "content/examples/20/01.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "02",
+      "path": "content/examples/20/02.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    }
+  ]
+}

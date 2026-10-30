@@ -1,0 +1,18 @@
+# 使用Tweepy库获取Twitter关注关系网络
+import tweepy
+
+# 使用v2 API端点（需要先申请Bearer Token）
+client = tweepy.Client(bearer_token="YOUR_BEARER_TOKEN")
+
+# 获取指定用户的粉丝和关注列表
+user_id = 123456789  # 替换为目标用户的ID
+followers = client.get_users_followers(id=user_id, max_results=100)
+following = client.get_users_following(id=user_id, max_results=100)
+
+# 构建用户关系网络（简化示例）
+followers_ids = [u.id for u in followers.data] if followers.data else []
+following_ids = [u.id for u in following.data] if following.data else []
+
+# 对于每个粉丝，进一步获取其关注列表（BFS方式扩展）
+# 注意：需要控制请求速率，避免触发rate limit
+print(f"用户 {user_id} 有 {len(followers_ids)} 个粉丝和 {len(following_ids)} 个关注")

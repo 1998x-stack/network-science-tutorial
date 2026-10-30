@@ -1,0 +1,19 @@
+# 使用PyGithub获取GitHub协作网络
+from github import Github
+
+g = Github("YOUR_GITHUB_TOKEN")
+
+# 获取一个仓库的贡献者列表，构建Star关系网络
+repo = g.get_repo("networkx/networkx")
+stargazers = repo.get_stargazers().get_page(0)  # 第一页
+
+# 对每个star用户，获取其关注的其他用户
+# 这可以构建一个"开发者-关注"的有向图
+for star_user in stargazers[:10]:  # 限制数量，避免耗时过长
+    print(f"用户: {star_user.login}")
+    try:
+        following = star_user.get_following()
+        for follow in following[:5]:
+            print(f"  关注了: {follow.login}")
+    except Exception as e:
+        print(f"  获取关注列表失败: {e}")

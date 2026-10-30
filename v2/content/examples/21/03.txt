@@ -1,0 +1,19 @@
+# 用t-SNE可视化节点嵌入
+from sklearn.manifold import TSNE
+import matplotlib.pyplot as plt
+
+def visualize_embeddings(embeddings, labels, title="Node Embeddings"):
+    """embeddings: dict {node: vector}, labels: dict {node: category}"""
+    nodes = list(embeddings.keys())
+    X = np.array([embeddings[n] for n in nodes])
+    y = [labels.get(n, -1) for n in nodes]
+
+    # t-SNE降维到2D
+    X_2d = TSNE(n_components=2, random_state=42).fit_transform(X)
+
+    # 绘图
+    plt.figure(figsize=(10, 8))
+    scatter = plt.scatter(X_2d[:, 0], X_2d[:, 1], c=y, cmap='tab10', alpha=0.7)
+    plt.colorbar(scatter)
+    plt.title(title)
+    plt.show()

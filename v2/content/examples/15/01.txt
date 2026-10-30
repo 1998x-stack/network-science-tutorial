@@ -1,0 +1,39 @@
+import networkx as nx
+import numpy as np
+
+def simulate_attack(G, strategy="random", p=0.1):
+    """
+    模拟节点移除攻击，返回最大连通分量相对大小。
+    strategy: "random" 或 "targeted"
+    p: 移除比例
+    """
+    G = G.copy()
+    n_orig = G.number_of_nodes()
+
+    if strategy == "random":
+        nodes_to_remove = np.random.choice(
+            list(G.nodes()), int(n_orig * p), replace=False
+        )
+    elif strategy == "targeted":
+        nodes_sorted = sorted(G.degree(), key=lambda x: x[1], reverse=True)
+        nodes_to_remove = [n for n, _ in nodes_sorted[:int(n_orig * p)]]
+
+    G.remove_nodes_from(nodes_to_remove)
+
+    if G.number_of_nodes() == 0:
+        return 0.0
+
+    components = sorted(nx.connected_components(G), key=len, reverse=True)
+    return len(components[0]) / n_orig
+
+# 创建ER和BA网络进行比较
+er = nx.erdos_renyi_graph(5000, 0.002)  # 平均度≈10
+ba = nx.barabasi_albert_graph(5000, 5)    # 平均度≈10
+
+for p_vals in [0.05, 0.1, 0.2, 0.3]:
+    er_rand = simulate_attack(er, "random", p_vals)
+    er_targ = simulate_attack(er, "targeted", p_vals)
+    ba_rand = simulate_attack(ba, "random", p_vals)
+    ba_targ = simulate_attack(ba, "targeted", p_vals)
+    print(f"p={p_vals:.2f}: ER随机={er_rand:.3f} ER定向={er_targ:.3f} "
+          f"BA随机={ba_rand:.3f} BA定向={ba_targ:.3f}")

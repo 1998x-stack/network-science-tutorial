@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "chapter": "21",
+  "title": "网络嵌入与表示学习",
+  "source_path": "21.html",
+  "source_git_blob": "e0cdb6e064e0606212eb6ac948022c1c1338db71",
+  "review_status": "migrated_unreviewed",
+  "headings": [
+    {
+      "depth": 2,
+      "title": "从特征工程到表示学习"
+    },
+    {
+      "depth": 2,
+      "title": "DeepWalk"
+    },
+    {
+      "depth": 3,
+      "title": "算法流程"
+    },
+    {
+      "depth": 3,
+      "title": "DeepWalk为什么有效？"
+    },
+    {
+      "depth": 2,
+      "title": "Node2Vec"
+    },
+    {
+      "depth": 3,
+      "title": "有偏随机游走"
+    },
+    {
+      "depth": 3,
+      "title": "任务导向的嵌入"
+    },
+    {
+      "depth": 2,
+      "title": "结构嵌入——struc2vec"
+    },
+    {
+      "depth": 2,
+      "title": "嵌入评估"
+    },
+    {
+      "depth": 3,
+      "title": "任务驱动评估"
+    },
+    {
+      "depth": 3,
+      "title": "可视化评估"
+    },
+    {
+      "depth": 2,
+      "title": "工具与实践"
+    },
+    {
+      "depth": 3,
+      "title": "Gensim + NetworkX"
+    },
+    {
+      "depth": 3,
+      "title": "Node2Vec 专用库"
+    }
+  ],
+  "examples": [
+    {
+      "id": "01",
+      "path": "content/examples/21/01.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "02",
+      "path": "content/examples/21/02.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "03",
+      "path": "content/examples/21/03.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "04",
+      "path": "content/examples/21/04.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "05",
+      "path": "content/examples/21/05.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    }
+  ]
+}

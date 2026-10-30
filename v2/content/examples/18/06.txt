@@ -1,0 +1,16 @@
+import numpy as np
+
+# 假设我们有一个3x3的邻接矩阵
+adj_matrix = np.array([
+    [0, 1, 1],
+    [1, 0, 0],
+    [1, 0, 0]
+])
+
+G = nx.from_numpy_array(adj_matrix)
+# 或从scipy稀疏矩阵导入
+# G = nx.from_scipy_sparse_array(sparse_matrix)
+
+# 为节点添加标签
+node_labels = {0: "Alice", 1: "Bob", 2: "Charlie"}
+G = nx.relabel_nodes(G, node_labels)

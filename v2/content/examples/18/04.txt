@@ -1,0 +1,30 @@
+import pandas as pd
+import networkx as nx
+
+# 原始边列表（通常从API或爬虫获得）
+raw_edges = pd.DataFrame({
+    "source": ["A", "B", "A", "C", "A", "D"],
+    "target": ["B", "A", "B", "D", "C", "A"],
+    "weight": [1, 1, 1, 1, 1, 1]
+})
+
+# 步骤1：去重（对无向图，移除(A,B)和(B,A)的重复）
+edges_dedup = raw_edges.copy()
+edges_dedup["sorted_pair"] = edges_dedup.apply(
+    lambda row: tuple(sorted([row["source"], row["target"]])), axis=1
+)
+edges_dedup = edges_dedup.drop_duplicates(subset="sorted_pair")
+
+# 步骤2：移除自环
+edges_clean = edges_dedup[edges_dedup["source"] != edges_dedup["target"]]
+
+# 步骤3：移除空值
+edges_clean = edges_clean.dropna(subset=["source", "target"])
+
+print(f"原始边数: {len(raw_edges)}")
+print(f"去重后边数: {len(edges_dedup)}")
+print(f"清洗后边数: {len(edges_clean)}")
+
+# 步骤4：清理节点列表
+all_nodes = set(edges_clean["source"]) | set(edges_clean["target"])
+print(f"节点总数: {len(all_nodes)}")

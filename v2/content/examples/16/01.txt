@@ -1,0 +1,34 @@
+# 在NetworkX中实现基于相似性的链路预测
+import networkx as nx
+import pandas as pd
+
+# 创建一个小型社交网络
+G = nx.karate_club_graph()
+
+# 使用NetworkX内置的预测函数
+pred_cn = list(nx.common_neighbors(G, 0, 4))
+print(f"节点0和4的共同邻居: {pred_cn}")
+
+# 对所有未连接节点对计算AA指数
+def aa_score(G, u, v):
+    """Adamic-Adar指数"""
+    if G.has_edge(u, v) or u == v:
+        return -float('inf')
+    score = 0.0
+    for w in nx.common_neighbors(G, u, v):
+        score += 1.0 / np.log(G.degree(w))
+    return score
+
+import numpy as np
+scores = []
+nodes = list(G.nodes())
+for i, u in enumerate(nodes):
+    for v in nodes[i+1:]:
+        if not G.has_edge(u, v):
+            scores.append((u, v, aa_score(G, u, v)))
+
+# 按分数排序，分数越高越可能连接
+scores.sort(key=lambda x: x[2], reverse=True)
+print("最有可能产生连接的Top-5节点对：")
+for u, v, s in scores[:5]:
+    print(f"  ({u}, {v}) -> AA分数: {s:.4f}")
