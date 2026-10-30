@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="网络科学结构实验可视化：ER、WS、BA 网络比较">
+  <title>Network Lab · 网络结构实验</title>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="samples.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+<header class="site-header">
+  <div><a class="brand" href="../../README.md">NETWORK <span>SCIENCE</span> / LAB</a><p>结构生成 · 对比分析 · 可复现实验</p></div>
+  <span class="status">v0.1 · 离线可用</span>
+</header>
+<main class="layout">
+  <aside class="panel side-panel">
+    <h1>网络结构实验</h1>
+    <p class="muted">选择由 Python 算法生成的实验结果，探索三种经典网络的形态差异。</p>
+    <h2>实验数据</h2>
+    <div class="tabs" role="group" aria-label="网络生成模型">
+      <button type="button" data-model="er" aria-pressed="true">ER</button>
+      <button type="button" data-model="ws" aria-pressed="false">WS</button>
+      <button type="button" data-model="ba" aria-pressed="false">BA</button>
+    </div>
+    <p id="model-description" class="description"></p>
+    <label class="file-label" for="upload">导入实验 JSON</label>
+    <input type="file" accept="application/json,.json" id="upload" aria-label="上传实验 JSON 文件">
+    <div class="divider"></div>
+    <h2>显示控制</h2>
+    <label class="row-label" for="size">节点大小 <output id="size-value">1.0x</output></label>
+    <input type="range" id="size" min="5" max="22" value="10" step="1">
+    <label class="row-label" for="edges">边透明度 <output id="edge-value">30%</output></label>
+    <input type="range" id="edges" min="0" max="100" value="30" step="5">
+    <div class="controls"><button id="reset" type="button">重置视图</button><button id="export" type="button">导出 JSON</button></div>
+    <p class="footnote">算法与指标由 Python 计算，浏览器仅绘制实验结果。可直接双击打开本页面，无需网络或后端服务。</p>
+  </aside>
+  <section class="workspace panel" aria-label="网络交互可视化">
+    <div class="workspace-header"><div><span class="eyebrow">EXPERIMENT CANVAS</span><h2 id="chart-title">ER · 随机网络</h2></div><div class="controls"><button id="zoom-out" type="button" aria-label="缩小">−</button><button id="zoom-in" type="button" aria-label="放大">＋</button></div></div>
+    <div class="canvas-wrap" id="canvas-wrap"><canvas id="graph" aria-label="网络节点和边的绘制区域"></canvas><div class="canvas-tip" id="tip" hidden></div><div class="canvas-hint">悬停查看节点 · 单击高亮邻居 · 滚轮缩放</div></div>
+  </section>
+  <aside class="panel metrics-panel">
+    <div class="eyebrow">NETWORK METRICS</div>
+    <h2>结构测量</h2>
+    <div id="metrics" class="metrics" aria-live="polite"></div>
+    <div class="divider"></div><h2>实验元数据</h2>
+    <dl id="metadata" class="meta"></dl>
+    <div class="divider"></div><h2>节点详情</h2><p id="selection" class="muted">点击网络中的节点，查看度数及相邻节点。</p>
+  </aside>
+</main>
+<footer>Network Science Tutorial · 架构重构验证模块 · 运行时零依赖</footer>
+</body>
+</html>
