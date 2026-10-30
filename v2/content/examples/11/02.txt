@@ -1,0 +1,11 @@
+import networkx as nx
+from networkx.algorithms.community import asyn_fluidc
+
+# 对于InfoMap，可以使用python-infomap库
+# 这里展示NetworkX中的版本思路
+G = nx.karate_club_graph()
+
+# 使用asyn_fluidc作为替代示例
+communities = asyn_fluidc(G, k=2)
+for i, comm in enumerate(communities):
+    print(f"社团 {i+1}: {sorted(comm)}")

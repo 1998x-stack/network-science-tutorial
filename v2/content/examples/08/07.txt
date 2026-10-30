@@ -1,0 +1,15 @@
+import networkx as nx
+
+G = nx.karate_club_graph()
+
+# 计算各种中心性
+deg_cent = nx.degree_centrality(G)
+bw_cent = nx.betweenness_centrality(G)
+cl_cent = nx.closeness_centrality(G)
+ev_cent = nx.eigenvector_centrality(G)
+
+# 找出每种指标排名前3的节点
+print("度中心性 Top3:", sorted(deg_cent.items(), key=lambda x: x[1], reverse=True)[:3])
+print("介数中心性 Top3:", sorted(bw_cent.items(), key=lambda x: x[1], reverse=True)[:3])
+print("接近中心性 Top3:", sorted(cl_cent.items(), key=lambda x: x[1], reverse=True)[:3])
+print("特征向量中心性 Top3:", sorted(ev_cent.items(), key=lambda x: x[1], reverse=True)[:3])

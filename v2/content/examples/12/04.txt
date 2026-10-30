@@ -1,0 +1,18 @@
+import networkx as nx
+import random
+
+def acquaintance_immunization(G, fraction):
+    """熟人免疫：随机选节点，免疫其随机一个邻居"""
+    n_immunized = int(len(G) * fraction)
+    candidates = set()
+    while len(candidates) < n_immunized:
+        node = random.choice(list(G.nodes()))
+        neighbors = list(G.neighbors(node))
+        if neighbors:
+            candidates.add(random.choice(neighbors))
+    return candidates
+
+G = nx.barabasi_albert_graph(10000, 3)
+immunized = acquaintance_immunization(G, 0.1)
+print(f"免疫 {len(immunized)} 个节点")
+print(f"被免疫节点的平均度: {sum(G.degree(n) for n in immunized) / len(immunized):.1f}")

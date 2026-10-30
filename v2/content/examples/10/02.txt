@@ -1,0 +1,14 @@
+import networkx as nx
+from networkx.algorithms.community import girvan_newman
+
+G = nx.karate_club_graph()
+
+# 运行Girvan-Newman算法
+comp = girvan_newman(G)
+# 获取前两层划分
+level1 = next(comp)
+level2 = next(comp)
+
+print("第一层划分的社团数:", len(level1))
+print("第二层划分的社团数:", len(level2))
+print("第一层社团大小:", [len(c) for c in level1])

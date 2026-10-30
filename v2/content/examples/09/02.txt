@@ -1,0 +1,20 @@
+# PageRank的幂迭代实现（简化版）
+import numpy as np
+
+def pagerank(adj_matrix, d=0.85, max_iter=100, tol=1e-6):
+    n = adj_matrix.shape[0]
+    # 出度归一化
+    out_degree = adj_matrix.sum(axis=1)
+    M = adj_matrix / out_degree[:, np.newaxis]
+    M = np.nan_to_num(M)  # 处理dead ends
+
+    pr = np.ones(n) / n
+    teleport = (1 - d) / n
+
+    for i in range(max_iter):
+        new_pr = teleport + d * M.T @ pr
+        if np.linalg.norm(new_pr - pr, 1) < tol:
+            break
+        pr = new_pr
+
+    return pr

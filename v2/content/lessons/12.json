@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "chapter": "12",
+  "title": "网络传播动力学",
+  "source_path": "12.html",
+  "source_git_blob": "711cadf5748c9853a705000ffc29043751f5b0ae",
+  "review_status": "migrated_unreviewed",
+  "headings": [
+    {
+      "depth": 2,
+      "title": "传染病建模基础"
+    },
+    {
+      "depth": 3,
+      "title": "仓室模型"
+    },
+    {
+      "depth": 3,
+      "title": "平均场方程"
+    },
+    {
+      "depth": 2,
+      "title": "网络上的传播"
+    },
+    {
+      "depth": 3,
+      "title": "网络结构如何改变传播"
+    },
+    {
+      "depth": 3,
+      "title": "异质性平均场理论"
+    },
+    {
+      "depth": 2,
+      "title": "传播阈值"
+    },
+    {
+      "depth": 2,
+      "title": "渗流视角"
+    },
+    {
+      "depth": 2,
+      "title": "免疫策略"
+    },
+    {
+      "depth": 3,
+      "title": "随机免疫"
+    },
+    {
+      "depth": 3,
+      "title": "目标免疫"
+    },
+    {
+      "depth": 3,
+      "title": "熟人免疫"
+    },
+    {
+      "depth": 2,
+      "title": "COVID-19案例：网络科学的视角"
+    }
+  ],
+  "examples": [
+    {
+      "id": "01",
+      "path": "content/examples/12/01.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "02",
+      "path": "content/examples/12/02.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "03",
+      "path": "content/examples/12/03.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "04",
+      "path": "content/examples/12/04.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    }
+  ]
+}

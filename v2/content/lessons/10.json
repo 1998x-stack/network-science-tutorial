@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "chapter": "10",
+  "title": "社团检测（上）",
+  "source_path": "10.html",
+  "source_git_blob": "b1a47232a768871f6202998e6e4e926fefbe8ce6",
+  "review_status": "migrated_unreviewed",
+  "headings": [
+    {
+      "depth": 2,
+      "title": "什么是社团"
+    },
+    {
+      "depth": 2,
+      "title": "模块度"
+    },
+    {
+      "depth": 3,
+      "title": "Newman-Girvan Modularity Q"
+    },
+    {
+      "depth": 3,
+      "title": "分辨率极限"
+    },
+    {
+      "depth": 2,
+      "title": "Girvan-Newman算法"
+    },
+    {
+      "depth": 3,
+      "title": "边介数"
+    },
+    {
+      "depth": 3,
+      "title": "分裂式层次聚类"
+    },
+    {
+      "depth": 2,
+      "title": "Louvain算法"
+    },
+    {
+      "depth": 3,
+      "title": "贪心模块度优化"
+    },
+    {
+      "depth": 3,
+      "title": "Louvain的局限"
+    },
+    {
+      "depth": 2,
+      "title": "层次聚类对比"
+    }
+  ],
+  "examples": [
+    {
+      "id": "01",
+      "path": "content/examples/10/01.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "02",
+      "path": "content/examples/10/02.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    }
+  ]
+}

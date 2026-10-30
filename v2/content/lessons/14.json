@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "chapter": "14",
+  "title": "网络上的博弈",
+  "source_path": "14.html",
+  "source_git_blob": "e7a03e099cfd662c3a42288f774a91ca5646907b",
+  "review_status": "migrated_unreviewed",
+  "headings": [
+    {
+      "depth": 2,
+      "title": "博弈论基础"
+    },
+    {
+      "depth": 3,
+      "title": "囚徒困境"
+    },
+    {
+      "depth": 2,
+      "title": "演化博弈"
+    },
+    {
+      "depth": 3,
+      "title": "复制动力学"
+    },
+    {
+      "depth": 3,
+      "title": "进化稳定策略"
+    },
+    {
+      "depth": 2,
+      "title": "网络上的合作"
+    },
+    {
+      "depth": 3,
+      "title": "网络促进合作的机制"
+    },
+    {
+      "depth": 3,
+      "title": "实践中的合作博弈"
+    },
+    {
+      "depth": 2,
+      "title": "意见动力学"
+    },
+    {
+      "depth": 3,
+      "title": "Voter Model（投票者模型）"
+    },
+    {
+      "depth": 3,
+      "title": "有界信任模型（Deffuant）"
+    },
+    {
+      "depth": 2,
+      "title": "选举与舆论"
+    }
+  ],
+  "examples": [
+    {
+      "id": "01",
+      "path": "content/examples/14/01.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "02",
+      "path": "content/examples/14/02.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    }
+  ]
+}
