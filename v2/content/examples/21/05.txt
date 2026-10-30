@@ -1,0 +1,12 @@
+from node2vec import Node2Vec
+
+# 初始化Node2Vec
+node2vec = Node2Vec(G, dimensions=128, walk_length=30,
+                    num_walks=200, p=0.5, q=2.0, workers=4)
+
+# 训练
+model = node2vec.fit(window=5, min_count=1, batch_words=4)
+
+# 获取嵌入
+emb = model.wv
+node_vector = emb['node_id']

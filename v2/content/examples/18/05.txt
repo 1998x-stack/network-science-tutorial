@@ -1,0 +1,14 @@
+import networkx as nx
+
+# 从CSV格式的边列表导入
+# 假设network.csv有两列: source, target
+G = nx.read_edgelist("network.csv", delimiter=",", nodetype=str)
+
+# 如果边列表包含权重
+G_weighted = nx.read_weighted_edgelist("weighted_network.csv", delimiter=",")
+
+# 从pandas DataFrame导入
+import pandas as pd
+df = pd.read_csv("edges.csv")
+G_from_df = nx.from_pandas_edgelist(df, source="source", target="target",
+                                     edge_attr="weight")

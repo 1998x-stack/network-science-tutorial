@@ -1,0 +1,29 @@
+# 第三步：基本网络统计量
+import numpy as np
+
+degrees = [d for n, d in G.degree()]
+print("=== 基本统计 ===")
+print(f"节点数: {G.number_of_nodes()}")
+print(f"边数: {G.number_of_edges()}")
+print(f"密度: {nx.density(G):.6f}")
+print(f"平均度: {np.mean(degrees):.2f}")
+print(f"度中位数: {np.median(degrees):.2f}")
+print(f"度标准差: {np.std(degrees):.2f}")
+print(f"最大度: {max(degrees)}")
+
+# 聚类系数
+avg_clustering = nx.average_clustering(G)
+print(f"平均聚类系数: {avg_clustering:.4f}")
+
+# 平均最短路径长度（需要在子图上计算）
+if G.number_of_nodes() < 10000:
+    avg_path_length = nx.average_shortest_path_length(G)
+    diameter = nx.diameter(G)
+    print(f"平均路径长度: {avg_path_length:.2f}")
+    print(f"直径: {diameter}")
+
+# 度分布
+from collections import Counter
+degree_counts = Counter(degrees)
+sorted_degrees = sorted(degree_counts.keys())
+pk = [degree_counts[k] / G.number_of_nodes() for k in sorted_degrees]

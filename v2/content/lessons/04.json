@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "chapter": "04",
+  "title": "随机网络模型",
+  "source_path": "04.html",
+  "source_git_blob": "d01530fc16a7afa63fc1618ccb051bfe51e84207",
+  "review_status": "migrated_unreviewed",
+  "headings": [
+    {
+      "depth": 2,
+      "title": "随机图的历史背景"
+    },
+    {
+      "depth": 2,
+      "title": "ER模型定义"
+    },
+    {
+      "depth": 2,
+      "title": "相变与涌现"
+    },
+    {
+      "depth": 2,
+      "title": "度分布分析"
+    },
+    {
+      "depth": 2,
+      "title": "ER模型的性质"
+    },
+    {
+      "depth": 2,
+      "title": "模型的局限性"
+    }
+  ],
+  "examples": [
+    {
+      "id": "01",
+      "path": "content/examples/04/01.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "02",
+      "path": "content/examples/04/02.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "03",
+      "path": "content/examples/04/03.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    }
+  ]
+}

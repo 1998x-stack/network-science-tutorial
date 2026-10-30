@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "chapter": "13",
+  "title": "信息与谣言传播",
+  "source_path": "13.html",
+  "source_git_blob": "e5daf44fc83daccec8b8e2862732497a17c42759",
+  "review_status": "migrated_unreviewed",
+  "headings": [
+    {
+      "depth": 2,
+      "title": "信息传播vs疾病传播"
+    },
+    {
+      "depth": 2,
+      "title": "信息级联"
+    },
+    {
+      "depth": 3,
+      "title": "阈值模型"
+    },
+    {
+      "depth": 3,
+      "title": "为什么会发生信息级联"
+    },
+    {
+      "depth": 2,
+      "title": "弱关系的力量"
+    },
+    {
+      "depth": 2,
+      "title": "影响力最大化"
+    },
+    {
+      "depth": 3,
+      "title": "Kempe-Kleinberg-Tardos框架"
+    },
+    {
+      "depth": 3,
+      "title": "应用场景"
+    },
+    {
+      "depth": 2,
+      "title": "社交媒体中的谣言"
+    },
+    {
+      "depth": 3,
+      "title": "回音室与过滤气泡"
+    },
+    {
+      "depth": 3,
+      "title": "谣言的检测与缓解"
+    }
+  ],
+  "examples": [
+    {
+      "id": "01",
+      "path": "content/examples/13/01.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "02",
+      "path": "content/examples/13/02.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    }
+  ]
+}

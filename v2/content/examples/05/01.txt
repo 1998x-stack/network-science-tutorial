@@ -1,0 +1,19 @@
+import networkx as nx
+import numpy as np
+
+n, K = 1000, 6  # 1000个顶点，每个顶点度数为6
+
+for p in [0, 0.001, 0.01, 0.1, 1.0]:
+    G = nx.watts_strogatz_graph(n, K, p)
+    C = nx.average_clustering(G)
+    # 用采样估算平均路径长度（全对最短路径计算代价高）
+    sample = 100
+    paths = []
+    for _ in range(sample):
+        s, t = np.random.randint(0, n, 2)
+        try:
+            paths.append(nx.shortest_path_length(G, s, t))
+        except nx.NetworkXNoPath:
+            pass
+    L = np.mean(paths) if paths else float('inf')
+    print(f"p={p:.3f} | C={C:.4f} | L={L:.2f}")

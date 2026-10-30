@@ -1,0 +1,25 @@
+// 创建节点
+CREATE (alice:Person {name: "Alice", age: 30})
+CREATE (bob:Person {name: "Bob", age: 25})
+CREATE (charlie:Person {name: "Charlie", age: 35})
+
+// 创建关系
+CREATE (alice)-[:FOLLOWS {since: 2020}]->(bob)
+CREATE (bob)-[:FOLLOWS]->(charlie)
+CREATE (alice)-[:KNOWS]->(charlie)
+
+// 查询Alice的"朋友的朋友"（2跳范围内的人）
+MATCH (alice:Person {name: "Alice"})-[:FOLLOWS*2]->(friend_of_friend)
+RETURN DISTINCT friend_of_friend.name
+
+// 查询社交影响力（PageRank风格的传播）
+MATCH (p:Person)
+RETURN p.name, size((p)<-[:FOLLOWS]-()) AS followers
+ORDER BY followers DESC
+LIMIT 10
+
+// 社区发现 —— Neo4j内置了Louvain算法
+CALL gds.louvain.stream('myGraph')
+YIELD nodeId, communityId
+RETURN gds.util.asNode(nodeId).name AS name, communityId
+ORDER BY communityId

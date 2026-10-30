@@ -1,0 +1,1 @@
+nx.pagerank(G, alpha=0.85, personalization={'user_A': 1.0})

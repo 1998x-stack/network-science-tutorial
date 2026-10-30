@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "chapter": "19",
+  "title": "多层网络",
+  "source_path": "19.html",
+  "source_git_blob": "ea889e438052c4909a8ef97d7c02d30cf928c408",
+  "review_status": "migrated_unreviewed",
+  "headings": [
+    {
+      "depth": 2,
+      "title": "单层网络的局限"
+    },
+    {
+      "depth": 2,
+      "title": "多层网络定义"
+    },
+    {
+      "depth": 3,
+      "title": "Multiplex vs Interdependent vs Multilayer"
+    },
+    {
+      "depth": 3,
+      "title": "形式化定义"
+    },
+    {
+      "depth": 2,
+      "title": "相互依赖网络"
+    },
+    {
+      "depth": 3,
+      "title": "级联失效——从意大利大停电说起"
+    },
+    {
+      "depth": 3,
+      "title": "理论模型"
+    },
+    {
+      "depth": 2,
+      "title": "多层中心性"
+    },
+    {
+      "depth": 3,
+      "title": "Multiplex PageRank"
+    },
+    {
+      "depth": 3,
+      "title": "统一度与多路聚类系数"
+    },
+    {
+      "depth": 2,
+      "title": "分析工具"
+    },
+    {
+      "depth": 3,
+      "title": "muxViz"
+    },
+    {
+      "depth": 3,
+      "title": "Pymnet"
+    },
+    {
+      "depth": 2,
+      "title": "案例：城市交通多层网络"
+    }
+  ],
+  "examples": [
+    {
+      "id": "01",
+      "path": "content/examples/19/01.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "02",
+      "path": "content/examples/19/02.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    }
+  ]
+}

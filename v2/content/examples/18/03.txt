@@ -1,0 +1,29 @@
+import requests
+from bs4 import BeautifulSoup
+import time
+
+# 步骤1：发送HTTP请求
+url = "https://example.com/some-page"
+headers = {
+    "User-Agent": "Mozilla/5.0 (compatible; NetworkScienceCourse/1.0)"
+}
+response = requests.get(url, headers=headers)
+
+if response.status_code == 200:
+    # 步骤2：解析HTML
+    soup = BeautifulSoup(response.text, "html.parser")
+
+    # 步骤3：提取链接关系
+    links = []
+    for a_tag in soup.find_all("a", href=True):
+        href = a_tag["href"]
+        text = a_tag.get_text(strip=True)
+        links.append((text, href))
+
+    print(f"从页面中提取了 {len(links)} 个链接")
+
+    # 步骤4：BFS方式爬取更深层的页面
+    # 关键：设置合理的爬取间隔！
+    time.sleep(1)  # 每次请求间隔1秒，避免对服务器造成压力
+else:
+    print(f"请求失败: HTTP {response.status_code}")

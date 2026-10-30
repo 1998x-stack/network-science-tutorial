@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "chapter": "26",
+  "title": "网络科学+机器学习",
+  "source_path": "26.html",
+  "source_git_blob": "cbb9d73ca8f0bb4679c8a23d1767ecbfe42de4cf",
+  "review_status": "migrated_unreviewed",
+  "headings": [
+    {
+      "depth": 2,
+      "title": "网络科学赋能机器学习"
+    },
+    {
+      "depth": 2,
+      "title": "图数据与推荐系统"
+    },
+    {
+      "depth": 2,
+      "title": "知识图谱"
+    },
+    {
+      "depth": 2,
+      "title": "Graph Foundation Models"
+    },
+    {
+      "depth": 2,
+      "title": "案例：社交推荐"
+    }
+  ],
+  "examples": [
+    {
+      "id": "01",
+      "path": "content/examples/26/01.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "02",
+      "path": "content/examples/26/02.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "03",
+      "path": "content/examples/26/03.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "04",
+      "path": "content/examples/26/04.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+import networkx as nx
+
+G = nx.karate_club_graph()
+
+# 计算coreness
+coreness = nx.core_number(G)
+
+# 按coreness分组
+by_core = {}
+for node, core in coreness.items():
+    by_core.setdefault(core, []).append(node)
+
+for core in sorted(by_core.keys(), reverse=True):
+    print(f"{core}-core: {sorted(by_core[core])}")

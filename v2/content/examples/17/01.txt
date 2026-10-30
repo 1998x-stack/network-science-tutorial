@@ -1,0 +1,26 @@
+# NetworkX力导向布局示例
+import networkx as nx
+import matplotlib.pyplot as plt
+
+G = nx.karate_club_graph()
+
+# 使用Fruchterman-Reingold布局
+pos_fr = nx.fruchterman_reingold_layout(G, seed=42, iterations=50)
+
+# 根据社团指定节点颜色
+communities = {0: 'red', 1: 'blue'}
+node_colors = [communities[G.nodes[n]['club']]
+               if 'club' in G.nodes[n] else 'gray'
+               for n in G.nodes()]
+
+# 根据度指定节点大小
+node_sizes = [300 * G.degree(n) for n in G.nodes()]
+
+plt.figure(figsize=(10, 8))
+nx.draw_networkx_nodes(G, pos_fr, node_color=node_colors,
+                       node_size=node_sizes, alpha=0.8)
+nx.draw_networkx_edges(G, pos_fr, alpha=0.3, width=0.8)
+nx.draw_networkx_labels(G, pos_fr, font_size=8, font_color='black')
+plt.axis('off')
+plt.title("Zachary's Karate Club — 力导向布局")
+plt.show()

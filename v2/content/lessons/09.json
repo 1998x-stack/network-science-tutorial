@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "chapter": "09",
+  "title": "PageRank与链接分析",
+  "source_path": "09.html",
+  "source_git_blob": "e12818f144fb748723096534e7b4cb181e605369",
+  "review_status": "migrated_unreviewed",
+  "headings": [
+    {
+      "depth": 2,
+      "title": "搜索引擎的挑战"
+    },
+    {
+      "depth": 2,
+      "title": "PageRank原理"
+    },
+    {
+      "depth": 3,
+      "title": "随机游走模型"
+    },
+    {
+      "depth": 3,
+      "title": "数学公式"
+    },
+    {
+      "depth": 2,
+      "title": "实战技巧"
+    },
+    {
+      "depth": 3,
+      "title": "Dead Ends（死胡同）"
+    },
+    {
+      "depth": 3,
+      "title": "Spider Traps（蜘蛛陷阱）"
+    },
+    {
+      "depth": 3,
+      "title": "收敛性"
+    },
+    {
+      "depth": 2,
+      "title": "HITS算法"
+    },
+    {
+      "depth": 2,
+      "title": "PageRank变体"
+    },
+    {
+      "depth": 3,
+      "title": "Topic-Sensitive PageRank"
+    },
+    {
+      "depth": 3,
+      "title": "Personalized PageRank"
+    },
+    {
+      "depth": 2,
+      "title": "应用场景"
+    }
+  ],
+  "examples": [
+    {
+      "id": "01",
+      "path": "content/examples/09/01.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "02",
+      "path": "content/examples/09/02.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "03",
+      "path": "content/examples/09/03.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "04",
+      "path": "content/examples/09/04.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    }
+  ]
+}

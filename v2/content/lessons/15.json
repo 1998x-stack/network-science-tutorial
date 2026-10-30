@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "chapter": "15",
+  "title": "网络鲁棒性与脆弱性",
+  "source_path": "15.html",
+  "source_git_blob": "6b43ccc08330dc72cf2c4fe4798f7544e44d911c",
+  "review_status": "migrated_unreviewed",
+  "headings": [
+    {
+      "depth": 2,
+      "title": "鲁棒性与脆弱性的悖论"
+    },
+    {
+      "depth": 2,
+      "title": "故障与攻击模拟"
+    },
+    {
+      "depth": 2,
+      "title": "级联失效"
+    },
+    {
+      "depth": 2,
+      "title": "2003年美加大停电：一次级联失效的教科书案例"
+    },
+    {
+      "depth": 2,
+      "title": "网络加固策略"
+    },
+    {
+      "depth": 3,
+      "title": "保护枢纽节点"
+    },
+    {
+      "depth": 3,
+      "title": "增加冗余"
+    },
+    {
+      "depth": 3,
+      "title": "拓扑优化"
+    },
+    {
+      "depth": 3,
+      "title": "提前发现关键节点"
+    },
+    {
+      "depth": 2,
+      "title": "互联网的鲁棒性"
+    }
+  ],
+  "examples": [
+    {
+      "id": "01",
+      "path": "content/examples/15/01.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "02",
+      "path": "content/examples/15/02.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    }
+  ]
+}

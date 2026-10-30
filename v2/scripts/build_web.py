@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build dependency-free static S02 web pages from one curriculum and Python artifacts.
+"""Build static V2 pages from curriculum, experiments and migrated full articles.
 
 Use --check for CI; no user data is fetched and original HTML chapters are untouched.
 """
@@ -28,29 +28,43 @@ def frame(title, body, prefix='', scripts=(), description='网络科学可复现
     <nav class="navlinks" aria-label="主导航"><a href="{prefix}index.html">课程</a><a href="{prefix}lab.html">Graph Lab</a><a href="{prefix}compare.html">模型比较</a><a href="{prefix}datasets.html">数据集</a></nav></header>'''
     js = ''.join(f'<script defer src="{prefix}{esc(path)}"></script>' for path in scripts)
     return f'''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="{esc(description)}"><title>{esc(title)} | Network Science</title><link rel="stylesheet" href="{prefix}site.css">{js}</head>
-<body>{nav}<main class="shell">{body}</main><footer class="footer shell">Network Science Tutorial V2 · S02 展示层 · 计算结果来自 Python，不在浏览器重算科研指标。<br>原 28 章保留在上游仓库，正文拆分迁移属于 S03。</footer></body></html>\n'''
+<body>{nav}<main class="shell">{body}</main><footer class="footer shell">Network Science Tutorial V2 · S03 内容与展示层 · 原版 HTML 继续保留，科学结论待独立审校。</footer></body></html>\n'''
 
 
 def homepage(chapters):
     groups = list(dict.fromkeys(c['group'] for c in chapters))
     items = []
     for c in chapters:
-        items.append(f'''<article class="lesson" data-number="{esc(c['num'])}" data-group="{esc(c['group'])}"><div class="lesson-top"><span class="lesson-num">CH {esc(c['num'])}</span><span class="tag">{esc(c['group'])}</span></div><h3>{esc(c['title'])}</h3><p>{esc(c['summary'])}</p><div class="lesson-bottom"><a class="open-lesson" href="lessons/{c['num']}.html" aria-label="阅读第{int(c['num'])}章概要">阅读概要 ↗</a><label class="check"><input type="checkbox" aria-label="完成第{int(c['num'])}章">完成</label></div></article>''')
+        items.append(f'''<article class="lesson" data-number="{esc(c['num'])}" data-group="{esc(c['group'])}"><div class="lesson-top"><span class="lesson-num">CH {esc(c['num'])}</span><span class="tag">{esc(c['group'])}</span></div><h3>{esc(c['title'])}</h3><p>{esc(c['summary'])}</p><div class="lesson-bottom"><a class="open-lesson" href="lessons/{c['num']}.html" aria-label="阅读第{int(c['num'])}章全文">阅读全章 ↗</a><label class="check"><input type="checkbox" aria-label="完成第{int(c['num'])}章">完成</label></div></article>''')
     filters = ''.join(f'<button class="filter" data-filter="{esc(x)}" aria-pressed="{str(x == "全部").lower()}">{esc(x)}</button>' for x in ['全部', *groups])
     orbit = '''<svg role="img" aria-label="从中心枢纽辐射到社团的示意网络" viewBox="0 0 440 215"><g stroke="#467c95" stroke-width="1.4" opacity=".75"><path d="M70 80 135 55 190 82 245 56 325 85 385 43M70 80 107 152 190 82 232 158 325 85 359 151M135 55 107 152 232 158 245 56 359 151 385 43M190 82 325 85M107 152 359 151M70 80 232 158M135 55 325 85" fill="none"/></g><g fill="#6de3c6"><circle cx="70" cy="80" r="5"/><circle cx="135" cy="55" r="7"/><circle cx="190" cy="82" r="11"/><circle cx="245" cy="56" r="4"/><circle cx="325" cy="85" r="10"/><circle cx="385" cy="43" r="5"/><circle cx="107" cy="152" r="6"/><circle cx="232" cy="158" r="5"/><circle cx="359" cy="151" r="8"/></g></svg>'''
     body = f'''<section class="hero"><div><span class="pill">28 章 · 网络科学 · 可复现实验</span><h1>从理解网络，<br>到<span>验证复杂系统</span>。</h1><p class="lead">图论、随机网络、中心性、传播动力学、网络嵌入与图神经网络。通过独立的 Python 算法和版本化实验数据，让教材与可视化真实对齐。</p><div class="cta"><a class="btn" href="#curriculum">探索课程目录 →</a><a class="btn secondary" href="lab.html">打开 Graph Lab</a><a id="resume" class="btn secondary" href="index.html" hidden>继续上次阅读</a></div><p id="progress-count" class="small muted" aria-live="polite">学习进度加载中</p></div><aside class="hero-mock"><div class="eyebrow">TOPOLOGY EXPLORER / S02</div><div class="hero-orbit">{orbit}</div><div class="statrow"><div class="stat"><strong>28</strong><span>课程章节</span></div><div class="stat"><strong>3</strong><span>生成模型</span></div><div class="stat"><strong>5</strong><span>随机种子</span></div></div></aside></section>
     <section class="section" aria-label="实验模块"><div class="section-head"><div><span class="eyebrow">PRACTICAL LABS</span><h2>理论与实验，同步深入</h2></div><span class="small muted">同源 JSON · 固定种子 · 可检查结果</span></div><div class="grid"><div class="feature-card"><span class="symbol">◎</span><h3>交互式网络图</h3><p>使用真实 ER / WS / BA 运行结果，观察节点关系、度数与全图结构。</p><a href="lab.html">进入实验画布 →</a></div><div class="feature-card"><span class="symbol">▥</span><h3>模型多种子比较</h3><p>按相近的期望平均度对齐模型，在可追溯数据上比较统计指标。</p><a href="compare.html">查看结构比较 →</a></div><div class="feature-card"><span class="symbol">▤</span><h3>数据与来源治理</h3><p>区分合成数据和待审核的外部数据集，避免隐式下载或误报许可证。</p><a href="datasets.html">查看数据注册表 →</a></div></div></section>
-    <section id="curriculum" class="section"><div class="section-head"><div><span class="eyebrow">COURSE CURRICULUM</span><h2>完整的 28 章知识路线</h2><p class="muted small">S02 提供 28 章概要；完整正文保留在原仓库，S03 将完成逐章迁移。</p></div></div><div class="controls"><label class="sr-only" for="search">搜索章节</label><input id="search" type="search" class="search" placeholder="搜索章节、主题或关键词…" autocomplete="off">{filters}</div><div class="lesson-grid">{''.join(items)}</div><div class="empty" id="no-results" hidden>没有找到匹配的章节，请调整搜索条件。</div></section>'''
+    <section id="curriculum" class="section"><div class="section-head"><div><span class="eyebrow">COURSE CURRICULUM</span><h2>完整的 28 章知识路线</h2><p class="muted small">28 章全文已按来源快照迁移；算法示例单独归档，迁移不等于科学审校。</p></div></div><div class="controls"><label class="sr-only" for="search">搜索章节</label><input id="search" type="search" class="search" placeholder="搜索章节、主题或关键词…" autocomplete="off">{filters}</div><div class="lesson-grid">{''.join(items)}</div><div class="empty" id="no-results" hidden>没有找到匹配的章节，请调整搜索条件。</div></section>'''
     return frame('课程首页',body,scripts=('data/curriculum.js','../shared/progress.js','app.js'))
 
 
-def lesson(ch,prev_ch,next_ch):
+def lesson(ch,prev_ch,next_ch,source_body=None,metadata=None):
     num=ch['num']; topics=''.join(f'<span>{esc(t)}</span>' for t in ch['topics']);
     other=[]
     if prev_ch:other.append(f'<a href="{prev_ch["num"]}.html">← 第{int(prev_ch["num"])}章</a>')
     if next_ch:other.append(f'<a href="{next_ch["num"]}.html">第{int(next_ch["num"])}章 →</a>')
     lab={'structure':('lab.html','打开网络结构实验'),'compare':('compare.html','打开统计比较实验')}.get(ch.get('lab'))
     body=f'''<div class="article"><section class="subhero"><span class="eyebrow">CHAPTER {num} / {esc(ch['group'])}</span><h1>第{int(num)}章 · {esc(ch['title'])}</h1><p class="lead">{esc(ch['summary'])}</p><div class="topics">{topics}</div></section><div class="notice"><strong>章节状态：S02 概要版。</strong> 原版教材内容尚未迁移，下面提供本章导学、原文链接及适配实验；避免将摘要误认为全章正文。</div><section class="panel"><h2>本章学习重点</h2><p>{esc(ch['summary'])}</p><p class="muted">建议围绕以下主题理解定义、数学假设、适用范围和验证方式：</p><div class="topics">{topics}</div><h2>原始章节</h2><p>原始 HTML 在独立仓库中保存。点击下方链接可以查看 GitHub 中的完整正文源文件；离线时则请使用随原仓库保存的旧版 01–28.html。</p><a class="btn secondary" target="_blank" rel="noopener noreferrer" href="{BASE}{num}.html">查看原始章节 →</a></section><section class="section"><h2>可执行配套实践</h2>{f'<p class="muted">本章提供与现有 Python 实验结果对齐的交互入口。</p><a class="btn" href="../{lab[0]}">{lab[1]} →</a>' if lab else '<p class="muted">相应的独立算法实验、习题及黄金测试计划在 S03–S06 阶段按课程映射逐步接入。</p>'}</section><div class="chapter-nav">{''.join(other)}</div><p><a href="../index.html#curriculum">← 返回课程目录</a></p></div>'''
+    if source_body is not None:
+        # Preserve original HTML semantic structure and mathematical notation without
+        # unsafe HTML-to-Markdown roundtrips. Original source remains the authority.
+        old = '<div class="notice"><strong>章节状态：S02 概要版。</strong> 原版教材内容尚未迁移，下面提供本章导学、原文链接及适配实验；避免将摘要误认为全章正文。</div>'
+        new = '<div class="notice"><strong>S03 全文迁移（未经科学审校）</strong> 原始章节中的正文、表格、公式及代码按原貌保存；已知勘误请参见根目录 ERRATA.md。示例独立归档，但未保证可单独执行。</div>'
+        assert old in body
+        body = body.replace(old, new)
+        sample_links = ''.join(f'<li><a href="../../../{esc(item["path"])}">代码片段 {esc(item["id"])}（原始文本）</a></li>' for item in metadata.get('examples', [])) if metadata else ''
+        block = '<section class="panel migrated-article" aria-label="完整章节正文"><div class="section-head"><div><span class="eyebrow">ORIGINAL CONTENT / S03</span><h2>完整章节正文</h2></div></div>' + source_body + '</section>'
+        if sample_links:
+            block += '<section class="panel"><h2>本章代码示例（原文提取）</h2><ol>'+sample_links+'</ol><p class="muted small">代码片段仅做忠实归档，尚未经过依赖固定、单独运行和科学正确性验证。</p></section>'
+        anchor = '<section class="section"><h2>可执行配套实践</h2>'
+        assert anchor in body
+        body = body.replace(anchor, block+anchor)
     return frame(f'第{int(num)}章 {ch["title"]}',body,prefix='../')
 
 
@@ -82,7 +96,12 @@ def generated():
     comparison=json.loads((ROOT/'experiments/model-comparison.json').read_text(encoding='utf-8'))
     datasets=json.loads((ROOT/'data/registry/datasets.json').read_text(encoding='utf-8'))
     outputs={'index.html':homepage(chapters),'lab.html':lab_page(),'compare.html':compare_page(),'datasets.html':datasets_page(datasets),'data/curriculum.js':js_data('NETSCI_CURRICULUM',curriculum),'data/comparison.js':js_data('NETSCI_COMPARISON',comparison)}
-    for i,c in enumerate(chapters):outputs[f'lessons/{c["num"]}.html']=lesson(c,chapters[i-1] if i else None,chapters[i+1] if i+1<len(chapters) else None)
+    for i,c in enumerate(chapters):
+        article_path = ROOT/'content/lessons'/f'{c["num"]}.html'
+        metadata_path = ROOT/'content/lessons'/f'{c["num"]}.json'
+        article = article_path.read_text(encoding='utf-8') if article_path.is_file() else None
+        metadata = json.loads(metadata_path.read_text(encoding='utf-8')) if metadata_path.is_file() else None
+        outputs[f'lessons/{c["num"]}.html'] = lesson(c,chapters[i-1] if i else None,chapters[i+1] if i+1<len(chapters) else None,article,metadata)
     return outputs
 
 

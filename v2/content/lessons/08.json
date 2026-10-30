@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "chapter": "08",
+  "title": "中心性分析",
+  "source_path": "08.html",
+  "source_git_blob": "6d2d2ec9ee2f22a0a5565c177738eb161458f24f",
+  "review_status": "migrated_unreviewed",
+  "headings": [
+    {
+      "depth": 2,
+      "title": "什么是中心性"
+    },
+    {
+      "depth": 2,
+      "title": "Degree Centrality"
+    },
+    {
+      "depth": 3,
+      "title": "度中心性的局限"
+    },
+    {
+      "depth": 2,
+      "title": "Betweenness Centrality"
+    },
+    {
+      "depth": 3,
+      "title": "计算复杂度"
+    },
+    {
+      "depth": 2,
+      "title": "Closeness Centrality"
+    },
+    {
+      "depth": 3,
+      "title": "处理不连通图的挑战"
+    },
+    {
+      "depth": 2,
+      "title": "Eigenvector Centrality"
+    },
+    {
+      "depth": 3,
+      "title": "Katz Centrality"
+    },
+    {
+      "depth": 2,
+      "title": "LeaderRank"
+    },
+    {
+      "depth": 2,
+      "title": "中心性比较：Zachary's Karate Club"
+    },
+    {
+      "depth": 2,
+      "title": "如何选择中心性指标"
+    }
+  ],
+  "examples": [
+    {
+      "id": "01",
+      "path": "content/examples/08/01.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "02",
+      "path": "content/examples/08/02.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "03",
+      "path": "content/examples/08/03.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "04",
+      "path": "content/examples/08/04.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "05",
+      "path": "content/examples/08/05.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "06",
+      "path": "content/examples/08/06.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "07",
+      "path": "content/examples/08/07.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    }
+  ]
+}

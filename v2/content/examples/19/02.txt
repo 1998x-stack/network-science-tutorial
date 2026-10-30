@@ -1,0 +1,21 @@
+# 用 Pymnet 创建一个多层网络
+from pymnet import *
+
+# 创建一个有2层、3节点的多重网络
+net = MultiplexNetwork()
+
+# 添加层
+net.add_layer('friends')
+net.add_layer('colleagues')
+
+# 添加节点和边
+net['friends'][1][2] = 1  # 在friends层，节点1-2相连
+net['friends'][2][3] = 1
+net['colleagues'][1][3] = 1  # 在colleagues层，节点1-3相连
+
+# 计算多层聚类系数
+from pymnet.algorithms import clustering
+cc = clustering.multiplex_clustering_coefficient(net)
+print(f"多层聚类系数: {cc}")
+
+# 层间耦合会自动处理——相同节点跨层连接

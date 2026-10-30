@@ -1,0 +1,19 @@
+// Scala代码示例（PySpark也有类似API）
+// 但这里用伪代码展示概念
+
+// 从边列表RDD创建图
+val edges = spark.read.textFile("hdfs://edges.txt")
+  .map { line =>
+    val parts = line.split("\t")
+    Edge(parts(0).toLong, parts(1).toLong)
+  }
+val graph = Graph.fromEdges(edges, defaultValue = 1)
+
+// 计算PageRank
+val ranks = graph.pageRank(0.0001).vertices
+
+// 计算连通分量
+val cc = graph.connectedComponents().vertices
+
+// 三角形计数（大规模图的社团结构分析）
+val triCounts = graph.triangleCount().vertices

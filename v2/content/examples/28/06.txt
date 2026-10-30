@@ -1,0 +1,65 @@
+# 第六步：可视化 — 发布日期质量
+import matplotlib.pyplot as plt
+import networkx as nx
+from matplotlib.lines import Line2D
+
+plt.rcParams['figure.dpi'] = 150
+plt.rcParams['font.family'] = 'sans-serif'
+
+def plot_degree_distribution(G):
+    """绘制度分布 — 双对数坐标"""
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+
+    degrees = [d for n, d in G.degree()]
+    ax1.hist(degrees, bins=50, density=True, alpha=0.7, color='#7c3aed')
+    ax1.set_xlabel('度 (k)')
+    ax1.set_ylabel('概率 P(k)')
+    ax1.set_title('度分布（线性坐标）')
+
+    # 双对数坐标
+    from collections import Counter
+    degree_counts = Counter(degrees)
+    ks = sorted(degree_counts.keys())
+    ps = [degree_counts[k] / G.number_of_nodes() for k in ks]
+    ax2.loglog(ks, ps, 'o', markersize=3, alpha=0.6, color='#7c3aed')
+    ax2.set_xlabel('度 k (log)')
+    ax2.set_ylabel('P(k) (log)')
+    ax2.set_title('度分布（双对数坐标）')
+    ax2.grid(True, alpha=0.3)
+
+    plt.tight_layout()
+    plt.savefig('degree_distribution.png', dpi=150, bbox_inches='tight')
+    plt.show()
+
+def plot_network(G, n_labels=20):
+    """可视化网络全局图 — 按社团着色"""
+    # 社团检测
+    from community import best_partition
+    partition = best_partition(G)
+
+    # 按社团分配颜色
+    colors = [partition[n] for n in G.nodes()]
+    # 节点大小按度
+    sizes = [G.degree(n) * 2 for n in G.nodes()]
+
+    fig, ax = plt.subplots(1, 1, figsize=(16, 12))
+    pos = nx.spring_layout(G, k=0.3, iterations=50, seed=42)
+
+    nx.draw_networkx_nodes(G, pos, node_size=sizes,
+                           node_color=colors, cmap=plt.cm.tab20,
+                           alpha=0.7, ax=ax)
+    nx.draw_networkx_edges(G, pos, alpha=0.05, ax=ax)
+
+    # 标注度数最高的节点
+    top_nodes = sorted(G.degree(), key=lambda x: x[1], reverse=True)[:n_labels]
+    labels = {n: n for n, d in top_nodes}
+    nx.draw_networkx_labels(G, pos, labels, font_size=8, ax=ax)
+
+    ax.set_title('GitHub 开发者协作网络（2024）', fontsize=16)
+    ax.axis('off')
+    plt.tight_layout()
+    plt.savefig('github_network_visualization.png', dpi=150, bbox_inches='tight')
+    plt.show()
+
+# 注意：对于大规模网络（>1万节点），NetworkX的绘图函数会非常慢
+# 此时建议使用子采样或使用graph-tool/igraph等更高效的工具

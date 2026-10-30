@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "chapter": "11",
+  "title": "社团检测（下）",
+  "source_path": "11.html",
+  "source_git_blob": "4d0825d3b8057c1b86ad84b7f86934e8426bf4f7",
+  "review_status": "migrated_unreviewed",
+  "headings": [
+    {
+      "depth": 2,
+      "title": "InfoMap算法"
+    },
+    {
+      "depth": 3,
+      "title": "压缩原理"
+    },
+    {
+      "depth": 3,
+      "title": "Map Equation"
+    },
+    {
+      "depth": 2,
+      "title": "重叠社团检测"
+    },
+    {
+      "depth": 3,
+      "title": "BigCLAM"
+    },
+    {
+      "depth": 3,
+      "title": "Clique Percolation"
+    },
+    {
+      "depth": 2,
+      "title": "核心-边缘结构"
+    },
+    {
+      "depth": 3,
+      "title": "K-Core分解"
+    },
+    {
+      "depth": 3,
+      "title": "Onion Layers"
+    },
+    {
+      "depth": 2,
+      "title": "社团评估指标"
+    },
+    {
+      "depth": 3,
+      "title": "外部评估指标"
+    },
+    {
+      "depth": 3,
+      "title": "内部评估指标"
+    },
+    {
+      "depth": 2,
+      "title": "真实案例：政治博客网络"
+    }
+  ],
+  "examples": [
+    {
+      "id": "01",
+      "path": "content/examples/11/01.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "02",
+      "path": "content/examples/11/02.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "03",
+      "path": "content/examples/11/03.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    }
+  ]
+}

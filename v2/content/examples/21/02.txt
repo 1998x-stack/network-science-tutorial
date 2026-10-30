@@ -1,0 +1,24 @@
+# Node2Vec的有偏游走核心逻辑（p和q的调整）
+import networkx as nx
+import numpy as np
+from random import choices
+
+def biased_random_walk_step(graph, current, previous, p, q):
+    """Node2Vec有偏游走的单步转移"""
+    neighbors = list(graph.neighbors(current))
+    if previous is None or len(neighbors) == 0:
+        return choice(neighbors) if neighbors else current
+
+    weights = []
+    for nxt in neighbors:
+        if nxt == previous:
+            # 回到上一个节点：权重1/p
+            weights.append(1.0 / p)
+        elif graph.has_edge(nxt, previous):
+            # 与上一个节点也是邻居：权重1
+            weights.append(1.0)
+        else:
+            # 远离上一个节点：权重1/q
+            weights.append(1.0 / q)
+
+    return choices(neighbors, weights=weights, k=1)[0]

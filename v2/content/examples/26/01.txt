@@ -1,0 +1,25 @@
+# 网络正则化的数学形式示意
+# L_total = L_supervised + λ * L_network
+
+# L_network 的一种常见形式（图拉普拉斯正则化）：
+# L_network = Σ_{i,j} A_{ij} * ||f(x_i) - f(x_j)||²
+#
+# 其中 A_{ij} 是邻接矩阵，f(x_i) 是节点i的预测值
+# 这个惩罚项鼓励有边相连的节点有相似的预测
+
+# 在实际应用中，可以使用PyTorch + PyG实现：
+import torch
+import torch.nn.functional as F
+
+def graph_laplacian_regularization(predictions, edge_index):
+    """
+    计算图拉普拉斯正则化项
+    predictions: [N, C] 节点预测
+    edge_index: [2, E] 边索引
+    """
+    src, dst = edge_index
+    diff = predictions[src] - predictions[dst]  # [E, C]
+    return torch.mean(torch.norm(diff, dim=1) ** 2)
+
+# 将此项加入总损失即可
+total_loss = supervised_loss + lambda_reg * graph_laplacian_regularization(pred, edge_index)

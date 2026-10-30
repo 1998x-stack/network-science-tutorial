@@ -1,0 +1,25 @@
+# 图提示学习（Graph Prompting）的简化实现思路
+# 目标是让预训练模型适应新任务而无需微调
+
+class GraphPrompt(nn.Module):
+    """为图任务设计的可学习提示模板"""
+    def __init__(self, hidden_dim, prompt_length=5):
+        super().__init__()
+        # 可学习的提示token
+        self.prompt_tokens = nn.Parameter(
+            torch.randn(prompt_length, hidden_dim)
+        )
+
+    def forward(self, x, edge_index, task_type):
+        # 将提示token附加到图的节点特征前
+        if task_type == 'node_classification':
+            # 在目标节点周围构造提示子图
+            prompt_x = torch.cat([self.prompt_tokens, x], dim=0)
+            # 添加提示token之间的连接
+            return prompt_x, edge_index
+        elif task_type == 'graph_classification':
+            # 对整图做提示
+            return x + self.prompt_tokens.mean(dim=0)
+
+# 预训练GNN + 图提示 = 不需要微调即可适应新任务
+# 这在大规模生产环境中大幅降低了部署成本

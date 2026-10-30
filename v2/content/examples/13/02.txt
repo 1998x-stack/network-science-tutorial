@@ -1,0 +1,22 @@
+# 贪心算法框架（简化）
+import networkx as nx
+import random
+
+def greedy_influence_max(G, model, k):
+    """贪心选择k个种子节点"""
+    seeds = set()
+    for _ in range(k):
+        best_gain = 0
+        best_node = None
+        for node in G.nodes():
+            if node in seeds:
+                continue
+            # 模拟添加该节点后的传播范围
+            candidate = seeds | {node}
+            spread = simulate_spread(G, model, candidate)
+            gain = spread - len(simulate_spread(G, model, seeds))
+            if gain > best_gain:
+                best_gain = gain
+                best_node = node
+        seeds.add(best_node)
+    return seeds

@@ -1,0 +1,31 @@
+# 利用城市移动数据识别交通瓶颈
+import networkx as nx
+
+def identify_traffic_bottlenecks(G_traffic, flow_edges, top_k=20):
+    """
+    识别城市交通网络中的关键瓶颈路段
+    G_traffic: 道路网络，边权重=通行时间
+    flow_edges: 当前时段的实时流量数据 [(u,v,flow_rate), ...]
+    """
+    G = G_traffic.copy()
+
+    # 第一步：更新边权重为实时通行时间
+    for u, v, flow in flow_edges:
+        if G.has_edge(u, v):
+            # 流量越大，通行时间越长（BPR函数）
+            free_flow_time = G[u][v]['free_flow_time']
+            capacity = G[u][v]['capacity']
+            congested_time = free_flow_time * (1 + 0.15 * (flow / capacity) ** 4)
+            G[u][v]['weight'] = congested_time
+
+    # 第二步：计算边的介数中心性（edge betweenness）
+    edge_betweenness = nx.edge_betweenness_centrality(G, weight='weight')
+
+    # 第三步：找出瓶颈路段（介数最高的top_k条边）
+    bottlenecks = sorted(edge_betweenness.items(),
+                         key=lambda x: x[1], reverse=True)[:top_k]
+    return bottlenecks
+
+# 输出示例：
+# [((node_45, node_67), 0.245), ((node_12, node_89), 0.221), ...]
+# 这些路段一旦发生拥堵，将影响全局交通流

@@ -1,0 +1,19 @@
+# 构建一个简单的多重网络的展开邻接矩阵
+import numpy as np
+
+# 3个节点，2层
+A1 = np.array([[0, 1, 0],  # 层1: 好友关系
+               [1, 0, 1],
+               [0, 1, 0]])
+
+A2 = np.array([[0, 0, 1],  # 层2: 同事关系
+               [0, 0, 1],
+               [1, 1, 0]])
+
+# 层间耦合矩阵（单位矩阵——同一节点跨层相连）
+C = np.eye(3)
+
+# 展开邻接矩阵 (6x6)
+supra = np.block([[A1, C],
+                  [C, A2]])
+print("Supra-adjacency matrix:\n", supra)

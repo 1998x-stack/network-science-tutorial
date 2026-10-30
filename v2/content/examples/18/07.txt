@@ -1,0 +1,5 @@
+# 读取GraphML格式（Gephi的默认导出格式之一）
+G = nx.read_graphml("network.graphml")
+
+# 读取GML格式
+G = nx.read_gml("network.gml")

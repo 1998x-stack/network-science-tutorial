@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "chapter": "25",
+  "title": "大规模网络分析",
+  "source_path": "25.html",
+  "source_git_blob": "3e9033969e573d423ae266c71fd67300b9ff46e0",
+  "review_status": "migrated_unreviewed",
+  "headings": [
+    {
+      "depth": 2,
+      "title": "大规模网络的挑战"
+    },
+    {
+      "depth": 2,
+      "title": "igraph入门"
+    },
+    {
+      "depth": 3,
+      "title": "安装与基本使用"
+    },
+    {
+      "depth": 3,
+      "title": "igraph vs NetworkX 性能对比"
+    },
+    {
+      "depth": 2,
+      "title": "网络采样"
+    },
+    {
+      "depth": 3,
+      "title": "常见的采样策略"
+    },
+    {
+      "depth": 3,
+      "title": "采样方法的比较"
+    },
+    {
+      "depth": 2,
+      "title": "图数据库简介"
+    },
+    {
+      "depth": 3,
+      "title": "Neo4j与Cypher查询语言"
+    },
+    {
+      "depth": 3,
+      "title": "什么时候用图数据库？"
+    },
+    {
+      "depth": 2,
+      "title": "分布式图处理"
+    },
+    {
+      "depth": 3,
+      "title": "GraphX/Spark简介"
+    },
+    {
+      "depth": 2,
+      "title": "性能比较"
+    }
+  ],
+  "examples": [
+    {
+      "id": "01",
+      "path": "content/examples/25/01.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "02",
+      "path": "content/examples/25/02.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "03",
+      "path": "content/examples/25/03.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "04",
+      "path": "content/examples/25/04.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "05",
+      "path": "content/examples/25/05.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+import networkx as nx
+import numpy as np
+
+# 模拟一个微博关注网络
+# N个用户，使用BA模型生成有向图来模拟"大V-粉丝"结构
+N = 5000
+m = 3  # 每个新用户初始关注几个人
+
+# 使用有向无标度网络模拟
+# BA无向模型 + 随机定向
+G_base = nx.barabasi_albert_graph(N, m, seed=42)
+G_weibo = nx.DiGraph()
+
+# 将无向边随机分配方向
+# 模拟"大V被关注多"的模式
+for u, v in G_base.edges():
+    degree_u = G_base.degree(u)
+    degree_v = G_base.degree(v)
+    # 度大的节点更可能被关注（被指向）
+    if degree_u > degree_v:
+        G_weibo.add_edge(u, v)  # v关注u，因为u更"大"
+    else:
+        G_weibo.add_edge(v, u)  # u关注v
+
+print(f"微博模拟网络: {G_weibo.number_of_nodes()} 用户, "
+      f"{G_weibo.number_of_edges()} 关注关系")
+
+# ===== 影响力分析 =====
+# 入度 —— 粉丝数
+in_degrees = [d for n, d in G_weibo.in_degree()]
+print(f"\n粉丝数统计:")
+print(f"  最大粉丝数: {max(in_degrees)}")
+print(f"  中位数粉丝: {np.median(in_degrees):.0f}")
+print(f"  平均粉丝数: {np.mean(in_degrees):.1f}")
+
+# 幂律分布验证
+top_fans = sorted(G_weibo.in_degree(), key=lambda x: x[1], reverse=True)[:10]
+print(f"\nTop-10 大V（粉丝数）:")
+for user_id, fans in top_fans:
+    print(f"  用户 {user_id}: {fans} 粉丝")
+
+# PageRank —— 综合影响力
+pr = nx.pagerank(G_weibo, alpha=0.85)
+top_pr = sorted(pr.items(), key=lambda x: x[1], reverse=True)[:10]
+print(f"\nPageRank Top-10:")
+for user_id, score in top_pr:
+    print(f"  用户 {user_id}: {score:.6f}")
+
+# ===== 互关分析 =====
+# 互关表示双向关系（类似微信好友）
+mutual_count = 0
+for u, v in G_weibo.edges():
+    if G_weibo.has_edge(v, u):  # 存在反向边
+        mutual_count += 1
+print(f"\n互关对数: {mutual_count}")
+print(f"互关比例: {100 * mutual_count / G_weibo.number_of_edges():.1f}%")
+
+# ===== 强连通分量 =====
+scc = list(nx.strongly_connected_components(G_weibo))
+largest_scc = max(scc, key=len)
+print(f"\n强连通分量数: {len(scc)}")
+print(f"最大SCC大小: {len(largest_scc)} "
+      f"({100*len(largest_scc)/N:.1f}%)")

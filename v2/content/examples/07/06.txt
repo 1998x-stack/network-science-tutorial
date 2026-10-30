@@ -1,0 +1,8 @@
+import networkx as nx
+
+# 计算同配性系数
+r = nx.degree_assortativity_coefficient(G)
+print(f"同配性系数 r = {r:.3f}")
+# r > 0: 同配混合 (同类型相连)
+# r < 0: 异配混合 (不同类型相连)
+# r = 0: 无相关性（随机连接）

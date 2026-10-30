@@ -1,0 +1,49 @@
+# Motter-Lai级联失效模型的简化实现
+import networkx as nx
+import numpy as np
+
+def motter_lai_cascade(G, alpha=0.5, initial_failure=None):
+    """
+    Motter-Lai级联失效模拟。
+    alpha: 容量容忍参数，越小系统越脆弱
+    initial_failure: 初始失效节点列表
+    """
+    G = G.copy()
+
+    # 计算初始负载（介数中心性）
+    betweenness = nx.betweenness_centrality(G)
+    loads = {n: b for n, b in betweenness.items()}
+    capacities = {n: (1 + alpha) * loads[n] for n in G.nodes()}
+
+    if initial_failure is None:
+        # 默认选择介数最大的节点作为初始故障
+        initial_failure = [max(loads, key=loads.get)]
+
+    # 设置初始失效节点
+    failed = set(initial_failure)
+    newly_failed = set(initial_failure)
+
+    while newly_failed:
+        G.remove_nodes_from(newly_failed)
+
+        # 重新计算存活节点的负载
+        if G.number_of_nodes() > 1:
+            betweenness = nx.betweenness_centrality(G)
+            for n in betweenness:
+                loads[n] = betweenness[n]
+
+        # 检查过载
+        newly_failed = set()
+        for n in G.nodes():
+            if loads[n] > capacities[n]:
+                newly_failed.add(n)
+
+        failed.update(newly_failed)
+
+    return 1.0 - G.number_of_nodes() / capacities_total
+
+# 不同\alpha值下的失效规模
+for alpha in [0.2, 0.5, 1.0, 2.0]:
+    G = nx.barabasi_albert_graph(500, 2)
+    frac = motter_lai_cascade(G, alpha=alpha)
+    print(f"alpha={alpha:.1f}: 失效节点比例 = {frac:.3f}")

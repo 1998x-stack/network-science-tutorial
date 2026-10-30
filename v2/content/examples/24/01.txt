@@ -1,0 +1,12 @@
+import networkx as nx
+import matplotlib.pyplot as plt
+import numpy as np
+
+G = nx.karate_club_graph()
+print(f"节点数: {G.number_of_nodes()}")
+print(f"边数: {G.number_of_edges()}")
+print(f"平均度: {2 * G.number_of_edges() / G.number_of_nodes():.2f}")
+
+# 看一下实际分裂后的归属
+for i in range(5):
+    print(f"  节点{i}: 归属 '{G.nodes[i]['club']}'")

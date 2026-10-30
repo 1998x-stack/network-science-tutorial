@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "chapter": "07",
+  "title": "度分布与网络异质性",
+  "source_path": "07.html",
+  "source_git_blob": "5dede44795528d20adcd4654d008ce0c40a49734",
+  "review_status": "migrated_unreviewed",
+  "headings": [
+    {
+      "depth": 2,
+      "title": "度分布的数学刻画"
+    },
+    {
+      "depth": 3,
+      "title": "累积度分布"
+    },
+    {
+      "depth": 3,
+      "title": "度分布的矩（Moments）"
+    },
+    {
+      "depth": 2,
+      "title": "异质性度量"
+    },
+    {
+      "depth": 3,
+      "title": "方差"
+    },
+    {
+      "depth": 3,
+      "title": "基尼系数"
+    },
+    {
+      "depth": 3,
+      "title": "异质性参数"
+    },
+    {
+      "depth": 2,
+      "title": "同配性与异配性"
+    },
+    {
+      "depth": 3,
+      "title": "同配混合 vs 异配混合"
+    },
+    {
+      "depth": 3,
+      "title": "Newman同配性系数"
+    },
+    {
+      "depth": 2,
+      "title": "度相关性"
+    },
+    {
+      "depth": 3,
+      "title": "富者更富俱乐部"
+    },
+    {
+      "depth": 2,
+      "title": "度分布对网络行为的影响"
+    }
+  ],
+  "examples": [
+    {
+      "id": "01",
+      "path": "content/examples/07/01.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "02",
+      "path": "content/examples/07/02.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "03",
+      "path": "content/examples/07/03.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "04",
+      "path": "content/examples/07/04.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "05",
+      "path": "content/examples/07/05.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "06",
+      "path": "content/examples/07/06.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "07",
+      "path": "content/examples/07/07.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    }
+  ]
+}

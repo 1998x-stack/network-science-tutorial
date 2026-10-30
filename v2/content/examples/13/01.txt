@@ -1,0 +1,25 @@
+# 简单阈值模型的模拟
+import networkx as nx
+import random
+
+def threshold_cascade(G, seeds, threshold=0.25):
+    active = set(seeds)
+    changed = True
+    while changed:
+        changed = False
+        for node in G.nodes():
+            if node in active:
+                continue
+            neighbors = list(G.neighbors(node))
+            if not neighbors:
+                continue
+            active_neighbors = sum(1 for n in neighbors if n in active)
+            if active_neighbors / len(neighbors) >= threshold:
+                active.add(node)
+                changed = True
+    return active
+
+G = nx.erdos_renyi_graph(1000, 0.01)
+seeds = random.sample(list(G.nodes()), 50)
+final_active = threshold_cascade(G, seeds, threshold=0.25)
+print(f"初始种子: 50 → 最终活跃: {len(final_active)}")

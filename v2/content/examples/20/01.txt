@@ -1,0 +1,19 @@
+# 时间接触序列的数据结构示例
+import pandas as pd
+
+# 每条记录: (节点A, 节点B, 开始时间, 结束时间)
+contacts = pd.DataFrame([
+    ('Alice', 'Bob',    1.0,  2.5),
+    ('Bob',   'Carol',  1.5,  2.0),
+    ('Alice', 'David',  3.0,  4.0),
+    ('Bob',   'David',  5.0,  6.0),
+    ('Carol', 'David',  5.5,  6.5),
+], columns=['src', 'dst', 't_start', 't_end'])
+
+# 计算每个时间点的活跃边数
+def active_edges_at(t):
+    mask = (contacts['t_start'] <= t) & (contacts['t_end'] >= t)
+    return len(contacts[mask])
+
+for t in [1.2, 1.7, 3.5, 5.8]:
+    print(f"t={t}: {active_edges_at(t)} 条活跃边")

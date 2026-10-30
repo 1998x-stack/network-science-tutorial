@@ -1,0 +1,36 @@
+# 第五步：链路预测
+from sklearn.metrics import roc_auc_score
+
+def evaluate_link_prediction(G, test_ratio=0.2):
+    """在GitHub协作网络上评估链路预测性能"""
+    # 划分训练集和测试集
+    edges = list(G.edges())
+    np.random.shuffle(edges)
+    n_test = int(len(edges) * test_ratio)
+    test_edges = edges[:n_test]
+    train_edges = edges[n_test:]
+
+    # 构建训练图
+    G_train = nx.Graph()
+    G_train.add_edges_from(train_edges)
+
+    # 生成负样本（不存在的边）
+    non_edges = list(nx.non_edges(G))
+    test_non_edges = np.random.choice(
+        len(non_edges), n_test, replace=False
+    )
+    test_non_edges = [non_edges[i] for i in test_non_edges]
+
+    # 计算共同邻居分数
+    preds_cn = []
+    for u, v in test_edges + test_non_edges:
+        cn = len(list(nx.common_neighbors(G_train, u, v)))
+        preds_cn.append(cn)
+
+    y_true = [1] * n_test + [0] * n_test
+    auc_cn = roc_auc_score(y_true, preds_cn)
+    print(f"共同邻居 AUC: {auc_cn:.4f}")
+
+    return auc_cn
+
+auc = evaluate_link_prediction(G)

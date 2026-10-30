@@ -1,0 +1,15 @@
+import networkx as nx
+import matplotlib.pyplot as plt
+
+# 生成一个ER随机图
+n, p = 20, 0.15
+G = nx.erdos_renyi_graph(n, p)
+
+print(f"顶点数: {G.number_of_nodes()}")
+print(f"边数: {G.number_of_edges()}")
+print(f"期望边数: {p * n * (n-1) / 2:.2f}")
+
+# 查看度分布
+degrees = [d for _, d in G.degree()]
+print(f"平均度: {sum(degrees)/n:.2f}")
+print(f"期望平均度: {p * (n-1):.2f}")

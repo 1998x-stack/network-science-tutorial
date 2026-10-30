@@ -1,0 +1,15 @@
+import networkx as nx
+
+# BA模型：从3个初始节点开始，每次新增节点连接3个已有节点
+n = 1000
+m = 3
+G = nx.barabasi_albert_graph(n, m)
+
+print(f"节点数: {G.number_of_nodes()}, 边数: {G.number_of_edges()}")
+print(f"平均度: {2 * G.number_of_edges() / G.number_of_nodes():.2f}")
+
+# 查看度最大的10个节点
+top_degrees = sorted(G.degree(), key=lambda x: x[1], reverse=True)[:10]
+print("度最大的前10个节点:")
+for node, deg in top_degrees:
+    print(f"  节点 {node}: 度 = {deg}")

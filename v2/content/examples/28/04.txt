@@ -1,0 +1,39 @@
+# 第四步：鲁棒性模拟
+import matplotlib.pyplot as plt
+
+def simulate_attack(G, attack_type='random', fraction=0.1):
+    """
+    模拟网络攻击，观察最大连通分量的变化
+    attack_type: 'random' 随机移除节点, 'targeted' 移除度最大的节点
+    """
+    G_copy = G.copy()
+    n_nodes = G_copy.number_of_nodes()
+    n_remove = int(n_nodes * fraction)
+
+    if attack_type == 'random':
+        nodes_to_remove = np.random.choice(
+            list(G_copy.nodes()), n_remove, replace=False
+        )
+    elif attack_type == 'targeted':
+        # 按度排序，移除最大的
+        nodes_sorted = sorted(G_copy.degree(), key=lambda x: x[1], reverse=True)
+        nodes_to_remove = [n for n, d in nodes_sorted[:n_remove]]
+
+    G_copy.remove_nodes_from(nodes_to_remove)
+
+    # 计算效应：最大连通分量的相对大小
+    if G_copy.number_of_nodes() == 0:
+        return 0.0
+    components = sorted(nx.connected_components(G_copy), key=len, reverse=True)
+    largest_size = len(components[0]) if components else 0
+    return largest_size / (n_nodes - n_remove)
+
+# 不同移除比例下的对比
+for frac in [0.01, 0.05, 0.10, 0.20, 0.30]:
+    rand_robust = simulate_attack(G, 'random', frac)
+    targ_robust = simulate_attack(G, 'targeted', frac)
+    print(f"移除 {frac*100:.0f}% -> 随机: GCC={rand_robust:.3f}, 定向: GCC={targ_robust:.3f}")
+
+# 预期的输出模式：
+# 随机删除30%的节点后，最大连通分量可能仍保持在80%以上
+# 定向删除5%的枢纽节点，最大连通分量可能就下降到50%以下

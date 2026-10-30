@@ -1,0 +1,28 @@
+# 动态社团检测的简化伪代码
+import numpy as np
+from sklearn.metrics import adjusted_rand_score
+
+def evolutionary_clustering(snapshots, alpha=0.7):
+    """snapshots: [adj_matrix_t1, adj_matrix_t2, ...]"""
+    n_snaps = len(snapshots)
+    prev_assignment = None
+
+    for t in range(n_snaps):
+        # 1. 对当前快照做静态社团检测
+        static_communities = detect_communities(snapshots[t])
+
+        if prev_assignment is None:
+            assignment = static_communities
+        else:
+            # 2. 计算平滑后分配
+            # 实际中会通过优化框架求解
+            assignment = smooth(static_communities, prev_assignment, alpha)
+
+        # 3. 检测演化事件
+        if prev_assignment is not None:
+            ari = adjusted_rand_score(prev_assignment, assignment)
+            print(f"t={t}: ARI={ari:.3f} (越接近1变化越小)")
+
+        prev_assignment = assignment
+
+    return assignments

@@ -1,0 +1,26 @@
+import pandas as pd
+import networkx as nx
+
+# 边列表（edge list）格式
+df_edges = pd.DataFrame({
+    "source": ["A", "B", "C", "D"],
+    "target": ["B", "C", "D", "A"],
+    "weight": [0.5, 1.2, 0.8, 0.3]
+})
+
+# 从DataFrame创建图
+G = nx.from_pandas_edgelist(df_edges, source="source",
+                            target="target", edge_attr="weight")
+
+# 也可以通过邻接矩阵创建
+import numpy as np
+adj_matrix = np.array([
+    [0, 1, 0, 0],
+    [1, 0, 1, 1],
+    [0, 1, 0, 1],
+    [0, 1, 1, 0],
+])
+G = nx.from_numpy_array(adj_matrix)
+# 默认节点标签为整数，可以后续重命名
+mapping = {i: name for i, name in enumerate(["N1", "N2", "N3", "N4"])}
+G = nx.relabel_nodes(G, mapping)

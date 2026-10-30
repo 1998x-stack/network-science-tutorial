@@ -1,0 +1,15 @@
+# Deffuant模型的关键发现：ε决定了最终意见的多样性
+# 如果 ε 较大（如 ε > 0.5）→ 所有意见收敛到同一个值
+# 如果 ε 中等 → 形成2-3个意见簇（极化）
+# 如果 ε 较小 → 最终保持多个意见簇（多元化）
+
+import random
+
+def deffuant_model(G, epsilon=0.2, mu=0.5, steps=50000):
+    opinions = {n: random.random() for n in G.nodes()}
+    for _ in range(steps):
+        i, j = random.sample(list(G.nodes()), 2)
+        if abs(opinions[i] - opinions[j]) < epsilon:
+            opinions[i] += mu * (opinions[j] - opinions[i])
+            opinions[j] += mu * (opinions[i] - opinions[j])
+    return opinions

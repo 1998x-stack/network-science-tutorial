@@ -1,0 +1,5 @@
+# Python接口安装
+pip install igraph
+
+# 注意：如果希望安装完全版（包括plotting支持）
+pip install python-igraph  # 会自动编译C核心

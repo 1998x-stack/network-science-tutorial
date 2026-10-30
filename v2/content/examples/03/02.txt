@@ -1,0 +1,8 @@
+# 无向图
+density = 2m / [n(n-1)]
+# 有向图
+density = m / [n(n-1)]
+
+# NetworkX直接计算
+d = nx.density(G)
+print(f"密度 = {d:.4f}")
