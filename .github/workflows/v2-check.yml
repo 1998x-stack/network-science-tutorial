@@ -1,0 +1,42 @@
+name: Network Science V2 checks
+on:
+  push:
+    paths:
+      - 'v2/**'
+      - '.github/workflows/v2-check.yml'
+  pull_request:
+    paths:
+      - 'v2/**'
+      - '.github/workflows/v2-check.yml'
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    defaults:
+      run:
+        working-directory: v2
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install independent numerical oracle
+        run: python -m pip install 'networkx>=3.3,<4'
+      - name: Python tests
+        run: PYTHONPATH=src python -m unittest discover -s tests -v
+      - name: Verify deterministic Web generation
+        run: python scripts/build_web.py --check
+      - name: Verify local links
+        run: python scripts/check_web.py
+      - name: JavaScript component tests
+        run: node --test tests/web/*.test.cjs
+      - name: JavaScript syntax
+        run: |
+          for f in apps/shared/*.js apps/web/*.js apps/graph-lab/app.js; do
+            node --check "$f"
+          done

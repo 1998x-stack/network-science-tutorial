@@ -1,0 +1,50 @@
+{
+  "schema_version": "0.1.0",
+  "datasets": [
+    {
+      "id": "synthetic-er",
+      "version": "1",
+      "source_kind": "generated",
+      "generator": "netsci.models.erdos_renyi",
+      "license_status": "generated-in-project",
+      "description": "ER random graph with explicit PRNG seed; no external download",
+      "recommended_tasks": ["structure", "percolation"]
+    },
+    {
+      "id": "synthetic-ws",
+      "version": "1",
+      "source_kind": "generated",
+      "generator": "netsci.models.watts_strogatz",
+      "license_status": "generated-in-project",
+      "description": "WS rewired ring lattice",
+      "recommended_tasks": ["small-world", "structure"]
+    },
+    {
+      "id": "synthetic-ba",
+      "version": "1",
+      "source_kind": "generated",
+      "generator": "netsci.models.barabasi_albert",
+      "license_status": "generated-in-project",
+      "description": "BA preferential attachment baseline",
+      "recommended_tasks": ["heterogeneity", "robustness"]
+    },
+    {
+      "id": "karate-club",
+      "version": "pending-source-review",
+      "source_kind": "external",
+      "source_url": "https://networkx.org/documentation/stable/reference/generated/networkx.generators.social.karate_club_graph.html",
+      "license_status": "review-before-redistribution",
+      "redistribute": false,
+      "recommended_tasks": ["centrality", "community", "golden-tests"]
+    },
+    {
+      "id": "cora",
+      "version": "pending-source-review",
+      "source_kind": "external",
+      "source_url": "https://pytorch-geometric.readthedocs.io/en/latest/generated/torch_geometric.datasets.Planetoid.html",
+      "license_status": "review-before-redistribution",
+      "redistribute": false,
+      "recommended_tasks": ["node-classification", "gnn", "embedding"]
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "network-science-labs"
+version = "0.1.0"
+description = "Reproducible network-science lesson experiments and visualization contracts"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+analysis = ["networkx>=3.2", "numpy>=1.26", "pandas>=2.1", "scipy>=1.11"]
+gnn = ["torch>=2.2", "torch-geometric>=2.5"]
+dev = ["pytest>=8", "ruff>=0.6", "mypy>=1.10"]
+
+[project.scripts]
+netsci = "netsci.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

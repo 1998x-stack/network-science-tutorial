@@ -1,0 +1,325 @@
+{
+  "schema_version": "1.0.0",
+  "experiment_id": "er-ws-ba-matched-expected-degree",
+  "params": {
+    "nodes": 80,
+    "expected_degree": 6,
+    "ws_rewire_probability": 0.08,
+    "seeds": [
+      11,
+      22,
+      33,
+      44,
+      55
+    ]
+  },
+  "notes": [
+    "ER degree is matched only in expectation",
+    "BA initial graph influences finite-size results",
+    "report summarizes samples, not causal effects or significance"
+  ],
+  "runs": [
+    {
+      "model": "er",
+      "seed": 11,
+      "metrics": {
+        "nodes": 80,
+        "edges": 243,
+        "density": 0.07689873417721518,
+        "mean_degree": 6.075,
+        "components": 1,
+        "largest_component_fraction": 1.0,
+        "mean_local_clustering": 0.0675297619047619,
+        "global_transitivity": 0.07142857142857142,
+        "average_shortest_path_lcc": 2.59873417721519
+      }
+    },
+    {
+      "model": "ws",
+      "seed": 11,
+      "metrics": {
+        "nodes": 80,
+        "edges": 240,
+        "density": 0.0759493670886076,
+        "mean_degree": 6.0,
+        "components": 1,
+        "largest_component_fraction": 1.0,
+        "mean_local_clustering": 0.43199404761904764,
+        "global_transitivity": 0.42295081967213116,
+        "average_shortest_path_lcc": 3.491139240506329
+      }
+    },
+    {
+      "model": "ba",
+      "seed": 11,
+      "metrics": {
+        "nodes": 80,
+        "edges": 231,
+        "density": 0.07310126582278481,
+        "mean_degree": 5.775,
+        "components": 1,
+        "largest_component_fraction": 1.0,
+        "mean_local_clustering": 0.1286674266637502,
+        "global_transitivity": 0.09579563597658329,
+        "average_shortest_path_lcc": 2.525632911392405
+      }
+    },
+    {
+      "model": "er",
+      "seed": 22,
+      "metrics": {
+        "nodes": 80,
+        "edges": 245,
+        "density": 0.07753164556962025,
+        "mean_degree": 6.125,
+        "components": 1,
+        "largest_component_fraction": 1.0,
+        "mean_local_clustering": 0.09016712454212454,
+        "global_transitivity": 0.09456740442655935,
+        "average_shortest_path_lcc": 2.615506329113924
+      }
+    },
+    {
+      "model": "ws",
+      "seed": 22,
+      "metrics": {
+        "nodes": 80,
+        "edges": 240,
+        "density": 0.0759493670886076,
+        "mean_degree": 6.0,
+        "components": 1,
+        "largest_component_fraction": 1.0,
+        "mean_local_clustering": 0.46934523809523804,
+        "global_transitivity": 0.4590834697217676,
+        "average_shortest_path_lcc": 3.550632911392405
+      }
+    },
+    {
+      "model": "ba",
+      "seed": 22,
+      "metrics": {
+        "nodes": 80,
+        "edges": 231,
+        "density": 0.07310126582278481,
+        "mean_degree": 5.775,
+        "components": 1,
+        "largest_component_fraction": 1.0,
+        "mean_local_clustering": 0.18040217174839937,
+        "global_transitivity": 0.1085016439643025,
+        "average_shortest_path_lcc": 2.445886075949367
+      }
+    },
+    {
+      "model": "er",
+      "seed": 33,
+      "metrics": {
+        "nodes": 80,
+        "edges": 228,
+        "density": 0.07215189873417721,
+        "mean_degree": 5.7,
+        "components": 1,
+        "largest_component_fraction": 1.0,
+        "mean_local_clustering": 0.046028485403485406,
+        "global_transitivity": 0.05238095238095238,
+        "average_shortest_path_lcc": 2.6579113924050635
+      }
+    },
+    {
+      "model": "ws",
+      "seed": 33,
+      "metrics": {
+        "nodes": 80,
+        "edges": 240,
+        "density": 0.0759493670886076,
+        "mean_degree": 6.0,
+        "components": 1,
+        "largest_component_fraction": 1.0,
+        "mean_local_clustering": 0.4955952380952381,
+        "global_transitivity": 0.48641975308641977,
+        "average_shortest_path_lcc": 3.6664556962025316
+      }
+    },
+    {
+      "model": "ba",
+      "seed": 33,
+      "metrics": {
+        "nodes": 80,
+        "edges": 231,
+        "density": 0.07310126582278481,
+        "mean_degree": 5.775,
+        "components": 1,
+        "largest_component_fraction": 1.0,
+        "mean_local_clustering": 0.18166884544084808,
+        "global_transitivity": 0.09794073329984933,
+        "average_shortest_path_lcc": 2.4585443037974684
+      }
+    },
+    {
+      "model": "er",
+      "seed": 44,
+      "metrics": {
+        "nodes": 80,
+        "edges": 271,
+        "density": 0.08575949367088608,
+        "mean_degree": 6.775,
+        "components": 1,
+        "largest_component_fraction": 1.0,
+        "mean_local_clustering": 0.09118506493506492,
+        "global_transitivity": 0.09416299559471365,
+        "average_shortest_path_lcc": 2.4740506329113923
+      }
+    },
+    {
+      "model": "ws",
+      "seed": 44,
+      "metrics": {
+        "nodes": 80,
+        "edges": 240,
+        "density": 0.0759493670886076,
+        "mean_degree": 6.0,
+        "components": 1,
+        "largest_component_fraction": 1.0,
+        "mean_local_clustering": 0.47005952380952376,
+        "global_transitivity": 0.4588815789473684,
+        "average_shortest_path_lcc": 3.482278481012658
+      }
+    },
+    {
+      "model": "ba",
+      "seed": 44,
+      "metrics": {
+        "nodes": 80,
+        "edges": 231,
+        "density": 0.07310126582278481,
+        "mean_degree": 5.775,
+        "components": 1,
+        "largest_component_fraction": 1.0,
+        "mean_local_clustering": 0.21560586334127602,
+        "global_transitivity": 0.12217194570135746,
+        "average_shortest_path_lcc": 2.4522151898734177
+      }
+    },
+    {
+      "model": "er",
+      "seed": 55,
+      "metrics": {
+        "nodes": 80,
+        "edges": 226,
+        "density": 0.07151898734177216,
+        "mean_degree": 5.65,
+        "components": 1,
+        "largest_component_fraction": 1.0,
+        "mean_local_clustering": 0.07979978354978354,
+        "global_transitivity": 0.08735632183908046,
+        "average_shortest_path_lcc": 2.7253164556962024
+      }
+    },
+    {
+      "model": "ws",
+      "seed": 55,
+      "metrics": {
+        "nodes": 80,
+        "edges": 240,
+        "density": 0.0759493670886076,
+        "mean_degree": 6.0,
+        "components": 1,
+        "largest_component_fraction": 1.0,
+        "mean_local_clustering": 0.4834226190476191,
+        "global_transitivity": 0.4761513157894737,
+        "average_shortest_path_lcc": 3.55253164556962
+      }
+    },
+    {
+      "model": "ba",
+      "seed": 55,
+      "metrics": {
+        "nodes": 80,
+        "edges": 231,
+        "density": 0.07310126582278481,
+        "mean_degree": 5.775,
+        "components": 1,
+        "largest_component_fraction": 1.0,
+        "mean_local_clustering": 0.14965841103341102,
+        "global_transitivity": 0.1135593220338983,
+        "average_shortest_path_lcc": 2.5427215189873418
+      }
+    }
+  ],
+  "summary": [
+    {
+      "model": "er",
+      "summary": {
+        "mean_degree": {
+          "mean": 6.065,
+          "std": 0.45090187402582393,
+          "samples": 5
+        },
+        "mean_local_clustering": {
+          "mean": 0.07494204406704406,
+          "std": 0.018776130037351534,
+          "samples": 5
+        },
+        "average_shortest_path_lcc": {
+          "mean": 2.6143037974683545,
+          "std": 0.09238539109134859,
+          "samples": 5
+        },
+        "largest_component_fraction": {
+          "mean": 1.0,
+          "std": 0.0,
+          "samples": 5
+        }
+      }
+    },
+    {
+      "model": "ws",
+      "summary": {
+        "mean_degree": {
+          "mean": 6.0,
+          "std": 0.0,
+          "samples": 5
+        },
+        "mean_local_clustering": {
+          "mean": 0.4700833333333333,
+          "std": 0.023875368403682578,
+          "samples": 5
+        },
+        "average_shortest_path_lcc": {
+          "mean": 3.548607594936709,
+          "std": 0.07350142544019204,
+          "samples": 5
+        },
+        "largest_component_fraction": {
+          "mean": 1.0,
+          "std": 0.0,
+          "samples": 5
+        }
+      }
+    },
+    {
+      "model": "ba",
+      "summary": {
+        "mean_degree": {
+          "mean": 5.775,
+          "std": 0.0,
+          "samples": 5
+        },
+        "mean_local_clustering": {
+          "mean": 0.17120054364553694,
+          "std": 0.03331372553905773,
+          "samples": 5
+        },
+        "average_shortest_path_lcc": {
+          "mean": 2.485,
+          "std": 0.04551772713367968,
+          "samples": 5
+        },
+        "largest_component_fraction": {
+          "mean": 1.0,
+          "std": 0.0,
+          "samples": 5
+        }
+      }
+    }
+  ]
+}

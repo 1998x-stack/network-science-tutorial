@@ -1,0 +1,29 @@
+name: S02 network science verification
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Python core tests
+        run: PYTHONPATH=src python -m unittest discover -s tests -v
+      - name: Web deterministic generation
+        run: python scripts/build_web.py --check
+      - name: Static links
+        run: python scripts/check_web.py
+      - name: JS contract and renderer logic tests
+        run: node --test tests/web/*.test.cjs
+      - name: JS syntax
+        run: |
+          for f in apps/shared/*.js apps/web/*.js apps/graph-lab/app.js; do node --check "$f"; done
