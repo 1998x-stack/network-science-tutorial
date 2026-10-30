@@ -10,3 +10,17 @@
 @media(max-width:440px){.lesson-grid{grid-template-columns:1fr}.brand{font-size:12px}.brand small{font-size:8px}.navlinks a:nth-child(3){display:none}.statrow{grid-template-columns:repeat(3,1fr)}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
 [hidden]{display:none!important}.no-wrap{white-space:nowrap}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+
+/* S03 original lesson content, isolated from the course shell. */
+.migrated-article{overflow-wrap:anywhere;font-size:1rem;line-height:1.85}
+.migrated-article h2{font-size:1.38rem;margin:2rem 0 .75rem;color:var(--ink)}
+.migrated-article h3{font-size:1.12rem;margin:1.25rem 0 .5rem}
+.migrated-article p{margin:1rem 0;line-height:1.85}
+.migrated-article ul,.migrated-article ol{padding-left:1.4rem;margin:.75rem 0}
+.migrated-article pre{padding:1rem;border:1px solid var(--line);border-radius:12px;background:#071c30;overflow-x:auto;line-height:1.55}
+.migrated-article pre code{white-space:pre;font-size:.85rem}
+.migrated-article :not(pre)>code{background:var(--panel);border-radius:3px;padding:.1rem .3rem}
+.migrated-article table{border-collapse:collapse;display:block;max-width:100%;overflow-x:auto;margin:1rem 0}
+.migrated-article th,.migrated-article td{border:1px solid var(--line);padding:.55rem .75rem;text-align:left}
+.migrated-article .tip,.migrated-article .highlight,.migrated-article .warning{border-left:3px solid var(--accent);padding:.6rem 1rem;margin:.9rem 0;background:rgba(96,165,250,.09)}
+.migrated-article .warning{border-left-color:#e4b35a}

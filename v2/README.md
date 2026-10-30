@@ -54,3 +54,8 @@ python3 -m http.server 8000           # http://localhost:8000/apps/web/index.htm
 ```
 
 S02 本地浏览器交互测试：`python3 tests/web/e2e.py`，需要 Python Playwright 和本机 Chromium。当前受限环境采用内联资源 E2E，详见 S02 文档的验收说明。
+
+
+## S03 — Full lesson extraction
+
+S03 preserves all 28 root articles in `content/lessons/NN.html` with machine-readable metadata, extracts code blocks under `content/examples/` (not yet run-validated), and adds ungraded `content/quizzes/`. The static reader renders full chapters; root legacy HTML remains untouched. Run `python3 scripts/migrate_lessons.py --check` to verify all content snapshots. See [docs/S03-CONTENT.md](docs/S03-CONTENT.md).
