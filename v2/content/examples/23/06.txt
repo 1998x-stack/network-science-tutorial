@@ -1,0 +1,14 @@
+# 度（Degree）
+degrees = dict(G.degree())
+print(f"平均度: {sum(degrees.values()) / G.number_of_nodes():.2f}")
+
+# 度分布
+degree_sequence = [d for n, d in G.degree()]
+
+# 聚类系数（Clustering Coefficient）
+# 局部聚类系数
+print(f"Alice的聚类系数: {nx.clustering(G, 'Alice'):.3f}")
+# 全局平均聚类系数
+print(f"平均聚类系数: {nx.average_clustering(G):.3f}")
+# 全局聚类系数（传递性）
+print(f"全局聚类系数: {nx.transitivity(G):.3f}")

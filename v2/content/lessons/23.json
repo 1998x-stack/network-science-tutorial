@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "chapter": "23",
+  "title": "NetworkX实战",
+  "source_path": "23.html",
+  "source_git_blob": "467430b2ead44c78353f7dc4fab10c3fd9479c26",
+  "review_status": "migrated_unreviewed",
+  "headings": [
+    {
+      "depth": 2,
+      "title": "NetworkX简介"
+    },
+    {
+      "depth": 2,
+      "title": "创建图"
+    },
+    {
+      "depth": 3,
+      "title": "手动添加节点和边"
+    },
+    {
+      "depth": 3,
+      "title": "从Pandas DataFrame创建"
+    },
+    {
+      "depth": 3,
+      "title": "读取常见格式文件"
+    },
+    {
+      "depth": 2,
+      "title": "网络分析函数"
+    },
+    {
+      "depth": 3,
+      "title": "基本度量"
+    },
+    {
+      "depth": 3,
+      "title": "路径与连通性"
+    },
+    {
+      "depth": 3,
+      "title": "中心性分析"
+    },
+    {
+      "depth": 2,
+      "title": "网络生成器"
+    },
+    {
+      "depth": 2,
+      "title": "可视化"
+    },
+    {
+      "depth": 3,
+      "title": "基本绘图"
+    },
+    {
+      "depth": 3,
+      "title": "布局算法"
+    },
+    {
+      "depth": 3,
+      "title": "按属性着色与缩放"
+    },
+    {
+      "depth": 2,
+      "title": "完整数据分析流程"
+    }
+  ],
+  "examples": [
+    {
+      "id": "01",
+      "path": "content/examples/23/01.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "02",
+      "path": "content/examples/23/02.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "03",
+      "path": "content/examples/23/03.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "04",
+      "path": "content/examples/23/04.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "05",
+      "path": "content/examples/23/05.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "06",
+      "path": "content/examples/23/06.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "07",
+      "path": "content/examples/23/07.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "08",
+      "path": "content/examples/23/08.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "09",
+      "path": "content/examples/23/09.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "10",
+      "path": "content/examples/23/10.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "11",
+      "path": "content/examples/23/11.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "12",
+      "path": "content/examples/23/12.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "13",
+      "path": "content/examples/23/13.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    }
+  ]
+}

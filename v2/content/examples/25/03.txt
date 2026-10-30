@@ -1,0 +1,61 @@
+import networkx as nx
+import random
+import numpy as np
+
+# 原始图（假设是一个大图）
+G = nx.barabasi_albert_graph(100000, 5, seed=42)
+target_size = 5000  # 采样目标节点数
+
+# ===== 1. 节点随机采样 (Node Sampling) =====
+sampled_nodes = random.sample(list(G.nodes()), target_size)
+G_node_sample = G.subgraph(sampled_nodes)
+
+print(f"节点采样: {G_node_sample.number_of_nodes()} 节点, "
+      f"{G_node_sample.number_of_edges()} 边")
+
+# ===== 2. 边随机采样 (Edge Sampling) =====
+sample_edges = random.sample(list(G.edges()), target_size * 2)
+G_edge_sample = nx.Graph()
+G_edge_sample.add_edges_from(sample_edges)
+
+print(f"边采样: {G_edge_sample.number_of_nodes()} 节点, "
+      f"{G_edge_sample.number_of_edges()} 边")
+
+# ===== 3. 随机游走采样 (Random Walk Sampling) =====
+def random_walk_sample(G, start_node, n_nodes):
+    visited = {start_node}
+    current = start_node
+    while len(visited) < n_nodes:
+        neighbors = list(G.neighbors(current))
+        if not neighbors:
+            break
+        current = random.choice(neighbors)
+        visited.add(current)
+    return G.subgraph(visited)
+
+start = random.choice(list(G.nodes()))
+G_rw_sample = random_walk_sample(G, start, target_size)
+
+print(f"随机游走采样: {G_rw_sample.number_of_nodes()} 节点, "
+      f"{G_rw_sample.number_of_edges()} 边")
+
+# ===== 4. 滚雪球采样 (Snowball Sampling) =====
+def snowball_sample(G, seeds, n_nodes):
+    visited = set(seeds)
+    frontier = set(seeds)
+    while len(visited) < n_nodes and frontier:
+        new_frontier = set()
+        for node in frontier:
+            neighbors = set(G.neighbors(node)) - visited
+            new_frontier.update(neighbors)
+            visited.update(neighbors)
+            if len(visited) >= n_nodes:
+                break
+        frontier = new_frontier
+    return G.subgraph(list(visited)[:n_nodes])
+
+seeds = [random.choice(list(G.nodes()))]
+G_snow_sample = snowball_sample(G, seeds, target_size)
+
+print(f"滚雪球采样: {G_snow_sample.number_of_nodes()} 节点, "
+      f"{G_snow_sample.number_of_edges()} 边")

@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "chapter": "27",
+  "title": "网络科学前沿",
+  "source_path": "27.html",
+  "source_git_blob": "1e55161ea5165ac7cb2d56f799d4f93cc7caf30e",
+  "review_status": "migrated_unreviewed",
+  "headings": [
+    {
+      "depth": 2,
+      "title": "网络医学"
+    },
+    {
+      "depth": 2,
+      "title": "脑网络与连接组学"
+    },
+    {
+      "depth": 2,
+      "title": "计算社会科学"
+    },
+    {
+      "depth": 2,
+      "title": "AI公平性与网络"
+    },
+    {
+      "depth": 2,
+      "title": "量子网络"
+    },
+    {
+      "depth": 2,
+      "title": "开放问题与挑战"
+    }
+  ],
+  "examples": [
+    {
+      "id": "01",
+      "path": "content/examples/27/01.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "02",
+      "path": "content/examples/27/02.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "03",
+      "path": "content/examples/27/03.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    }
+  ]
+}

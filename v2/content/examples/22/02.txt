@@ -1,0 +1,26 @@
+# GAT注意力机制的简化实现
+class GATLayer(nn.Module):
+    def __init__(self, in_features, out_features, dropout=0.6, alpha=0.2):
+        super().__init__()
+        self.W = nn.Linear(in_features, out_features)
+        self.a = nn.Parameter(torch.zeros(1, 2 * out_features))
+        self.dropout = nn.Dropout(dropout)
+        self.leakyrelu = nn.LeakyReLU(alpha)
+
+    def forward(self, h, adj):
+        # h: 节点特征 (N x in_features)
+        Wh = self.W(h)  # (N x out_features)
+
+        # 计算所有节点对的注意力分数
+        Wh1 = Wh @ self.a[:, :self.out_features].T  # (N x 1)
+        Wh2 = Wh @ self.a[:, self.out_features:].T  # (N x 1)
+        e = self.leakyrelu(Wh1 + Wh2.T)  # (N x N) 未归一化注意力
+
+        # 掩码：只保留有边的节点对
+        attention = torch.where(adj > 0, e, -1e10 * torch.ones_like(e))
+        attention = F.softmax(attention, dim=1)
+        attention = self.dropout(attention)
+
+        # 加权聚合邻居特征
+        h_prime = attention @ Wh
+        return h_prime

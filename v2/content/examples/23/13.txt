@@ -1,0 +1,70 @@
+import networkx as nx
+import matplotlib.pyplot as plt
+import numpy as np
+
+# ===== 1. 加载数据 =====
+G = nx.karate_club_graph()
+print(f"图信息: {G}")
+print(f"节点数: {G.number_of_nodes()}, 边数: {G.number_of_edges()}")
+
+# ===== 2. 结构分析 =====
+# 基本度量
+print(f"\n--- 基本度量 ---")
+print(f"平均度: {np.mean([d for n, d in G.degree()]):.2f}")
+print(f"平均聚类系数: {nx.average_clustering(G):.3f}")
+print(f"传递性: {nx.transitivity(G):.3f}")
+
+# 中心性分析
+print(f"\n--- 中心性 Top-5 ---")
+deg_cent = nx.degree_centrality(G)
+bet_cent = nx.betweenness_centrality(G)
+eig_cent = nx.eigenvector_centrality(G, max_iter=1000)
+
+print("度中心性:", sorted(deg_cent.items(),
+      key=lambda x: x[1], reverse=True)[:5])
+print("介数中心性:", sorted(bet_cent.items(),
+      key=lambda x: x[1], reverse=True)[:5])
+print("特征向量中心性:", sorted(eig_cent.items(),
+      key=lambda x: x[1], reverse=True)[:5])
+
+# 社团检测（使用Girvan-Newman算法）
+from networkx.algorithms.community import girvan_newman
+comp = girvan_newman(G)
+top_level_comms = next(comp)
+print(f"\nGirvan-Newman检测到的社团数: {len(top_level_comms)}")
+for i, comm in enumerate(top_level_comms):
+    print(f"  社团{i+1}: {sorted(comm)}")
+
+# ===== 3. 可视化 =====
+plt.figure(figsize=(12, 10))
+pos = nx.spring_layout(G, seed=42, k=0.3)
+
+degrees = dict(G.degree())
+node_sizes = [degrees[n] * 80 for n in G.nodes()]
+
+# 用不同颜色表示实际分裂后的两个群体
+color_map = []
+for node in G.nodes():
+    if G.nodes[node]["club"] == "Mr. Hi":
+        color_map.append("#ff6b6b")  # 红色
+    else:
+        color_map.append("#4ecdc4")  # 青色
+
+nx.draw_networkx_nodes(G, pos, node_size=node_sizes,
+                       node_color=color_map, alpha=0.85,
+                       edgecolors="#333", linewidths=0.5)
+nx.draw_networkx_edges(G, pos, alpha=0.25, width=0.8)
+nx.draw_networkx_labels(G, pos, font_size=9, font_weight="bold")
+
+plt.axis("off")
+plt.title("Zachary's Karate Club — 网络分析与社团结构", fontsize=14, pad=15)
+plt.tight_layout()
+plt.savefig("karate_analysis.png", dpi=150, bbox_inches="tight")
+plt.show()
+
+# ===== 4. 结果解读 =====
+print(f"\n--- 关键发现 ---")
+print("1. 俱乐部成员在分裂后形成了两个清晰的社团结构")
+print("2. 节点0（教练Mr. Hi）和节点33（管理员）是关键枢纽节点")
+print("3. 介数中心性高的节点是连接两个社团的桥梁人物")
+print("4. Girvan-Newman算法检测到的社团与实际分裂结果高度吻合")

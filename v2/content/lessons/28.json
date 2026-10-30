@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "chapter": "28",
+  "title": "综合实战项目",
+  "source_path": "28.html",
+  "source_git_blob": "7f0e3d0c05eb87e2890a933eea0bcf6a60d6fddd",
+  "review_status": "migrated_unreviewed",
+  "headings": [
+    {
+      "depth": 2,
+      "title": "项目目标"
+    },
+    {
+      "depth": 2,
+      "title": "数据获取"
+    },
+    {
+      "depth": 2,
+      "title": "网络构建与清洗"
+    },
+    {
+      "depth": 2,
+      "title": "基本分析"
+    },
+    {
+      "depth": 2,
+      "title": "高级分析"
+    },
+    {
+      "depth": 2,
+      "title": "可视化"
+    },
+    {
+      "depth": 2,
+      "title": "洞察与报告"
+    },
+    {
+      "depth": 2,
+      "title": "总结与展望"
+    }
+  ],
+  "examples": [
+    {
+      "id": "01",
+      "path": "content/examples/28/01.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "02",
+      "path": "content/examples/28/02.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "03",
+      "path": "content/examples/28/03.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "04",
+      "path": "content/examples/28/04.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "05",
+      "path": "content/examples/28/05.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "06",
+      "path": "content/examples/28/06.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    }
+  ]
+}

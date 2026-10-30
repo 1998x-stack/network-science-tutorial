@@ -1,0 +1,20 @@
+# 完全图
+K_5 = nx.complete_graph(5)
+
+# 路径图
+P_10 = nx.path_graph(10)
+
+# 轮图（一个中心连接周围一圈）
+W_6 = nx.wheel_graph(6)
+
+# 随机规则图 —— 每个节点恰有k个邻居
+G_reg = nx.random_regular_graph(4, 100)
+
+# 幂律图 —— 更灵活地控制度分布指数
+G_pl = nx.powerlaw_cluster_graph(500, 3, 0.1)
+
+# 配置模型 —— 给定度序列生成随机图
+degree_sequence = [3, 3, 2, 2, 2, 2, 1, 1]  # 度序列之和必须为偶数
+G_cm = nx.configuration_model(degree_sequence)
+G_cm = nx.Graph(G_cm)  # 去掉多重边
+G_cm.remove_edges_from(nx.selfloop_edges(G_cm))  # 去掉自环

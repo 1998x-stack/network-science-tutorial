@@ -1,0 +1,40 @@
+from networkx.algorithms.community import girvan_newman, greedy_modularity
+
+# Girvan-Newman算法
+comp = girvan_newman(G)
+top_clusters = next(comp)
+cluster_1, cluster_2 = top_clusters
+
+print("Girvan-Newman检测结果:")
+print(f"  社团1 (大小={len(cluster_1)}): {sorted(cluster_1)}")
+print(f"  社团2 (大小={len(cluster_2)}): {sorted(cluster_2)}")
+
+# 贪婪模块度优化算法
+communities = list(greedy_modularity_communities(G))
+print(f"\n贪婪模块度算法检测到 {len(communities)} 个社团:")
+for i, c in enumerate(communities):
+    print(f"  社团{i+1} (大小={len(c)}): {sorted(c)}")
+
+# 计算与真实分裂的匹配度
+actual_split = {
+    0: "Mr. Hi", 1: "Mr. Hi", 2: "Mr. Hi", 3: "Mr. Hi",
+    4: "Mr. Hi", 5: "Mr. Hi", 6: "Mr. Hi", 7: "Mr. Hi",
+    8: "Mr. Hi", 9: "Officer", 10: "Mr. Hi",
+    11: "Mr. Hi", 12: "Mr. Hi", 13: "Mr. Hi",
+    14: "Officer", 15: "Officer", 16: "Mr. Hi",
+    17: "Mr. Hi", 18: "Officer", 19: "Mr. Hi",
+    20: "Mr. Hi", 21: "Mr. Hi", 22: "Officer",
+    23: "Officer", 24: "Officer", 25: "Officer",
+    26: "Officer", 27: "Officer", 28: "Officer",
+    29: "Officer", 30: "Officer", 31: "Officer",
+    32: "Officer", 33: "Officer"
+}
+
+# 简单的匹配度评估
+match_count = 0
+for cluster in top_clusters:
+    labels = [actual_split[n] for n in cluster]
+    majority = max(set(labels), key=labels.count)
+    match_count += labels.count(majority)
+print(f"\nGirvan-Newman与真实分裂匹配度: {match_count}/{G.number_of_nodes()} "
+      f"({100*match_count/G.number_of_nodes():.1f}%)")

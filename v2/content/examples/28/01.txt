@@ -1,0 +1,66 @@
+# 第一步：数据获取
+# 使用GitHub Archive数据集构建开发者协作网络
+
+import requests
+import json
+import csv
+from collections import defaultdict
+from datetime import datetime
+
+def fetch_github_events(year=2024, month=1, limit=10000):
+    """从GitHub Archive获取事件数据"""
+    base_url = f"http://data.gharchive.org/{year}-{month:02d}"
+    events = []
+
+    for day in range(1, 32):
+        for hour in range(24):
+            url = f"{base_url}-{day:02d}-{hour}.json.gz"
+            try:
+                # 实际使用时需要解压并逐行读取JSON
+                # 这里展示逻辑结构
+                resp = requests.get(url)
+                if resp.status_code == 200:
+                    events.extend(resp.text.strip().split('\n'))
+                    if len(events) >= limit:
+                        break
+            except Exception as e:
+                continue
+        if len(events) >= limit:
+            break
+
+    return events
+
+def extract_collaborations(events):
+    """提取用户间的协作关系"""
+    # repo -> set of users
+    repo_users = defaultdict(set)
+
+    for event_str in events:
+        try:
+            event = json.loads(event_str)
+            repo = event.get('repo', {}).get('name')
+            actor = event.get('actor', {}).get('login')
+            if repo and actor:
+                repo_users[repo].add(actor)
+        except:
+            continue
+
+    # 在同一repo中贡献过的用户之间建立边
+    edges = set()
+    for repo, users in repo_users.items():
+        users = list(users)
+        for i in range(len(users)):
+            for j in range(i + 1, len(users)):
+                edge = tuple(sorted([users[i], users[j]]))
+                edges.add(edge)
+
+    return list(edges)
+
+# 边列表格式：[("user_a", "user_b"), ("user_c", "user_d"), ...]
+# 保存为CSV方便后续分析
+edges = extract_collaborations(fetch_github_events())
+with open('github_collab_edges.csv', 'w') as f:
+    writer = csv.writer(f)
+    writer.writerow(['source', 'target'])
+    writer.writerows(edges)
+print(f"提取到 {len(edges)} 条协作关系")

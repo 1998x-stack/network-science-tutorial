@@ -1,0 +1,17 @@
+# 度中心性
+deg_cent = nx.degree_centrality(G)
+
+# 介数中心性 —— 计算最慢，大图上注意
+bet_cent = nx.betweenness_centrality(G)
+
+# 接近中心性
+clo_cent = nx.closeness_centrality(G)
+
+# 特征向量中心性
+eig_cent = nx.eigenvector_centrality(G, max_iter=1000)
+
+# 可以排个序，看看谁是最重要的节点
+sorted_nodes = sorted(deg_cent.items(), key=lambda x: x[1], reverse=True)
+print("Top-3 度中心性节点:")
+for node, val in sorted_nodes[:3]:
+    print(f"  {node}: {val:.4f}")

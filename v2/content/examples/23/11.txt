@@ -1,0 +1,19 @@
+import matplotlib.pyplot as plt
+
+G = nx.karate_club_graph()  # NetworkX内置的空手道俱乐部数据
+
+# 最简单的绘图
+nx.draw(G, with_labels=True)
+plt.show()
+
+# 稍微精致一点的版本
+plt.figure(figsize=(10, 8))
+pos = nx.spring_layout(G, seed=42)  # 布局算法，seed保证可复现
+nx.draw_networkx_nodes(G, pos, node_color="lightblue",
+                       node_size=300, alpha=0.9)
+nx.draw_networkx_edges(G, pos, alpha=0.4, width=0.5)
+nx.draw_networkx_labels(G, pos, font_size=9)
+plt.axis("off")
+plt.title("Zachary's Karate Club", fontsize=14)
+plt.tight_layout()
+plt.show()

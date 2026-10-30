@@ -1,0 +1,4 @@
+pip install networkx
+
+# 如果需要可视化功能，建议一并安装 matplotlib
+pip install matplotlib

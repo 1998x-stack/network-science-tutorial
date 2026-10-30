@@ -1,0 +1,16 @@
+# 最短路径
+path = nx.shortest_path(G, source="Alice", target="Frank")
+print(f"最短路径: {path}")
+print(f"路径长度: {len(path) - 1}")
+
+# 如果图中有权重，可以用Dijkstra算法求加权最短路径
+path_weighted = nx.dijkstra_path(G, source="Alice", target="Frank", weight="weight")
+
+# 平均最短路径长度（只对连通图有意义）
+if nx.is_connected(G):
+    print(f"平均路径长度: {nx.average_shortest_path_length(G):.3f}")
+
+# 连通分量
+components = list(nx.connected_components(G))
+print(f"连通分量数量: {len(components)}")
+print(f"最大连通分量大小: {len(max(components, key=len))}")

@@ -1,0 +1,23 @@
+G = nx.karate_club_graph()
+
+# 计算度数，用于控制节点大小和颜色
+degrees = dict(G.degree())
+node_sizes = [degrees[n] * 50 for n in G.nodes()]
+node_colors = [degrees[n] for n in G.nodes()]
+
+# 按俱乐部成员分裂后的归属着色
+club_colors = ["red" if G.nodes[n]["club"] == "Mr. Hi"
+               else "blue" for n in G.nodes()]
+
+plt.figure(figsize=(10, 8))
+pos = nx.spring_layout(G, seed=42, k=0.3)
+
+nx.draw_networkx_nodes(G, pos, node_size=node_sizes,
+                       node_color=club_colors, alpha=0.85)
+nx.draw_networkx_edges(G, pos, alpha=0.3, width=0.5)
+nx.draw_networkx_labels(G, pos, font_size=8)
+
+plt.axis("off")
+plt.title("Karate Club — 颜色代表分裂后的归属", fontsize=13)
+plt.tight_layout()
+plt.show()

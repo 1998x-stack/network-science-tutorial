@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "chapter": "24",
+  "title": "社交网络分析案例",
+  "source_path": "24.html",
+  "source_git_blob": "f6b4ba283fcf26eba3e99c90cf0da2b1a850d72b",
+  "review_status": "migrated_unreviewed",
+  "headings": [
+    {
+      "depth": 2,
+      "title": "Zachary's Karate Club"
+    },
+    {
+      "depth": 3,
+      "title": "社团检测与真实分裂对比"
+    },
+    {
+      "depth": 2,
+      "title": "arXiv合作网络"
+    },
+    {
+      "depth": 3,
+      "title": "合作网络的关键特征"
+    },
+    {
+      "depth": 2,
+      "title": "微博社交网络"
+    },
+    {
+      "depth": 2,
+      "title": "对比分析"
+    }
+  ],
+  "examples": [
+    {
+      "id": "01",
+      "path": "content/examples/24/01.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "02",
+      "path": "content/examples/24/02.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "03",
+      "path": "content/examples/24/03.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "04",
+      "path": "content/examples/24/04.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    }
+  ]
+}

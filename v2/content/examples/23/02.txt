@@ -1,0 +1,27 @@
+import networkx as nx
+
+G = nx.Graph()
+
+# 添加节点
+G.add_node("Alice")
+G.add_node("Bob")
+G.add_node("Charlie")
+
+# 批量添加节点
+G.add_nodes_from(["David", "Eve", "Frank"])
+
+# 添加边
+G.add_edge("Alice", "Bob")
+G.add_edge("Bob", "Charlie")
+
+# 批量添加边
+G.add_edges_from([
+    ("Alice", "David"),
+    ("Bob", "Eve"),
+    ("Charlie", "Frank"),
+    ("David", "Eve"),
+])
+
+print(f"节点数: {G.number_of_nodes()}")
+print(f"边数: {G.number_of_edges()}")
+print(f"邻居: {list(G.neighbors('Alice'))}")

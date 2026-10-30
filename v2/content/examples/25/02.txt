@@ -1,0 +1,27 @@
+import igraph as ig
+
+# 创建图
+G = ig.Graph()
+G.add_vertices(5)
+G.add_edges([(0, 1), (1, 2), (2, 3), (3, 4), (4, 0), (1, 3)])
+
+print(G)
+# 输出: IGRAPH U--- 5 6 --  (无向图, 5节点, 6边)
+
+# 基本度量
+print(f"度序列: {G.degree()}")
+print(f"平均路径长度: {G.average_path_length():.3f}")
+print(f"平均聚类系数: {G.transitivity_avglocal_undirected():.3f}")
+
+# 从边列表文件高效加载
+# G = ig.Graph.Read_Edgelist("large_network.edges")
+
+# 中心性计算（比NetworkX快很多）
+btwn = G.betweenness()
+print(f"介数中心性 Top-3: {sorted(btwn, reverse=True)[:3]}")
+
+# 社团检测（igraph内置多种算法）
+communities = G.community_fastgreedy()
+clusters = communities.as_clustering()
+print(f"社团数量: {len(clusters)}")
+print(f"各社团大小: {[len(c) for c in clusters]}")

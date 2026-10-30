@@ -1,0 +1,25 @@
+# 社交推荐的简化实现
+import torch.nn as nn
+
+class SocialRecommender(nn.Module):
+    """融合社交网络的推荐模型"""
+    def __init__(self, num_users, num_items, dim=64):
+        super().__init__()
+        self.user_emb = nn.Embedding(num_users, dim)
+        self.item_emb = nn.Embedding(num_items, dim)
+        # GNN层聚合社交邻居信息
+        self.social_gnn = LightGCNConv()
+        # GNN层聚合交互物品信息
+        self.interact_gnn = LightGCNConv()
+
+    def forward(self, user_ids, item_ids, social_edge, interact_edge):
+        user_base = self.user_emb(user_ids)
+        # 社交邻居聚合
+        user_social = self.social_gnn(user_base, social_edge)
+        # 交互物品信息聚合（通过物品到用户的消息传递）
+        item_embeds = self.item_emb(torch.arange(num_items))
+        user_from_items = self.interact_gnn(item_embeds, interact_edge)
+        # 融合三种表示
+        user_final = user_base + 0.5 * user_social + 0.3 * user_from_items
+        item_final = self.item_emb(item_ids)
+        return (user_final * item_final).sum(dim=1)  # 内积得分

@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "chapter": "22",
+  "title": "图神经网络入门",
+  "source_path": "22.html",
+  "source_git_blob": "7d6590b21cd68d0d5d891ef93e6d7b0f3303a830",
+  "review_status": "migrated_unreviewed",
+  "headings": [
+    {
+      "depth": 2,
+      "title": "为什么需要图神经网络"
+    },
+    {
+      "depth": 2,
+      "title": "消息传递框架"
+    },
+    {
+      "depth": 3,
+      "title": "置换不变性（Permutation Invariance）"
+    },
+    {
+      "depth": 2,
+      "title": "GCN——图卷积网络"
+    },
+    {
+      "depth": 3,
+      "title": "谱域 vs 空域"
+    },
+    {
+      "depth": 3,
+      "title": "Kipf & Welling GCN"
+    },
+    {
+      "depth": 2,
+      "title": "GAT——图注意力网络"
+    },
+    {
+      "depth": 3,
+      "title": "注意力机制"
+    },
+    {
+      "depth": 3,
+      "title": "多头注意力（Multi-Head Attention）"
+    },
+    {
+      "depth": 2,
+      "title": "GraphSAGE——归纳式学习"
+    },
+    {
+      "depth": 3,
+      "title": "邻居采样（Neighborhood Sampling）"
+    },
+    {
+      "depth": 3,
+      "title": "三种聚合器"
+    },
+    {
+      "depth": 2,
+      "title": "PyTorch Geometric入门"
+    },
+    {
+      "depth": 3,
+      "title": "安装与基本概念"
+    },
+    {
+      "depth": 3,
+      "title": "实战：节点分类"
+    }
+  ],
+  "examples": [
+    {
+      "id": "01",
+      "path": "content/examples/22/01.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "02",
+      "path": "content/examples/22/02.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "03",
+      "path": "content/examples/22/03.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    },
+    {
+      "id": "04",
+      "path": "content/examples/22/04.txt",
+      "language": "unclassified",
+      "review_status": "not_executed"
+    }
+  ]
+}

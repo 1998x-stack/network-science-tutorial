@@ -1,0 +1,15 @@
+# GEXF格式 —— Gephi的标准格式，保留颜色、大小等视觉属性
+G = nx.read_gexf("network.gexf")
+nx.write_gexf(G, "output.gexf")
+
+# GML格式 —— yED等图编辑工具常用
+G = nx.read_gml("network.gml")
+
+# GraphML —— 基于XML的格式，跨平台兼容性好
+G = nx.read_graphml("network.graphml")
+
+# 边列表 —— 最简单的文本格式，两列（源节点 目标节点）
+G = nx.read_edgelist("edges.txt")
+
+# 邻接列表
+G = nx.read_adjlist("adjacency.txt")

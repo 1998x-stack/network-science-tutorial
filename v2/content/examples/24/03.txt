@@ -1,0 +1,37 @@
+# 从NetworkX内置数据集加载
+# 注意：完整数据集需要额外下载，这里演示分析思路
+
+# 假设我们已经加载了合著网络 G_coauthor
+# 节点 = 作者, 边 = 两人至少合作发表过一篇论文
+
+# ---- 如果从边列表文件加载 ----
+# G_coauthor = nx.read_edgelist("CA-HepTh.txt")
+# print(f"节点数: {G_coauthor.number_of_nodes()}")
+# print(f"边数: {G_coauthor.number_of_edges()}")
+
+# ---- 以下是分析代码（伪代码风格，展示思路）----
+"""
+# 巨连通分量分析
+components = sorted(nx.connected_components(G_coauthor),
+                    key=len, reverse=True)
+giant = components[0]
+giant_subgraph = G_coauthor.subgraph(giant)
+print(f"最大连通分量: {len(giant)} 个节点 "
+      f"(占全体 {100*len(giant)/G_coauthor.number_of_nodes():.1f}%)")
+
+# 合著强度分析
+# 边的权重 = 合作论文数量
+weights = nx.get_edge_attributes(giant_subgraph, "weight")
+if weights:
+    print(f"合作次数最大: {max(weights.values())} 篇论文")
+    print(f"平均合作次数: {np.mean(list(weights.values())):.2f}")
+
+# 谁是最有影响力的作者？
+betweenness = nx.betweenness_centrality(giant_subgraph,
+                                        k=min(500, len(giant)))
+top_authors = sorted(betweenness.items(),
+                     key=lambda x: x[1], reverse=True)[:10]
+print("\n介数中心性 Top-10 作者（桥梁人物）:")
+for author, score in top_authors:
+    print(f"  {author}: {score:.4f}")
+"""
