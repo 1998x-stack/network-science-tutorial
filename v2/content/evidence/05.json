@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0.0",
+  "chapter": "05",
+  "review_status": "reviewed",
+  "claims": [
+    {
+      "id": "milgram-chain-count",
+      "claim": "Travers and Milgram reported 296 initiated chains, 64 completed chains, and a mean of 5.2 intermediaries among completed chains.",
+      "kind": "empirical",
+      "source_url": "https://doi.org/10.2307/2786545",
+      "locator": "Sociometry 32(4) (1969), pp. 425–443; abstract and results",
+      "status": "verified",
+      "notes": "Mean applies only to completed chains; it is not a universal distance between all people."
+    },
+    {
+      "id": "ws-model",
+      "claim": "Watts and Strogatz studied networks interpolating between regular and random topologies through random rewiring.",
+      "kind": "paper-claim",
+      "source_url": "https://doi.org/10.1038/30918",
+      "locator": "Nature 393 (1998), pp. 440–442; model construction and Fig. 1",
+      "status": "verified"
+    },
+    {
+      "id": "ring-clustering",
+      "claim": "For the regular ring lattice with even degree K, the local clustering coefficient is 3(K−2)/[4(K−1)].",
+      "kind": "derived",
+      "source_url": "https://doi.org/10.1038/30918",
+      "locator": "Watts and Strogatz (1998), regular ring construction; count neighbor-neighbor edges",
+      "status": "derived"
+    },
+    {
+      "id": "navigability-distinction",
+      "claim": "Short average path length does not by itself guarantee decentralized search; navigability depends on long-range link distribution.",
+      "kind": "theory",
+      "source_url": "https://doi.org/10.1145/335305.335325",
+      "locator": "Kleinberg (2000), The Small-World Phenomenon: An Algorithmic Perspective",
+      "status": "verified"
+    }
+  ]
+}

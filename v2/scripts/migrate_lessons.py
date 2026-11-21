@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """Deterministically extract the 28 legacy lessons, examples and draft assignments.
 
-The source of truth remains repository-root NN.html; generated articles are
-read-only snapshots and are intentionally not editorially reviewed.
+The source of truth remains repository-root NN.html; generated articles are read-only snapshots; evidence ledgers define review status.
 """
 from __future__ import annotations
 import argparse
@@ -16,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 REPO = ROOT.parent
 START = '<div class="main-content">'
 END = '<div class="footer-nav">'
-CODE = re.compile(r'<pre[^>]*>\s*<code[^>]*>([\s\S]*?)</code>\s*</pre>', re.I)
+CODE = re.compile(r'<pre[^>]*>\s*<code(?P<attrs>[^>]*)>(?P<code>[\s\S]*?)</code>\s*</pre>', re.I)
 HEADINGS = re.compile(r'<h([23])[^>]*>([\s\S]*?)</h\1>', re.I)
 TAGS = re.compile(r'<[^>]*>')
 H1 = re.compile(r'<h1[^>]*>[\s\S]*?</h1>\s*', re.I)
@@ -43,20 +42,30 @@ def outline(body: str) -> list[dict]:
             for m in HEADINGS.finditer(body)]
 
 
-def outputs_for(num: str, source: str, chapter: dict) -> dict[str, str]:
+def outputs_for(num: str, source: str, chapter: dict, root: Path | None=None) -> dict[str, str]:
     body = article(source)
     examples = []
     output = {f'content/lessons/{num}.html': body}
+    evidence_path = root / 'content' / 'evidence' / f'{num}.json' if root is not None else None
+    reviewed = bool(evidence_path and evidence_path.is_file())
+    if reviewed:
+        evidence = json.loads(evidence_path.read_text(encoding='utf-8'))
+        if evidence.get('chapter') != num or evidence.get('review_status') != 'reviewed':
+            raise ValueError(f'{evidence_path}: reviewed evidence ledger must match chapter {num}')
     for idx, m in enumerate(CODE.finditer(body), 1):
         sample_id = f'{idx:02d}'
         path = f'content/examples/{num}/{sample_id}.txt'
-        code = html.unescape(m.group(1)).replace('\r\n', '\n').strip('\n') + '\n'
-        examples.append({'id':sample_id,'path':path,'language':'unclassified','review_status':'not_executed'})
+        code = html.unescape(m.group('code')).replace('\r\n', '\n').strip('\n') + '\n'
+        language = 'python' if re.search(r'\blanguage-python\b', m.group('attrs'), re.I) else 'unclassified'
+        status = 'tested' if reviewed and language == 'python' else 'not_executed'
+        examples.append({'id':sample_id,'path':path,'language':language,'review_status':status})
         output[path] = code
+    if reviewed and not any(item['review_status'] == 'tested' for item in examples):
+        raise ValueError(f'{num}.html: reviewed chapter must contain a tested Python example')
     meta = {
         'schema_version':1,'chapter':num,'title':chapter['title'],
         'source_path':f'{num}.html','source_git_blob':git_blob_sha(source),
-        'review_status':'migrated_unreviewed','headings':outline(body),'examples':examples,
+        'review_status':'reviewed' if reviewed else 'migrated_unreviewed','headings':outline(body),'examples':examples,
     }
     output[f'content/lessons/{num}.json'] = json.dumps(meta, ensure_ascii=False, indent=2) + '\n'
     tasks = {
@@ -78,7 +87,7 @@ def expected(root: Path=ROOT, repo: Path=REPO) -> dict[str,str]:
     files = {}
     for ch in chapters:
         num = ch['num']
-        files.update(outputs_for(num, (repo/f'{num}.html').read_text(encoding='utf-8'), ch))
+        files.update(outputs_for(num, (repo/f'{num}.html').read_text(encoding='utf-8'), ch, root))
     return files
 
 

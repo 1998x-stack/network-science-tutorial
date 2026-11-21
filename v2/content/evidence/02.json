@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0.0",
+  "chapter": "02",
+  "review_status": "reviewed",
+  "claims": [
+    {
+      "id": "graph-definition",
+      "claim": "A graph is defined by a vertex set and an edge set; direction, multiplicity and weights are part of model semantics.",
+      "kind": "definition",
+      "source_url": "https://diestel-graph-theory.com/",
+      "locator": "Diestel, Graph Theory, introductory definitions",
+      "status": "verified"
+    },
+    {
+      "id": "handshake-lemma",
+      "claim": "For a finite undirected graph, the sum of vertex degrees equals twice the number of edges.",
+      "kind": "theorem",
+      "source_url": "https://www.pearson.com/en-us/subject-catalog/p/introduction-to-graph-theory/P200000003295",
+      "locator": "West, Introduction to Graph Theory, introductory degree theory",
+      "status": "verified"
+    },
+    {
+      "id": "tree-characterization",
+      "claim": "A finite tree with n vertices has n−1 edges.",
+      "kind": "theorem",
+      "source_url": "https://diestel-graph-theory.com/",
+      "locator": "Diestel, Graph Theory, trees chapter",
+      "status": "verified"
+    },
+    {
+      "id": "networkx-representations",
+      "claim": "NetworkX graph classes and adjacency-matrix conversion support explicit node ordering.",
+      "kind": "implementation",
+      "source_url": "https://networkx.org/documentation/stable/reference/generated/networkx.convert_matrix.to_numpy_array.html",
+      "locator": "to_numpy_array API; nodelist parameter",
+      "status": "verified"
+    }
+  ]
+}

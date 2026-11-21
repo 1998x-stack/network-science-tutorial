@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0.0",
+  "chapter": "03",
+  "review_status": "reviewed",
+  "claims": [
+    {
+      "id": "degree-sum",
+      "claim": "For a simple undirected graph, mean degree is 2m/n.",
+      "kind": "derived",
+      "source_url": "https://diestel-graph-theory.com/",
+      "locator": "Handshake lemma divided by n",
+      "status": "derived"
+    },
+    {
+      "id": "density",
+      "claim": "The density of a simple undirected graph is 2m/[n(n−1)].",
+      "kind": "definition",
+      "source_url": "https://networkx.org/documentation/stable/reference/generated/networkx.classes.function.density.html",
+      "locator": "NetworkX density definition",
+      "status": "verified"
+    },
+    {
+      "id": "local-clustering",
+      "claim": "Local clustering is the fraction of possible neighbor-neighbor edges that exist; NetworkX uses zero when degree is below two.",
+      "kind": "definition",
+      "source_url": "https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.cluster.clustering.html",
+      "locator": "Formula and degree<2 convention",
+      "status": "verified"
+    },
+    {
+      "id": "average-clustering",
+      "claim": "Average local clustering is the arithmetic mean of node coefficients; transitivity is a distinct triangle/triple ratio.",
+      "kind": "definition",
+      "source_url": "https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.cluster.average_clustering.html",
+      "locator": "Average clustering definition; compare transitivity API",
+      "status": "verified"
+    },
+    {
+      "id": "shortest-path-connectivity",
+      "claim": "NetworkX average_shortest_path_length requires a connected undirected graph or strongly connected directed graph.",
+      "kind": "implementation",
+      "source_url": "https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.shortest_paths.generic.average_shortest_path_length.html",
+      "locator": "Raises section and disconnected graph notes",
+      "status": "verified"
+    },
+    {
+      "id": "four-node-example",
+      "claim": "For edges (0,1),(1,2),(2,0),(2,3), density=2/3, mean local clustering=7/12, transitivity=3/5 and average path length=4/3.",
+      "kind": "derived",
+      "source_url": "https://networkx.org/documentation/stable/reference/algorithms/clustering.html",
+      "locator": "Definitions applied to the explicit four-node graph in this lesson",
+      "status": "derived"
+    }
+  ]
+}

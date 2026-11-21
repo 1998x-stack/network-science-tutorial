@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0.0",
+  "chapter": "01",
+  "review_status": "reviewed",
+  "claims": [
+    {
+      "id": "euler-seven-bridges",
+      "claim": "The Königsberg multigraph has four odd-degree vertices (3, 3, 5, 3), so it has neither an Euler trail nor an Euler circuit.",
+      "kind": "historical-mathematical",
+      "source_url": "https://scholarlycommons.pacific.edu/euler-works/53/",
+      "locator": "Euler Archive E53; written 1735 and published 1741; Commentarii academiae scientiarum Petropolitanae 8, pp. 128–140",
+      "status": "verified",
+      "notes": "Degree sequence checked against the seven-bridge multigraph; Euler trail criterion stated explicitly."
+    },
+    {
+      "id": "random-graphs-history",
+      "claim": "Erdős and Rényi published On random graphs I in 1959.",
+      "kind": "bibliographic",
+      "source_url": "https://doi.org/10.5486/PMD.1959.6.3-4.12",
+      "locator": "Publicationes Mathematicae Debrecen 6 (1959), pp. 290–297",
+      "status": "verified"
+    },
+    {
+      "id": "small-world-history",
+      "claim": "Watts and Strogatz introduced the small-world rewiring model in 1998.",
+      "kind": "bibliographic",
+      "source_url": "https://doi.org/10.1038/30918",
+      "locator": "Nature 393 (1998), pp. 440–442",
+      "status": "verified"
+    },
+    {
+      "id": "preferential-attachment-history",
+      "claim": "Barabási and Albert described growth plus preferential attachment as mechanisms for scale-free degree distributions.",
+      "kind": "paper-claim",
+      "source_url": "https://doi.org/10.1126/science.286.5439.509",
+      "locator": "Science 286(5439) (1999), pp. 509–512; abstract and model",
+      "status": "verified"
+    }
+  ]
+}

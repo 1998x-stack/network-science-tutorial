@@ -1,15 +1,16 @@
 import networkx as nx
-import matplotlib.pyplot as plt
 
-# 生成一个ER随机图
-n, p = 20, 0.15
-G = nx.erdos_renyi_graph(n, p)
+n, p, seed = 1000, 0.01, 42
+G = nx.erdos_renyi_graph(n, p, seed=seed)
 
-print(f"顶点数: {G.number_of_nodes()}")
-print(f"边数: {G.number_of_edges()}")
-print(f"期望边数: {p * n * (n-1) / 2:.2f}")
+expected_edges = p * n * (n - 1) / 2
+expected_degree = p * (n - 1)
+observed_degree = sum(dict(G.degree()).values()) / n
 
-# 查看度分布
-degrees = [d for _, d in G.degree()]
-print(f"平均度: {sum(degrees)/n:.2f}")
-print(f"期望平均度: {p * (n-1):.2f}")
+print("实际边数:", G.number_of_edges())
+print("期望边数:", expected_edges)
+print("实际平均度:", observed_degree)
+print("期望平均度:", expected_degree)
+
+assert G.number_of_nodes() == n
+assert abs(observed_degree - 2 * G.number_of_edges() / n) < 1e-12

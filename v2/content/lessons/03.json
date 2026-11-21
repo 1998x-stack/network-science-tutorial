@@ -3,48 +3,52 @@
   "chapter": "03",
   "title": "网络基本度量",
   "source_path": "03.html",
-  "source_git_blob": "6827a48d7018c2979a5ecd45b84c570c677231a7",
-  "review_status": "migrated_unreviewed",
+  "source_git_blob": "aa7a61650f631706ae61351e4a9a35e4d4358cd0",
+  "review_status": "reviewed",
   "headings": [
     {
       "depth": 2,
-      "title": "度与度分布"
+      "title": "先明确测量对象"
     },
     {
       "depth": 2,
-      "title": "路径与距离"
+      "title": "度与度分布：连接集中在哪里？"
     },
     {
       "depth": 2,
-      "title": "聚集系数"
+      "title": "密度：相对于最多可能的边有多稠密？"
     },
     {
       "depth": 2,
-      "title": "网络密度与稀疏性"
+      "title": "路径与距离：节点之间隔着几步？"
     },
     {
       "depth": 2,
-      "title": "网络度量综合实例"
+      "title": "聚集系数：邻居之间是否也彼此连接？"
+    },
+    {
+      "depth": 3,
+      "title": "同一张图，不同的结构问题"
+    },
+    {
+      "depth": 2,
+      "title": "手算一个四节点网络"
+    },
+    {
+      "depth": 2,
+      "title": "读指标时不要越界解释"
+    },
+    {
+      "depth": 2,
+      "title": "参考资料"
     }
   ],
   "examples": [
     {
       "id": "01",
       "path": "content/examples/03/01.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
-    },
-    {
-      "id": "02",
-      "path": "content/examples/03/02.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
-    },
-    {
-      "id": "03",
-      "path": "content/examples/03/03.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
+      "language": "python",
+      "review_status": "tested"
     }
   ]
 }

@@ -1,16 +1,10 @@
-# S03 — 28-chapter full-content migration
+# S03 / S04 — 内容迁移与首批审校
 
-## Source of truth and boundaries
+根目录 `NN.html` 是当前课程兼容入口和迁移源；`v2/content/lessons/NN.html` 是从 `.main-content` 提取的正文快照；`v2/apps/web/lessons/NN.html` 是静态构建产物。不要手工编辑生成文件。每章证据账本保存在 `v2/content/evidence/NN.json`。
 
-- Original root `01.html` through `28.html` remain unchanged, browseable and offline-compatible.
-- `v2/content/lessons/NN.html` is a **verbatim article HTML snapshot** (excluding site chrome and duplicate H1). This is a deliberate fidelity-preserving intermediate representation, **not MDX**. Converting to MDX requires a follow-on AST conversion with validated math/table semantics.
-- `v2/content/lessons/NN.json` is machine-readable chapter metadata with source Git blob SHA, headings and example paths.
-- `v2/content/examples/NN/*.txt` are faithful extracts of code snippets. `.txt` intentionally avoids claiming they are runnable Python; shell/SQL/pseudocode may occur in the book.
-- `v2/content/quizzes/NN.json` contains **draft, ungraded** exercise prompts, derived from the chapter's curriculum topics, not extracted authored questions.
-- `v2/apps/web/lessons/NN.html` is a generated static reader containing the full original article, S02 chapter summary, source link and sample code file links.
-- Known ERRATA remains authoritative; migrating a historical error is not scientific endorsement or correction.
+## S03：全量正文迁移
 
-## Commands (from repository root)
+迁移保留章节结构和代码片段，不自动把伪代码改写成可运行 Python，也不把迁移状态当作科学认可。
 
 ```bash
 python3 v2/scripts/migrate_lessons.py
@@ -18,22 +12,25 @@ python3 v2/scripts/build_web.py
 python3 v2/scripts/migrate_lessons.py --check
 python3 v2/scripts/build_web.py --check
 python3 v2/scripts/check_web.py
-python3 -m unittest discover -s v2/tests -v
-node --test v2/tests/web/shared.test.cjs
-python3 scripts/check_site.py .
 ```
 
-The pipeline is idempotent, deterministic, and has no network fetch. `--check` prevents changes and fails on mismatches. `source_git_blob` binds every migrated snapshot to the Git SHA of its original HTML file. For chapter edits, change root source first, rerun migration and review the generated diff. Do **not** hand-edit snapshots.
+## S04：首批五章独立内容审校
 
-## Scientific review backlog
+第 01–05 章重写为独立课程文章。每页包含具体问题、完整定义、渐进图解、可访问 MathML、固定依赖的 Python 示例、确定性不变量测试、适用边界和原始参考资料。交互控件用于参数探索或状态切换，默认内容无需 JavaScript 也可理解。
 
-1. Chapter 01: four odd-degree vertices in Seven Bridges of Königsberg.
-2. Chapter 04: distinguish G(n,p) and G(n,M).
-3. Chapter 11: k-core need not be connected.
-4. Chapter 12: model-dependent epidemic thresholds and compartment conventions.
-5. Chapter 16: prevent temporal/graph-structure leakage for prediction tasks.
-6. Chapter 20: review time-respecting paths and proper HTML entity handling.
-7. Chapter 22: distinguish inductive/tranductive **training setups** from the capabilities of GNN layers.
-8. Chapter 25: numeric speed claims require reproducible performance benchmarks.
+只有当证据账本声明 `reviewed` 且代码块标记为 `language-python` 时，迁移元数据才分别记录章节审校和已测试示例。该状态代表仓库自动化门禁覆盖，不等于完整论文复现或同行评审。
 
-Each proposed correction should include references and tests and should be made in its own subsequent content-review PR rather than silently changing original evidence during S03.
+## 自动化验收
+
+```bash
+cd v2
+python scripts/migrate_lessons.py --check
+python scripts/build_web.py --check
+python scripts/check_web.py
+PYTHONPATH=src python -m unittest discover -s tests -v
+node --test tests/web/*.test.cjs
+python -m playwright install chromium
+python tests/web/e2e.py
+```
+
+Chromium E2E 覆盖根课程门户、V2 阅读器、Graph Lab、模型比较、数据集入口，以及首批五章在 1440、768、390、360px 视口下的溢出、图像、MathML 和交互控件。

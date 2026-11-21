@@ -23,12 +23,12 @@ def js_data(name, value):
     return f'window.{name} = {payload};\n'
 
 
-def frame(title, body, prefix='', scripts=(), description='网络科学可复现课程与实验平台'):
+def frame(title, body, prefix='', scripts=(), description='网络科学可复现课程与实验平台', footer='Network Science Tutorial V2 · S03 内容与展示层 · 原版 HTML 继续保留，科学结论待独立审校。'):
     nav = f'''<header class="topnav shell"><a class="brand" href="{prefix}index.html"><span class="brand-mark">◉</span><span>NETWORK SCIENCE<small>LEARN · EXPERIMENT · VERIFY</small></span></a>
     <nav class="navlinks" aria-label="主导航"><a href="{prefix}index.html">课程</a><a href="{prefix}lab.html">Graph Lab</a><a href="{prefix}compare.html">模型比较</a><a href="{prefix}datasets.html">数据集</a></nav></header>'''
     js = ''.join(f'<script defer src="{prefix}{esc(path)}"></script>' for path in scripts)
     return f'''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="{esc(description)}"><title>{esc(title)} | Network Science</title><link rel="stylesheet" href="{prefix}site.css">{js}</head>
-<body>{nav}<main class="shell">{body}</main><footer class="footer shell">Network Science Tutorial V2 · S03 内容与展示层 · 原版 HTML 继续保留，科学结论待独立审校。</footer></body></html>\n'''
+<body>{nav}<main class="shell">{body}</main><footer class="footer shell">{esc(footer)}</footer></body></html>\n'''
 
 
 def homepage(chapters):
@@ -45,27 +45,44 @@ def homepage(chapters):
 
 
 def lesson(ch,prev_ch,next_ch,source_body=None,metadata=None):
-    num=ch['num']; topics=''.join(f'<span>{esc(t)}</span>' for t in ch['topics']);
+    num=ch['num']; topics=''.join(f'<span>{esc(t)}</span>' for t in ch['topics'])
+    reviewed = bool(metadata and metadata.get('review_status') == 'reviewed')
+    source_heading = '根目录兼容入口' if reviewed else '原始章节'
+    source_intro = ('根目录中的 '+num+'.html 是 Pages 与离线阅读入口；本页正文由同一源文件确定性生成。' if reviewed else '原始 HTML 在独立仓库中保存。点击下方链接可以查看 GitHub 中的完整正文源文件；离线时则请使用随原仓库保存的旧版 01–28.html。')
+    source_link = ('打开兼容阅读入口 →' if reviewed else '查看原始章节 →')
     other=[]
     if prev_ch:other.append(f'<a href="{prev_ch["num"]}.html">← 第{int(prev_ch["num"])}章</a>')
     if next_ch:other.append(f'<a href="{next_ch["num"]}.html">第{int(next_ch["num"])}章 →</a>')
     lab={'structure':('lab.html','打开网络结构实验'),'compare':('compare.html','打开统计比较实验')}.get(ch.get('lab'))
-    body=f'''<div class="article"><section class="subhero"><span class="eyebrow">CHAPTER {num} / {esc(ch['group'])}</span><h1>第{int(num)}章 · {esc(ch['title'])}</h1><p class="lead">{esc(ch['summary'])}</p><div class="topics">{topics}</div></section><div class="notice"><strong>章节状态：S02 概要版。</strong> 原版教材内容尚未迁移，下面提供本章导学、原文链接及适配实验；避免将摘要误认为全章正文。</div><section class="panel"><h2>本章学习重点</h2><p>{esc(ch['summary'])}</p><p class="muted">建议围绕以下主题理解定义、数学假设、适用范围和验证方式：</p><div class="topics">{topics}</div><h2>原始章节</h2><p>原始 HTML 在独立仓库中保存。点击下方链接可以查看 GitHub 中的完整正文源文件；离线时则请使用随原仓库保存的旧版 01–28.html。</p><a class="btn secondary" target="_blank" rel="noopener noreferrer" href="{BASE}{num}.html">查看原始章节 →</a></section><section class="section"><h2>可执行配套实践</h2>{f'<p class="muted">本章提供与现有 Python 实验结果对齐的交互入口。</p><a class="btn" href="../{lab[0]}">{lab[1]} →</a>' if lab else '<p class="muted">相应的独立算法实验、习题及黄金测试计划在 S03–S06 阶段按课程映射逐步接入。</p>'}</section><div class="chapter-nav">{''.join(other)}</div><p><a href="../index.html#curriculum">← 返回课程目录</a></p></div>'''
+    body=f'''<div class="article"><section class="subhero"><span class="eyebrow">CHAPTER {num} / {esc(ch['group'])}</span><h1>第{int(num)}章 · {esc(ch['title'])}</h1><p class="lead">{esc(ch['summary'])}</p><div class="topics">{topics}</div></section><div class="notice"><strong>章节状态：S02 概要版。</strong> 原版教材内容尚未迁移，下面提供本章导学、原文链接及适配实验；避免将摘要误认为全章正文。</div><section class="panel"><h2>本章学习重点</h2><p>{esc(ch['summary'])}</p><p class="muted">建议围绕以下主题理解定义、数学假设、适用范围和验证方式：</p><div class="topics">{topics}</div><h2>{source_heading}</h2><p>{esc(source_intro)}</p><a class="btn secondary" target="_blank" rel="noopener noreferrer" href="{BASE}{num}.html">{source_link}</a></section><section class="section"><h2>可执行配套实践</h2>{f'<p class="muted">本章提供与现有 Python 实验结果对齐的交互入口。</p><a class="btn" href="../{lab[0]}">{lab[1]} →</a>' if lab else '<p class="muted">相应的独立算法实验、习题及黄金测试计划在 S03–S06 阶段按课程映射逐步接入。</p>'}</section><div class="chapter-nav">{''.join(other)}</div><p><a href="../index.html#curriculum">← 返回课程目录</a></p></div>'''
     if source_body is not None:
         # Preserve original HTML semantic structure and mathematical notation without
         # unsafe HTML-to-Markdown roundtrips. Original source remains the authority.
         old = '<div class="notice"><strong>章节状态：S02 概要版。</strong> 原版教材内容尚未迁移，下面提供本章导学、原文链接及适配实验；避免将摘要误认为全章正文。</div>'
-        new = '<div class="notice"><strong>S03 全文迁移（未经科学审校）</strong> 原始章节中的正文、表格、公式及代码按原貌保存；已知勘误请参见根目录 ERRATA.md。示例独立归档，但未保证可单独执行。</div>'
+        reviewed = bool(metadata and metadata.get('review_status') == 'reviewed')
+        if reviewed:
+            source_body = source_body.replace('src="assets/lessons/', 'src="../assets/lessons/')
+        new = ('<div class="notice"><strong>S04 首轮内容审校已完成。</strong> 本章的核心定义、关键数值与示例已建立证据账本，并通过本章自动化测试；这不等于完整论文复现或同行评审。</div>' if reviewed else '<div class="notice"><strong>S03 全文迁移（未经科学审校）</strong> 原始章节中的正文、表格、公式及代码按原貌保存；已知勘误请参见根目录 ERRATA.md。示例独立归档，但未保证可单独执行。</div>')
         assert old in body
         body = body.replace(old, new)
-        sample_links = ''.join(f'<li><a href="../../../{esc(item["path"])}">代码片段 {esc(item["id"])}（原始文本）</a></li>' for item in metadata.get('examples', [])) if metadata else ''
-        block = '<section class="panel migrated-article" aria-label="完整章节正文"><div class="section-head"><div><span class="eyebrow">ORIGINAL CONTENT / S03</span><h2>完整章节正文</h2></div></div>' + source_body + '</section>'
+        if reviewed:
+            sample_links = ''.join(f'<li><a href="../../../{esc(item["path"])}">代码示例 {esc(item["id"])}（{esc(item.get("language","未分类"))}）</a></li>' for item in metadata.get('examples', [])) if metadata else ''
+            label = 'REVIEWED ARTICLE / S04'
+        else:
+            sample_links = ''.join(f'<li><a href="../../../{esc(item["path"])}">代码片段 {esc(item["id"])}（原始文本）</a></li>' for item in metadata.get('examples', [])) if metadata else ''
+            label = 'ORIGINAL CONTENT / S03'
+        block = f'<section class="panel migrated-article" aria-label="完整章节正文"><div class="section-head"><div><span class="eyebrow">{label}</span><h2>完整章节正文</h2></div></div>' + source_body + '</section>'
         if sample_links:
-            block += '<section class="panel"><h2>本章代码示例（原文提取）</h2><ol>'+sample_links+'</ol><p class="muted small">代码片段仅做忠实归档，尚未经过依赖固定、单独运行和科学正确性验证。</p></section>'
+            if reviewed:
+                block += '<section class="panel"><h2>本章代码示例</h2><ol>'+sample_links+'</ol><p class="muted small">代码示例已纳入本章确定性测试；依赖与运行方式见正文。</p></section>'
+            else:
+                block += '<section class="panel"><h2>本章代码示例（原文提取）</h2><ol>'+sample_links+'</ol><p class="muted small">代码片段仅做忠实归档，尚未经过依赖固定、单独运行和科学正确性验证。</p></section>'
         anchor = '<section class="section"><h2>可执行配套实践</h2>'
         assert anchor in body
         body = body.replace(anchor, block+anchor)
-    return frame(f'第{int(num)}章 {ch["title"]}',body,prefix='../')
+    scripts = ('../shared/lesson-interactions.js',) if reviewed else ()
+    footer = 'Network Science Tutorial V2 · S04 首批审校章节 · 证据账本随源文件发布。' if reviewed else 'Network Science Tutorial V2 · S03 内容与展示层 · 原版 HTML 继续保留，科学结论待独立审校。'
+    return frame(f'第{int(num)}章 {ch["title"]}',body,prefix='../',scripts=scripts,footer=footer)
 
 
 def lab_page():
