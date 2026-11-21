@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """Deterministically extract the 28 legacy lessons, examples and draft assignments.
 
-The source of truth remains repository-root NN.html; generated articles are
-read-only snapshots and are intentionally not editorially reviewed.
+The source of truth remains repository-root NN.html; generated articles are read-only snapshots; evidence ledgers define review status.
 """
 from __future__ import annotations
 import argparse
@@ -43,7 +42,7 @@ def outline(body: str) -> list[dict]:
             for m in HEADINGS.finditer(body)]
 
 
-def outputs_for(num: str, source: str, chapter: dict) -> dict[str, str]:
+def outputs_for(num: str, source: str, chapter: dict, root: Path=ROOT) -> dict[str, str]:
     body = article(source)
     examples = []
     output = {f'content/lessons/{num}.html': body}
@@ -88,7 +87,7 @@ def expected(root: Path=ROOT, repo: Path=REPO) -> dict[str,str]:
     files = {}
     for ch in chapters:
         num = ch['num']
-        files.update(outputs_for(num, (repo/f'{num}.html').read_text(encoding='utf-8'), ch))
+        files.update(outputs_for(num, (repo/f'{num}.html').read_text(encoding='utf-8'), ch, root))
     return files
 
 
