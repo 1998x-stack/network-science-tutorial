@@ -3,40 +3,48 @@
   "chapter": "05",
   "title": "小世界网络",
   "source_path": "05.html",
-  "source_git_blob": "e644b6dcb733ff731b09c996b66be77aa5d00525",
-  "review_status": "migrated_unreviewed",
+  "source_git_blob": "6605d7f05c4f9b9048bee783f2194c46eeb6fc41",
+  "review_status": "reviewed",
   "headings": [
     {
       "depth": 2,
-      "title": "六度分隔的故事"
+      "title": "局部抱团与全局通达之间的张力"
     },
     {
       "depth": 2,
-      "title": "小世界悖论"
+      "title": "“六度分隔”是一项有边界的实验结果"
     },
     {
       "depth": 2,
-      "title": "Watts-Strogatz模型"
+      "title": "Watts–Strogatz 模型：从规则环开始，逐条重连"
     },
     {
       "depth": 2,
-      "title": "WS模型的性质"
+      "title": "调节重连概率 β"
     },
     {
       "depth": 2,
-      "title": "真实网络中的小世界"
+      "title": "小世界效应不等于“可以轻松搜索”"
     },
     {
       "depth": 2,
-      "title": "小世界与搜索"
+      "title": "用多个重连概率比较结构"
+    },
+    {
+      "depth": 2,
+      "title": "理解小世界网络时记住三件事"
+    },
+    {
+      "depth": 2,
+      "title": "参考资料"
     }
   ],
   "examples": [
     {
       "id": "01",
       "path": "content/examples/05/01.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
+      "language": "python",
+      "review_status": "tested"
     }
   ]
 }

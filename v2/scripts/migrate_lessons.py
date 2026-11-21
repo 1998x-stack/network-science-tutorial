@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 REPO = ROOT.parent
 START = '<div class="main-content">'
 END = '<div class="footer-nav">'
-CODE = re.compile(r'<pre[^>]*>\s*<code[^>]*>([\s\S]*?)</code>\s*</pre>', re.I)
+CODE = re.compile(r'<pre[^>]*>\s*<code(?P<attrs>[^>]*)>(?P<code>[\s\S]*?)</code>\s*</pre>', re.I)
 HEADINGS = re.compile(r'<h([23])[^>]*>([\s\S]*?)</h\1>', re.I)
 TAGS = re.compile(r'<[^>]*>')
 H1 = re.compile(r'<h1[^>]*>[\s\S]*?</h1>\s*', re.I)
@@ -47,16 +47,26 @@ def outputs_for(num: str, source: str, chapter: dict) -> dict[str, str]:
     body = article(source)
     examples = []
     output = {f'content/lessons/{num}.html': body}
+    evidence_path = root / 'content' / 'evidence' / f'{num}.json'
+    reviewed = evidence_path.is_file()
+    if reviewed:
+        evidence = json.loads(evidence_path.read_text(encoding='utf-8'))
+        if evidence.get('chapter') != num or evidence.get('review_status') != 'reviewed':
+            raise ValueError(f'{evidence_path}: reviewed evidence ledger must match chapter {num}')
     for idx, m in enumerate(CODE.finditer(body), 1):
         sample_id = f'{idx:02d}'
         path = f'content/examples/{num}/{sample_id}.txt'
-        code = html.unescape(m.group(1)).replace('\r\n', '\n').strip('\n') + '\n'
-        examples.append({'id':sample_id,'path':path,'language':'unclassified','review_status':'not_executed'})
+        code = html.unescape(m.group('code')).replace('\r\n', '\n').strip('\n') + '\n'
+        language = 'python' if re.search(r'\blanguage-python\b', m.group('attrs'), re.I) else 'unclassified'
+        status = 'tested' if reviewed and language == 'python' else 'not_executed'
+        examples.append({'id':sample_id,'path':path,'language':language,'review_status':status})
         output[path] = code
+    if reviewed and not any(item['review_status'] == 'tested' for item in examples):
+        raise ValueError(f'{num}.html: reviewed chapter must contain a tested Python example')
     meta = {
         'schema_version':1,'chapter':num,'title':chapter['title'],
         'source_path':f'{num}.html','source_git_blob':git_blob_sha(source),
-        'review_status':'migrated_unreviewed','headings':outline(body),'examples':examples,
+        'review_status':'reviewed' if reviewed else 'migrated_unreviewed','headings':outline(body),'examples':examples,
     }
     output[f'content/lessons/{num}.json'] = json.dumps(meta, ensure_ascii=False, indent=2) + '\n'
     tasks = {

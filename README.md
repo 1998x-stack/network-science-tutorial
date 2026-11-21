@@ -1,81 +1,107 @@
-# 🌐 网络科学 · 从入门到精通
+# 网络科学教程｜从连接关系理解复杂系统
 
-一套 **28 章全中文网络科学课程**，以静态 HTML 提供原理、案例与实战内容，从图论基础逐步介绍复杂网络、网络分析与图机器学习。
+一套 **28 章中文网络科学课程**，覆盖图论、网络度量、随机网络、小世界与无标度结构、中心性、社团检测、传播动力学、网络表示学习、图神经网络和综合实践。
 
-## 🚀 快速开始
+课程以独立 HTML 页面发布。正文从具体问题出发，明确模型假设、公式含义、可运行示例、适用边界和原始参考资料。前五章已完成第一轮内容重构与证据审校；其余章节保留既有内容，按相同质量门槛逐批升级。
 
-课程目录已预渲染，不再依赖从 `file://` 页面调用 `fetch()`：直接用浏览器打开 `index.html` 即可查看所有章节，也可以直接打开 `01.html` 至 `28.html` 阅读正文。课程无需安装依赖，也不要求联网。
+## 在线入口
+
+- GitHub Pages：<https://1998x-stack.github.io/network-science-tutorial/>
+- 仓库：<https://github.com/1998x-stack/network-science-tutorial>
+- 交互式 Graph Lab：<https://1998x-stack.github.io/network-science-tutorial/v2/apps/web/lab.html>
+- ER / WS / BA 模型比较：<https://1998x-stack.github.io/network-science-tutorial/v2/apps/web/compare.html>
+
+Pages 由 GitHub Actions 从主分支部署。首次启用时请在 Settings → Pages 确认 Source 为 GitHub Actions；部署完成后再访问在线入口。
+
+## 快速开始
+
+无需安装依赖即可阅读静态课程。克隆仓库后直接打开 `index.html`，或在仓库根目录运行：
 
 ```bash
-# macOS
-open index.html
-# Linux 桌面环境
-xdg-open index.html
-# Windows（PowerShell）
-start index.html
+python3 -m http.server 8000
 ```
 
-如需以 HTTP 方式预览，也可以在仓库目录运行 `python3 -m http.server 8000`，然后打开 `http://localhost:8000/`。本地服务器仅用于预览，不是课程运行所必需的。
+浏览器访问 <http://localhost:8000/>。Graph Lab 和模型比较页面也可在本地服务器下打开。目录搜索和学习进度在浏览器本机运行；进度保存在当前浏览器的 `localStorage`，不会自动跨设备同步。
 
-目录支持按标题、章节编号或知识点搜索。可以手动勾选“已学完”，并通过“继续上次阅读”返回最近从目录打开的章节。进度仅存于当前浏览器的 `localStorage`；它不会跨浏览器或设备同步。浏览器禁用本地存储时，目录和搜索仍可使用，但进度不会持久保存。关闭 JavaScript 时，28 个静态章节链接仍可使用。
+## 课程路线
 
-## 📖 章节目录
+| 章节 | 主题 | 主要问题 |
+|---|---|---|
+| 01 | 网络科学导论 | 为什么不同系统可以用同一种关系模型描述？ |
+| 02 | 图论基础 | 如何定义节点、边、路径、连通性和图的表示？ |
+| 03 | 网络基本度量 | 如何量化连接数量、路径距离和局部聚集？ |
+| 04 | 随机网络模型 | 独立随机连边会产生哪些整体结构和阈值？ |
+| 05 | 小世界网络 | 少量捷径如何缩短路径并保留局部团簇？ |
+| 06–07 | 网络异质性与无标度结构 | 增长、优先连接和度分布如何解释枢纽？ |
+| 08–11 | 中心性与社团检测 | 节点重要性和群体结构如何定义、比较？ |
+| 12–16 | 动态与预测 | 传播、博弈、鲁棒性和链路预测如何建模？ |
+| 17–22 | 数据与学习 | 如何采集、可视化网络并学习图表示？ |
+| 23–28 | 工程实践 | 如何用 Python、公开数据和图模型完成分析项目？ |
 
-| # | 章节 | 核心主题 |
-|---|------|----------|
-| 01 | 网络科学导论 | 学科定义、发展简史、应用领域、课程概览 |
-| 02 | 图论基础 | 节点与边、有向/无向图、邻接矩阵、二分图 |
-| 03 | 网络基本度量 | 度分布、路径与距离、聚集系数、网络密度 |
-| 04 | 随机网络模型 | Erdős–Rényi模型、相变现象、泊松度分布、连通性 |
-| 05 | 小世界网络 | Watts-Strogatz模型、六度分隔、高聚集性、短路径 |
-| 06 | 无标度网络 | Barabási–Albert模型、幂律分布、优先连接、枢纽节点 |
-| 07 | 度分布与网络异质性 | 度分布矩、异质性度量、度相关性、同配性 |
-| 08 | 中心性分析 | 度/介数/接近中心性、特征向量中心性、Katz中心性、LeaderRank |
-| 09 | PageRank与链接分析 | PageRank原理、随机游走、HITS算法、主题敏感PR |
-| 10 | 社团检测（上） | 模块度、Girvan-Newman算法、Louvain算法、层次聚类 |
-| 11 | 社团检测（下） | InfoMap算法、重叠社团、核心-边缘结构、社团评估 |
-| 12 | 网络传播动力学 | SIR/SIS模型、渗流理论、传播阈值、免疫策略 |
-| 13 | 信息与谣言传播 | 信息级联、社会增强效应、弱关系优势、影响力最大化 |
-| 14 | 网络上的博弈 | 演化博弈论、合作涌现、意见动力学、选举模型 |
-| 15 | 网络鲁棒性与脆弱性 | 随机故障vs蓄意攻击、级联失效、鲁棒性优化、案例研究 |
-| 16 | 链路预测 | 相似性指标、概率模型、评估方法、应用场景 |
-| 17 | 网络可视化 | 力导向布局、Gephi实战、大规模可视、可视化伦理 |
-| 18 | 网络数据采集 | API数据获取、爬虫技术、数据清洗、NetworkX导入 |
-| 19 | 多层网络 | 跨层耦合、相互依赖网络、多层中心性、muxViz |
-| 20 | 时序与动态网络 | 时间演化图、快照聚合、时态路径、动态社团 |
-| 21 | 网络嵌入与表示学习 | DeepWalk、Node2Vec、struc2vec、嵌入可视化 |
-| 22 | 图神经网络入门 | GCN原理、GAT注意力、GraphSAGE、PyG实战 |
-| 23 | NetworkX实战 | 图创建、遍历与分析、网络生成器、可视化 |
-| 24 | 社交网络分析案例 | 空手道俱乐部、arXiv合著、微博分析、对比研究 |
-| 25 | 大规模网络分析 | igraph优化、图数据库、采样技术、性能比较 |
-| 26 | 网络科学+机器学习 | 推荐系统、知识图谱、Graph Foundation Model、网络正则化 |
-| 27 | 网络科学前沿 | 网络医学、脑网络、计算社会科学、AI公平性 |
-| 28 | 综合实战项目 | 数据获取、网络构建、分析流水线、报告撰写 |
+每一章都是独立入口。读者无需先读完上一章才能理解当前章节；必要概念会在本页重新定义，前置知识只作为延伸链接。
 
-## 📂 项目结构
+## 仓库结构
 
 ```text
-index.html                 离线可用的课程目录、搜索与本机学习进度
-01.html ... 28.html        章节正文与章节导航
-courses.json               课程标题、编号、文件名、主题元数据
-theme.css                  目录与正文的共享样式
-scripts/check_site.py      课程元数据、章节导航与本地链接检查
-tests/test_site.py         检查器的回归测试
-.github/workflows/site-check.yml    GitHub Actions 自动检查
-ERRATA.md                  已确认、尚未写回章节正文的勘误
+.
+├── index.html                    # GitHub Pages 主课程门户
+├── 01.html ... 28.html           # 兼容离线阅读的课程原文入口
+├── assets/lessons/               # 首批课程的独立 SVG 图解
+├── courses.json                  # 根目录课程目录元数据
+├── ERRATA.md                     # 已确认的科学勘误与修订状态
+├── AGENTS.md                     # 后续内容编辑与审校规范
+├── docs/                         # 内容架构与迁移约定
+├── scripts/                      # 根站点结构与链接检查
+├── tests/                        # 根站点检查器回归测试
+├── .github/workflows/            # 根站点检查与 Pages 部署
+└── v2/
+    ├── content/lessons/          # 根章节确定性迁移正文快照
+    ├── content/evidence/          # 每章事实与数据的证据账本
+    ├── content/examples/          # 从章节提取的代码示例
+    ├── content/quizzes/           # 草拟练习题
+    ├── apps/web/                  # 课程阅读器、Graph Lab、比较页
+    ├── apps/shared/               # 可复用的进度与交互逻辑
+    ├── src/netsci/                # Python 图模型与指标实现
+    ├── experiments/              # 固定参数和随机种子的实验产物
+    ├── scripts/                   # 迁移、构建和静态检查
+    └── tests/                     # Python、JavaScript 与浏览器回归测试
 ```
 
-## ✅ 开发与验证
+### 内容来源与构建关系
 
-只需要 Python 3，无第三方依赖。修改标题或增删章节时，请同步更新 `courses.json`、`index.html` 和各章节导航；检查器会检测相关文件、编号和链接是否一致。
+- 根目录 `NN.html` 是兼容阅读入口，也是 S03 迁移流程的原始来源。
+- `v2/content/lessons/NN.html`、元数据和代码摘录由 `v2/scripts/migrate_lessons.py` 确定性生成；不要直接编辑生成快照。
+- `v2/apps/web/` 页面由 `v2/scripts/build_web.py` 从课程目录、实验结果和迁移正文生成。
+- 第 1–5 章的证据账本位于 `v2/content/evidence/`。这些章节包含独立 SVG、MathML、交互控件、可运行代码和参考文献。
+- 其余章节的迁移状态不代表科学审校完成；请查看每章 JSON 的 `review_status`。
+
+## 开发与质量检查
 
 ```bash
 python3 -m unittest discover -s tests -v
 python3 scripts/check_site.py .
+cd v2
+python3 scripts/migrate_lessons.py --check
+python3 scripts/build_web.py --check
+python3 scripts/check_web.py
+PYTHONPATH=src python3 -m unittest discover -s tests -v
+node --test tests/web/*.test.cjs
+python3 -m playwright install chromium
+python3 tests/web/e2e.py
 ```
 
-Pull Request 和主分支推送会触发相同的 GitHub Actions 检查。检查器只验证站点结构与本地链接，**不等价于** 浏览器端到端测试、外部链接可用性验证或全部课程科学内容审稿。
+静态检查验证文件、章节导航、链接和构建快照，不等于科学审稿；数值单测验证公式与图不变量，不等于真实世界数据复现；Chromium E2E 验证指定视口与控件行为，未执行的设备不得标为通过。
 
-## 📌 勘误
+## 首批内容审校
 
-阅读第 01 章前请参阅 [ERRATA.md](ERRATA.md)：原七桥图的四个顶点全是奇数度，而非三个。本次工程优化没有直接改动 28 章正文，正文里的这处表述暂时仍待修订。
+| 章节 | 本轮处理 |
+|---|---|
+| 01 | 校准七桥问题的四个奇度顶点，重建网络建模的三层视角 |
+| 02 | 补齐图类型、邻接表示、握手定理、连通性和树 |
+| 03 | 区分平均聚集系数、全局传递性与 LCC 路径口径 |
+| 04 | 区分 G(n,p)/G(n,m)、巨分量阈值与全图连通阈值 |
+| 05 | 校准 Milgram 完成链统计、WS 重连机制和可导航性边界 |
+
+## 参考文献与许可
+
+课程优先链接原始论文、教材和官方 API 文档。图解由本项目独立绘制；不复制第三方文章的文字、图像或代码。仓库未声明覆盖全部历史素材的通用许可证；再分发前请检查各来源许可并补充项目许可证。

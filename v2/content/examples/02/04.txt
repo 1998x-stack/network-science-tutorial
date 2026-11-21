@@ -1,0 +1,16 @@
+import networkx as nx
+
+G = nx.Graph()
+G.add_edges_from([("A", "B"), ("A", "C"), ("B", "C"), ("C", "D")])
+nodes = ["A", "B", "C", "D"]
+
+A = nx.to_numpy_array(G, nodelist=nodes, dtype=int)
+adjacency = {v: sorted(G.neighbors(v)) for v in nodes}
+
+print("邻接矩阵：\n", A)
+print("邻接表：", adjacency)
+print("度数：", dict(G.degree()))
+
+assert (A == A.T).all()                  # 无向图矩阵对称
+assert int(A.sum()) == 2 * G.number_of_edges()
+assert nx.is_bipartite(nx.path_graph(4)) # 偶数长度路径是二分图

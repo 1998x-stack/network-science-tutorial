@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0.0",
+  "chapter": "04",
+  "review_status": "reviewed",
+  "claims": [
+    {
+      "id": "gnp-definition",
+      "claim": "In G(n,p), every possible edge is included independently with probability p; in G(n,m), the edge count is fixed.",
+      "kind": "definition",
+      "source_url": "https://doi.org/10.5486/PMD.1959.6.3-4.12",
+      "locator": "Erdős and Rényi, On random graphs I (1959); independent-edge and fixed-edge-count models",
+      "status": "verified"
+    },
+    {
+      "id": "expected-degree-edges",
+      "claim": "For G(n,p), expected edge count is p n(n−1)/2 and expected degree is p(n−1).",
+      "kind": "derived",
+      "source_url": "https://doi.org/10.1017/CBO9780511546594.003",
+      "locator": "Durrett, Random Graph Dynamics, Chapter 2; linearity of expectation over independent edge indicators",
+      "status": "derived"
+    },
+    {
+      "id": "giant-component-threshold",
+      "claim": "For p=c/n, the giant-component threshold is at c=1 (equivalently p of order 1/n).",
+      "kind": "theorem",
+      "source_url": "https://doi.org/10.1090/noti2802",
+      "locator": "Park (2023), §2, Theorem 2.2; Threshold Phenomena for Random Discrete Structures",
+      "status": "verified"
+    },
+    {
+      "id": "connectivity-threshold",
+      "claim": "The full-graph connectivity threshold is of order (ln n)/n, distinct from the giant-component threshold.",
+      "kind": "theorem",
+      "source_url": "https://services.math.duke.edu/~rtd/RGD/RGD.pdf",
+      "locator": "Durrett, Random Graph Dynamics, §2.8, Threshold for connectivity",
+      "status": "verified"
+    },
+    {
+      "id": "poisson-limit",
+      "claim": "The binomial degree distribution approaches a Poisson distribution in the sparse large-n regime with bounded expected degree.",
+      "kind": "asymptotic",
+      "source_url": "https://doi.org/10.1017/CBO9780511546594.003",
+      "locator": "Durrett, Random Graph Dynamics, Chapter 2; Binomial(n−1,p) degree with p=λ/n",
+      "status": "verified"
+    }
+  ]
+}

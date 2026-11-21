@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check the static course catalog and local chapter links (Python stdlib only)."""
+"""Check the static course catalog, links, reviewed lesson assets and evidence (stdlib only)."""
 from __future__ import annotations
 
 import json
@@ -147,6 +147,41 @@ def validate(root: Path) -> list[str]:
         chapter_links = {urlsplit(url).path for tag, url in page.links if tag == "a"}
         for missing in sorted(files - chapter_links):
             errors.append(f"{filename}: sidebar missing chapter link to {missing}")
+    if len(chapters) >= 5:
+        allowed_evidence = {"verified", "derived", "illustrative"}
+        for index in range(1, 6):
+            number = f"{index:02d}"
+            page_path = root / f"{number}.html"
+            evidence_path = root / "v2" / "content" / "evidence" / f"{number}.json"
+            svg_path = root / "assets" / "lessons" / f"{number}.svg"
+            if page_path.is_file():
+                article = page_path.read_text(encoding="utf-8")
+                for marker in ('class="lesson-article"', '<figure class="lesson-figure"', '<section id="references"', 'class="language-python"', '<math'):
+                    if marker not in article:
+                        errors.append(f"{number}.html: reviewed lesson missing {marker}")
+            if not svg_path.is_file():
+                errors.append(f"{number}.html: missing standalone SVG {svg_path.relative_to(root)}")
+            else:
+                svg = svg_path.read_text(encoding="utf-8")
+                for marker in ('viewBox=', '<title', '<desc', 'role="img"'):
+                    if marker not in svg:
+                        errors.append(f"{svg_path.relative_to(root)}: missing accessible SVG marker {marker}")
+            try:
+                ledger = json.loads(evidence_path.read_text(encoding="utf-8"))
+            except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+                errors.append(f"{evidence_path.relative_to(root)}: cannot read evidence ledger: {exc}")
+                continue
+            if ledger.get("chapter") != number or ledger.get("review_status") != "reviewed":
+                errors.append(f"{evidence_path.relative_to(root)}: chapter or review_status mismatch")
+            claims = ledger.get("claims")
+            if not isinstance(claims, list) or not claims:
+                errors.append(f"{evidence_path.relative_to(root)}: claims must be a non-empty array")
+                continue
+            for claim in claims:
+                if not all(isinstance(claim.get(key), str) and claim[key].strip() for key in ("claim", "source_url", "locator")):
+                    errors.append(f"{evidence_path.relative_to(root)}: every claim needs claim, source_url and locator")
+                if claim.get("status") not in allowed_evidence:
+                    errors.append(f"{evidence_path.relative_to(root)}: unsupported or unverified evidence status")
     return errors
 
 
@@ -158,7 +193,7 @@ def main() -> int:
             print("ERROR:", error, file=sys.stderr)
         print(f"Site check failed: {len(errors)} problem(s)", file=sys.stderr)
         return 1
-    print("Site check passed: metadata, chapters, navigation, and local links")
+    print("Site check passed: metadata, 28 chapters, navigation, local links, and first-five evidence assets")
     return 0
 
 
