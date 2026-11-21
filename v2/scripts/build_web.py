@@ -61,7 +61,7 @@ def lesson(ch,prev_ch,next_ch,source_body=None,metadata=None):
         old = '<div class="notice"><strong>章节状态：S02 概要版。</strong> 原版教材内容尚未迁移，下面提供本章导学、原文链接及适配实验；避免将摘要误认为全章正文。</div>'
         reviewed = bool(metadata and metadata.get('review_status') == 'reviewed')
         if reviewed:
-            source_body = source_body.replace('src="assets/lessons/', 'src="../../../../assets/lessons/')
+            source_body = source_body.replace('src="assets/lessons/', 'src="../assets/lessons/')
         new = ('<div class="notice"><strong>S04 首轮内容审校已完成。</strong> 本章的核心定义、关键数值与示例已建立证据账本，并通过本章自动化测试；这不等于完整论文复现或同行评审。</div>' if reviewed else '<div class="notice"><strong>S03 全文迁移（未经科学审校）</strong> 原始章节中的正文、表格、公式及代码按原貌保存；已知勘误请参见根目录 ERRATA.md。示例独立归档，但未保证可单独执行。</div>')
         assert old in body
         body = body.replace(old, new)
