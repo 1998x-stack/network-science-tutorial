@@ -42,12 +42,12 @@ def outline(body: str) -> list[dict]:
             for m in HEADINGS.finditer(body)]
 
 
-def outputs_for(num: str, source: str, chapter: dict, root: Path=ROOT) -> dict[str, str]:
+def outputs_for(num: str, source: str, chapter: dict, root: Path | None=None) -> dict[str, str]:
     body = article(source)
     examples = []
     output = {f'content/lessons/{num}.html': body}
-    evidence_path = root / 'content' / 'evidence' / f'{num}.json'
-    reviewed = evidence_path.is_file()
+    evidence_path = root / 'content' / 'evidence' / f'{num}.json' if root is not None else None
+    reviewed = bool(evidence_path and evidence_path.is_file())
     if reviewed:
         evidence = json.loads(evidence_path.read_text(encoding='utf-8'))
         if evidence.get('chapter') != num or evidence.get('review_status') != 'reviewed':
