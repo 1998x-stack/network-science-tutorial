@@ -1,1 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" role="img" aria-labelledby="title desc"><title id="title">小世界网络从规则到随机</title><desc id="desc">规则环形网络、加入少量远程捷径的小世界网络、随机化网络的结构对比。</desc><rect width="760" height="330" rx="18" fill="#102238"/><g stroke="#70dbc3" stroke-width="2.5" fill="none"><path d="M95 100 L145 55 L195 100 L195 165 L145 210 L95 165 Z M95 100 L195 100 M145 55 L195 165 M95 165 L145 210 M95 100 L95 165 M145 55 L145 210"/><path d="M330 100 L380 55 L430 100 L430 165 L380 210 L330 165 Z M330 100 L430 100 M380 55 L430 165 M330 165 L380 210 M330 100 L330 165 M380 55 L380 210"/><path d="M330 100 L430 165" stroke="#f4bc7c" stroke-width="5"/><path d="M565 100 L615 55 L665 100 L665 165 L615 210 L565 165 Z M565 100 L665 100 M615 55 L665 165 M565 165 L615 210 M565 100 L565 165 M615 55 L615 210 M565 100 L615 210 M665 100 L615 210 M565 165 L665 100 M615 55 L565 165"/></g><g fill="#f4bc7c" stroke="#fff" stroke-width="2"><circle cx="95" cy="100" r="8"/><circle cx="145" cy="55" r="8"/><circle cx="195" cy="100" r="8"/><circle cx="195" cy="165" r="8"/><circle cx="145" cy="210" r="8"/><circle cx="95" cy="165" r="8"/><circle cx="330" cy="100" r="8"/><circle cx="380" cy="55" r="8"/><circle cx="430" cy="100" r="8"/><circle cx="430" cy="165" r="8"/><circle cx="380" cy="210" r="8"/><circle cx="330" cy="165" r="8"/><circle cx="565" cy="100" r="8"/><circle cx="615" cy="55" r="8"/><circle cx="665" cy="100" r="8"/><circle cx="665" cy="165" r="8"/><circle cx="615" cy="210" r="8"/><circle cx="565" cy="165" r="8"/></g><g fill="#eaf3ff" font-family="system-ui,sans-serif" font-size="15" font-weight="700" text-anchor="middle"><text x="145" y="265">规则环 · β=0</text><text x="380" y="265">少量捷径 · β 较小</text><text x="615" y="265">高度重连 · β 接近 1</text></g><text x="380" y="302" fill="#9fb4ce" font-family="system-ui,sans-serif" font-size="12" text-anchor="middle">橙色边表示跨越局部邻域的捷径</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 310" role="img" aria-labelledby="title desc">
+<title id="title">小世界网络的边重连过程</title>
+<desc id="desc">三个八节点网络依次展示规则环、把一条局部边删除并重连为远程边、以及随机网络。中间图的橙色边替代了灰色虚线边，而不是额外增加边。</desc>
+<rect width="760" height="310" rx="18" fill="#102238"/>
+<g stroke="#70dbc3" stroke-width="2.2" fill="none" stroke-linecap="round">
+<g transform="translate(130 122)">
+<path d="M0 -65 L46 -46 L65 0 L46 46 L0 65 L-46 46 L-65 0 L-46 -46 Z M0 -65 L65 0 M46 -46 L46 46 M65 0 L0 65 M46 46 L-46 46 M0 65 L-65 0 M-46 46 L-46 -46 M-65 0 L0 -65 M-46 -46 L46 -46"/>
+</g>
+<g transform="translate(380 122)">
+<path d="M0 -65 L46 -46 L65 0 L46 46 L0 65 L-46 46 L-65 0 L-46 -46 Z M46 -46 L46 46 M65 0 L0 65 M46 46 L-46 46 M0 65 L-65 0 M-46 46 L-46 -46 M-65 0 L0 -65 M-46 -46 L46 -46"/>
+</g>
+<g transform="translate(630 122)">
+<path d="M0 -65 L65 0 M46 -46 L-46 46 M65 0 L-46 -46 M46 46 L-65 0 M0 65 L46 -46 M-46 46 L0 -65 M-65 0 L46 46"/>
+</g>
+</g>
+<g transform="translate(380 122)" fill="none" stroke-linecap="round">
+<path d="M0 -65 L65 0" stroke="#8295aa" stroke-width="2.6" stroke-dasharray="5 5"/>
+<path d="M0 -65 L-46 46" stroke="#f4bc7c" stroke-width="4"/>
+</g>
+<g fill="#f4bc7c" stroke="#fff" stroke-width="1.8">
+<g transform="translate(130 122)"><circle cy="-65" r="7"/><circle cx="46" cy="-46" r="7"/><circle cx="65" r="7"/><circle cx="46" cy="46" r="7"/><circle cy="65" r="7"/><circle cx="-46" cy="46" r="7"/><circle cx="-65" r="7"/><circle cx="-46" cy="-46" r="7"/></g>
+<g transform="translate(380 122)"><circle cy="-65" r="7"/><circle cx="46" cy="-46" r="7"/><circle cx="65" r="7"/><circle cx="46" cy="46" r="7"/><circle cy="65" r="7"/><circle cx="-46" cy="46" r="7"/><circle cx="-65" r="7"/><circle cx="-46" cy="-46" r="7"/></g>
+<g transform="translate(630 122)"><circle cy="-65" r="7"/><circle cx="46" cy="-46" r="7"/><circle cx="65" r="7"/><circle cx="46" cy="46" r="7"/><circle cy="65" r="7"/><circle cx="-46" cy="46" r="7"/><circle cx="-65" r="7"/><circle cx="-46" cy="-46" r="7"/></g>
+</g>
+<g fill="#eaf3ff" font-family="system-ui,sans-serif" font-size="15" font-weight="700" text-anchor="middle">
+<text x="130" y="225">规则环 · β = 0</text><text x="380" y="225">边重连 · 0 &lt; β &lt; 1</text><text x="630" y="225">随机化 · β 接近 1</text>
+</g>
+<g font-family="system-ui,sans-serif" font-size="12" text-anchor="middle"><text x="380" y="249" fill="#8295aa">灰色虚线：被移除的局部边</text><text x="380" y="267" fill="#f4bc7c">橙色实线：替代它的远程边</text></g>
+<text x="380" y="292" fill="#9fb4ce" font-family="system-ui,sans-serif" font-size="12" text-anchor="middle">Watts–Strogatz 重连会替换一条边；不是在原网络上单纯追加捷径</text>
+</svg>
