@@ -62,15 +62,21 @@ def lesson(ch,prev_ch,next_ch,source_body=None,metadata=None):
         reviewed = bool(metadata and metadata.get('review_status') == 'reviewed')
         if reviewed:
             source_body = source_body.replace('src="assets/lessons/', 'src="../../../../assets/lessons/')
-        new = ('<div class="notice"><strong>S04 首轮内容审校已完成。</strong> 本章的核心定义、关键数值与示例已建立证据账本，并通过本章自动化测试；这不等于完整论文复现或同行评审。</div>' if reviewed else '<div class="notice"><strong>S03 全文迁移（未经科学审校）</strong> 本页保留迁移正文；关键事实仍需独立核验。</div>')
+        new = ('<div class="notice"><strong>S04 首轮内容审校已完成。</strong> 本章的核心定义、关键数值与示例已建立证据账本，并通过本章自动化测试；这不等于完整论文复现或同行评审。</div>' if reviewed else '<div class="notice"><strong>S03 全文迁移（未经科学审校）</strong> 原始章节中的正文、表格、公式及代码按原貌保存；已知勘误请参见根目录 ERRATA.md。示例独立归档，但未保证可单独执行。</div>')
         assert old in body
         body = body.replace(old, new)
-        sample_links = ''.join(f'<li><a href="../../../{esc(item["path"])}">代码示例 {esc(item["id"])}（{esc(item.get("language","未分类"))}）</a></li>' for item in metadata.get('examples', [])) if metadata else ''
-        label = 'REVIEWED ARTICLE / S04' if reviewed else 'MIGRATED SOURCE / S03'
+        if reviewed:
+            sample_links = ''.join(f'<li><a href="../../../{esc(item["path"])}">代码示例 {esc(item["id"])}（{esc(item.get("language","未分类"))}）</a></li>' for item in metadata.get('examples', [])) if metadata else ''
+            label = 'REVIEWED ARTICLE / S04'
+        else:
+            sample_links = ''.join(f'<li><a href="../../../{esc(item["path"])}">代码片段 {esc(item["id"])}（原始文本）</a></li>' for item in metadata.get('examples', [])) if metadata else ''
+            label = 'ORIGINAL CONTENT / S03'
         block = f'<section class="panel migrated-article" aria-label="完整章节正文"><div class="section-head"><div><span class="eyebrow">{label}</span><h2>完整章节正文</h2></div></div>' + source_body + '</section>'
         if sample_links:
-            note = '代码示例已纳入本章确定性测试；依赖与运行方式见正文。' if reviewed else '代码片段仅做忠实归档，尚未经过依赖固定、单独运行和科学正确性验证。'
-            block += '<section class="panel"><h2>本章代码示例</h2><ol>'+sample_links+'</ol><p class="muted small">'+note+'</p></section>'
+            if reviewed:
+                block += '<section class="panel"><h2>本章代码示例</h2><ol>'+sample_links+'</ol><p class="muted small">代码示例已纳入本章确定性测试；依赖与运行方式见正文。</p></section>'
+            else:
+                block += '<section class="panel"><h2>本章代码示例（原文提取）</h2><ol>'+sample_links+'</ol><p class="muted small">代码片段仅做忠实归档，尚未经过依赖固定、单独运行和科学正确性验证。</p></section>'
         anchor = '<section class="section"><h2>可执行配套实践</h2>'
         assert anchor in body
         body = body.replace(anchor, block+anchor)
