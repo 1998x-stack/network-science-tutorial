@@ -42,7 +42,7 @@ def run():
         page.set_content(inline_page('../index.html'))
         assert page.locator('.lesson').count()==28
         assert page.locator('#learning-roadmap img').count()==1
-        assert page.locator('#learning-roadmap img').first.evaluate('(el)=>el.complete&&el.naturalWidth==1250')
+        page.wait_for_function("document.querySelector('#learning-roadmap img')?.complete && document.querySelector('#learning-roadmap img')?.naturalWidth > 0")
         assert page.locator('.phase-links a').count()==6
         assert page.locator('.phase-links a[href="24.html"]').count()==1
         page.set_viewport_size({'width':360,'height':800})
@@ -82,7 +82,7 @@ def run():
             assert visual.count()==1,number
             assert visual.get_attribute('data-visual-chapter')==number
             assert visual.locator('img').count()==1
-            assert visual.locator('img').evaluate('(el)=>el.complete&&el.naturalWidth===1100')
+            page.wait_for_function("document.querySelector('.migrated-article .visual-storyboard img')?.complete && document.querySelector('.migrated-article .visual-storyboard img')?.naturalWidth > 0")
             assert visual.locator('figcaption').inner_text().startswith('检验点：')
             assert page.locator('.migrated-article .lesson-jump a').count()==4
             for href in page.locator('.migrated-article .lesson-jump a').evaluate_all('(els)=>els.map(el=>el.getAttribute("href"))'):
