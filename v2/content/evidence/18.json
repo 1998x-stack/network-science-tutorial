@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0.0",
+  "chapter": "18",
+  "review_status": "reviewed",
+  "claims": [
+    {
+      "id": "event-to-graph",
+      "claim": "Converting interaction event records to a graph requires choosing direction, duplicate treatment, loops, time scope and node boundaries.",
+      "source_url": "https://networkx.org/documentation/stable/reference/classes/generated/networkx.Graph.html",
+      "locator": "NetworkX Graph semantics and edge representation, combined with explicit modeling convention",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "missing-bias",
+      "claim": "Missing records, non-response, boundary choices and sampling affect graph statistics including degree, clustering and connected components.",
+      "source_url": "https://doi.org/10.1016/j.socnet.2005.07.002",
+      "locator": "Kossinets (2006), effects of missing data in social networks",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "sampling-sensitivity",
+      "claim": "Random missing nodes distort centrality and topology measurements to differing degrees.",
+      "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3846431/",
+      "locator": "Smith and Moody (2013), structural effects of network sampling coverage I",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "ethical-data",
+      "claim": "Computing professionals should respect privacy and only access data with appropriate authorization.",
+      "source_url": "https://www.acm.org/code-of-ethics",
+      "locator": "ACM Code of Ethics principles on privacy and authorized access",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "synthetic-counts",
+      "claim": "The six explicitly enumerated synthetic records collapse into five vertices and four undirected edges when reversing endpoints is deduplicated and self loops are omitted.",
+      "source_url": "https://networkx.org/documentation/stable/reference/classes/generated/networkx.Graph.html",
+      "locator": "Derived from six explicit event rows and exact projection/oracle code",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "missing-bridge",
+      "claim": "Removing C-D from the A-B-C-D-E path leaves connected component sizes 3 and 2.",
+      "source_url": "https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.components.connected_components.html",
+      "locator": "Derived from explicit projection and NetworkX connected_components",
+      "status": "derived",
+      "kind": "derived"
+    }
+  ]
+}
