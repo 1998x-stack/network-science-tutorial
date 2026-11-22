@@ -1,1 +1,13 @@
-C_D(v) = deg(v) / (N - 1)
+import networkx as nx
+graph = nx.Graph([(0, 1), (1, 2), (2, 0),
+                  (2, 3), (3, 4), (4, 5), (5, 3)])
+degree = nx.degree_centrality(graph)
+between = nx.betweenness_centrality(graph, normalized=True, endpoints=False)
+eigen = nx.eigenvector_centrality(graph, max_iter=1000)
+assert degree[2] == 0.6 and degree[3] == 0.6
+assert abs(between[2] - 0.6) < 1e-12
+assert abs(between[3] - 0.6) < 1e-12
+assert all(abs(between[v]) < 1e-12 for v in (0, 1, 4, 5))
+print("degree:", degree)
+print("betweenness:", between)
+print("eigenvector:", eigen)

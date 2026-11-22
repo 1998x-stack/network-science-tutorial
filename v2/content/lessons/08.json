@@ -3,100 +3,48 @@
   "chapter": "08",
   "title": "中心性分析",
   "source_path": "08.html",
-  "source_git_blob": "6d2d2ec9ee2f22a0a5565c177738eb161458f24f",
-  "review_status": "migrated_unreviewed",
+  "source_git_blob": "4e4d9b156f8b2a3748781a112e69050e52b6f7a8",
+  "review_status": "reviewed",
   "headings": [
     {
       "depth": 2,
-      "title": "什么是中心性"
+      "title": "节点“重要”到底指什么？"
     },
     {
       "depth": 2,
-      "title": "Degree Centrality"
+      "title": "度中心性：先看直接连接多少人"
+    },
+    {
+      "depth": 2,
+      "title": "介数中心性：谁站在最短路径中间？"
+    },
+    {
+      "depth": 2,
+      "title": "让同一张图回答三个不同的问题"
     },
     {
       "depth": 3,
-      "title": "度中心性的局限"
+      "title": "切换“重要性”的定义"
     },
     {
       "depth": 2,
-      "title": "Betweenness Centrality"
-    },
-    {
-      "depth": 3,
-      "title": "计算复杂度"
+      "title": "特征向量中心性：邻居是谁也重要"
     },
     {
       "depth": 2,
-      "title": "Closeness Centrality"
-    },
-    {
-      "depth": 3,
-      "title": "处理不连通图的挑战"
+      "title": "用 NetworkX 计算并验证桥梁节点"
     },
     {
       "depth": 2,
-      "title": "Eigenvector Centrality"
-    },
-    {
-      "depth": 3,
-      "title": "Katz Centrality"
-    },
-    {
-      "depth": 2,
-      "title": "LeaderRank"
-    },
-    {
-      "depth": 2,
-      "title": "中心性比较：Zachary's Karate Club"
-    },
-    {
-      "depth": 2,
-      "title": "如何选择中心性指标"
+      "title": "原始资料与技术参考"
     }
   ],
   "examples": [
     {
       "id": "01",
       "path": "content/examples/08/01.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
-    },
-    {
-      "id": "02",
-      "path": "content/examples/08/02.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
-    },
-    {
-      "id": "03",
-      "path": "content/examples/08/03.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
-    },
-    {
-      "id": "04",
-      "path": "content/examples/08/04.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
-    },
-    {
-      "id": "05",
-      "path": "content/examples/08/05.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
-    },
-    {
-      "id": "06",
-      "path": "content/examples/08/06.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
-    },
-    {
-      "id": "07",
-      "path": "content/examples/08/07.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
+      "language": "python",
+      "review_status": "tested"
     }
   ]
 }

@@ -1,1 +1,9 @@
-PR(v) = (1-d)/N + d × Σ_{u∈B(v)} PR(u) / L(u)
+import networkx as nx
+graph = nx.DiGraph()
+graph.add_nodes_from("ABCD")
+graph.add_edges_from([("A", "B"), ("B", "C"), ("C", "B")])
+rank = nx.pagerank(graph, alpha=0.85, max_iter=1000, tol=1e-12)
+assert abs(sum(rank.values()) - 1.0) < 1e-10
+assert rank["B"] > rank["C"] > rank["A"]
+assert abs(rank["A"] - rank["D"]) < 1e-10
+print({node: round(rank[node], 6) for node in "ABCD"})
