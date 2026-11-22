@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.0.0",
+  "chapter": "28",
+  "review_status": "reviewed",
+  "claims": [
+    {
+      "id": "capstone-28-1",
+      "claim": "FAIR data management principles prescribe findability, accessibility, interoperability, and reusability",
+      "source_url": "https://doi.org/10.1038/sdata.2016.18",
+      "locator": "Original FAIR principles publication",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "capstone-28-2",
+      "claim": "OGB aims to provide realistic graph datasets with repeatable evaluation protocols",
+      "source_url": "https://proceedings.neurips.cc/paper/2020/hash/fb60d411a5c5b72b2e7d3527cfc84fd0-Abstract.html",
+      "locator": "Open Graph Benchmark 2020 paper",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "capstone-28-3",
+      "claim": "OGB link prediction benchmarks have task-specific split and evaluation definitions",
+      "source_url": "https://ogb.stanford.edu/docs/linkprop/",
+      "locator": "Official OGB Link Property Prediction dataset documentation",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "capstone-28-4",
+      "claim": "Common-neighbors count is cardinality of neighborhood intersection",
+      "source_url": "https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.link_prediction.common_neighbors.html",
+      "locator": "NetworkX common_neighbors API math definition",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "capstone-28-5",
+      "claim": "Toy train events until time 3 make n=5 m=5 and degree sum 10",
+      "source_url": "https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.link_prediction.common_neighbors.html",
+      "locator": "Derived from explicitly listed six synthetic timestamped records",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "capstone-28-6",
+      "claim": "Toy CN(B,D) is 1 and CN(B,E) is 0 using training-only graph",
+      "source_url": "https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.link_prediction.common_neighbors.html",
+      "locator": "Derived neighborhood sets B={A,C},D={C,E},E={D}",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "capstone-28-7",
+      "claim": "Toy Precision@1 is 1 under exactly two candidates and exactly one positive future edge",
+      "source_url": "https://ogb.stanford.edu/docs/linkprop/",
+      "locator": "Arithmetic of synthetic candidate pool; not empirical benchmark",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "capstone-28-8",
+      "claim": "Link prediction targets unobserved or future network connections from observed structure",
+      "source_url": "https://doi.org/10.1002/asi.20591",
+      "locator": "Original link prediction task definition",
+      "status": "verified",
+      "kind": "reference"
+    }
+  ]
+}
