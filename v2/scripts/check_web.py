@@ -6,6 +6,9 @@ from pathlib import Path
 from urllib.parse import unquote, urlsplit
 import sys
 ROOT=Path(__file__).resolve().parents[1]
+# V2 is a subtree of the same static repository; reviewed articles link to
+# repository-root research pages. Restrict links to that repository, not only V2.
+PROJECT=ROOT.parent
 WEB=ROOT/'apps/web'
 
 class Links(html.parser.HTMLParser):
@@ -30,7 +33,7 @@ def main():
                 errors.append(f'{page.relative_to(ROOT)}: unsupported URL {u}');continue
             if parsed.path:
                 target=(page.parent/unquote(parsed.path)).resolve()
-                if not target.is_relative_to(ROOT.resolve()):errors.append(f'{page.name}: path escapes project root {u}')
+                if not target.is_relative_to(PROJECT.resolve()):errors.append(f'{page.name}: path escapes repository root {u}')
                 elif not target.is_file():errors.append(f'{page.relative_to(ROOT)}: broken link {u}')
     for e in errors:print('ERROR:',e,file=sys.stderr)
     if errors:return 1
