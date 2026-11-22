@@ -12,15 +12,17 @@
 <a class="brand" href="index.html"><span class="brand-mark">◉</span><span>NETWORK SCIENCE<small>网络科学 · 结构与复杂系统</small></span></a>
 <nav class="navlinks" aria-label="站点导航"><a href="index.html">课程首页</a><a href="v2/apps/web/lab.html">Graph Lab</a><a href="v2/apps/web/compare.html">模型比较</a><a href="v2/apps/web/datasets.html">数据集</a></nav>
 </header>
-<main class="shell lesson-layout">
+<main class="shell lesson-layout"><a class="skip-lesson" href="#lesson-content">跳到本章正文</a>
 <aside class="panel"><nav class="chapter-index" aria-label="28章课程导航"><h2>课程目录</h2><ol><li><a href="01.html">01 · 网络科学导论</a></li><li><a href="02.html" class="active" aria-current="page">02 · 图论基础</a></li><li><a href="03.html">03 · 网络基本度量</a></li><li><a href="04.html">04 · 随机网络模型</a></li><li><a href="05.html">05 · 小世界网络</a></li><li><a href="06.html">06 · 无标度网络</a></li><li><a href="07.html">07 · 度分布与网络异质性</a></li><li><a href="08.html">08 · 中心性分析</a></li><li><a href="09.html">09 · PageRank与链接分析</a></li><li><a href="10.html">10 · 社团检测（上）</a></li><li><a href="11.html">11 · 社团检测（下）</a></li><li><a href="12.html">12 · 网络传播动力学</a></li><li><a href="13.html">13 · 信息与谣言传播</a></li><li><a href="14.html">14 · 网络上的博弈</a></li><li><a href="15.html">15 · 网络鲁棒性与脆弱性</a></li><li><a href="16.html">16 · 链路预测</a></li><li><a href="17.html">17 · 网络可视化</a></li><li><a href="18.html">18 · 网络数据采集</a></li><li><a href="19.html">19 · 多层网络</a></li><li><a href="20.html">20 · 时序与动态网络</a></li><li><a href="21.html">21 · 网络嵌入与表示学习</a></li><li><a href="22.html">22 · 图神经网络入门</a></li><li><a href="23.html">23 · NetworkX实战</a></li><li><a href="24.html">24 · 社交网络分析案例</a></li><li><a href="25.html">25 · 大规模网络分析</a></li><li><a href="26.html">26 · 网络科学+机器学习</a></li><li><a href="27.html">27 · 网络科学前沿</a></li><li><a href="28.html">28 · 综合实战项目</a></li></ol></nav></aside>
 <div class="main-content">
-<article class="lesson-article"><header class="lesson-hero">
+<article class="lesson-article" id="lesson-content"><header class="lesson-hero">
 <p class="eyebrow">GRAPH THEORY / MATHEMATICAL LANGUAGE</p>
 <h1>第2章 图论基础</h1>
 <p class="dek">一张图由什么组成，决定了它能回答什么问题。</p>
 <p class="reading-meta">核心问题：怎样把现实关系转换成精确、可计算、不会混淆语义的数据结构？</p>
 </header>
+<figure class="visual-storyboard" data-visual-chapter="02" aria-label="四节点路径与邻接矩阵"><div class="visual-heading"><span class="visual-label">先读图 · 再看公式与实验</span><span class="visual-hint">左侧结构 → 右侧三个核对步骤</span></div><div class="diagram-viewport" tabindex="0" role="region" aria-label="第2章图解，可在窄屏横向滚动"><img src="assets/lessons/02-visual.svg" alt="四节点路径与邻接矩阵：A—B—C—D 的 3 条无向边，对应一张对称的 4×4 邻接矩阵。矩阵对角线为 0，总度数是 6。"></div><figcaption><strong>检验点：</strong>A—B—C—D 的 3 条无向边，对应一张对称的 4×4 邻接矩阵。矩阵对角线为 0，总度数是 6。</figcaption></figure>
+<nav class="lesson-jump" aria-label="本章内容导览"><span class="jump-label">本章阅读路线</span><a href="#definition">1 · 从现实关系到数学对象</a><a href="#graph-types">2 · 先判断你处理的是哪一种图</a><a href="#degree">3 · 度数与握手定理</a><a href="#references">↗ 参考资料</a></nav>
 <section id="definition">
 <h2>从现实关系到数学对象</h2>
 <p>图论研究由顶点和边组成的离散结构。给定顶点集合 <math class="math-inline" aria-label="V"><mi>V</mi></math> 与边集合 <math class="math-inline" aria-label="E"><mi>E</mi></math>，图记作 <math class="math-inline" aria-label="G 等于 V 和 E"><mrow><mi>G</mi><mo>=</mo><mo>(</mo><mi>V</mi><mo>,</mo><mi>E</mi><mo>)</mo></mrow></math>。例如，在地铁网络中，顶点可以是车站，边可以表示两站之间存在直达轨道；在引用网络中，顶点是论文，有向边表示一篇论文引用另一篇论文。</p>
