@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0.0",
+  "chapter": "19",
+  "review_status": "reviewed",
+  "claims": [
+    {
+      "id": "framework",
+      "claim": "Multilayer network models distinguish entities, layers, node-layer tuples, intralayer links and interlayer couplings.",
+      "source_url": "https://doi.org/10.1093/comnet/cnu016",
+      "locator": "Kivelä et al. (2014), taxonomy and general multilayer framework",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "tensor-blocks",
+      "claim": "Supra adjacency representations can use layer diagonal blocks and interlayer off-diagonal coupling blocks.",
+      "source_url": "https://doi.org/10.1103/PhysRevX.3.041022",
+      "locator": "De Domenico et al. (2013), mathematical multilayer formalization",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "multiplex-not-interdependent",
+      "claim": "Multiplex, interdependent and networks-of-networks models do not assign identical semantics to all cross-layer links.",
+      "source_url": "https://doi.org/10.1093/comnet/cnu016",
+      "locator": "Kivelä et al. (2014), terminology and taxonomy",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "toy-graph-count",
+      "claim": "The teaching supra graph has 4 real actors, 2 layers, 8 node-layer states, 4 intralayer and 4 identity cross-layer edges.",
+      "source_url": "https://networkx.org/documentation/stable/reference/classes/generated/networkx.Graph.html",
+      "locator": "Derived from explicitly enumerated network and NetworkX construction oracle",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "toy-paths",
+      "claim": "From (B,social) to (D,collab), the legal supra path uses three unit-cost edges; flattening gives two, disabling switching makes the state pair disconnected.",
+      "source_url": "https://networkx.org/documentation/stable/reference/algorithms/shortest_paths.html",
+      "locator": "Derived via NetworkX shortest_path and has_path on three specified graphs",
+      "status": "derived",
+      "kind": "derived"
+    }
+  ]
+}
