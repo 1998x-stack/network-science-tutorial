@@ -62,7 +62,7 @@ def run():
         page.locator('.lesson[data-number="04"] .open-lesson').dispatch_event('click',{'button':1,'ctrlKey':True})
         # Page links are verified in static-generation tests. Do not navigate from about:blank.
         # S04/S05: ten independently authored lessons, standalone SVGs, MathML and tested controls.
-        for number in ('01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20'):
+        for number in ('01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25'):
             page.set_viewport_size({'width':1440,'height':900})
             page.set_content(inline_page(f'apps/web/lessons/{number}.html'))
             assert page.locator('.migrated-article figure').count()>=1
@@ -168,7 +168,32 @@ def run():
                 assert page.locator('[data-temporal-count]').inner_text()=='2 / 4'
                 page.locator('[data-temporal-schedule="ordered"]').click()
                 assert page.locator('[data-temporal-arrival]').inner_text()=='3'
-            if number in ('06','07','08','09','10','11','12','13','14','15','16','17','18','19','20'):
+            elif number=='21':
+                page.locator('[data-n2v-q]').evaluate('(el)=>{el.value="0.5";el.dispatchEvent(new Event("input",{bubbles:true}))}')
+                assert page.locator('[data-n2v-d]').inner_text()=='0.500'
+                assert '1.000' in page.locator('[data-n2v-note]').inner_text()
+            elif number=='22':
+                page.locator('[data-gcn-x]').evaluate('(el)=>{el.value="2";el.dispatchEvent(new Event("input",{bubbles:true}))}')
+                assert page.locator('[data-gcn-output]').inner_text()=='0.8165'
+                page.locator('[data-gat-logit]').evaluate('(el)=>{el.value="-1";el.dispatchEvent(new Event("input",{bubbles:true}))}')
+                assert page.locator('[data-gat-c]').inner_text()=='0.269'
+            elif number=='23':
+                page.locator('[data-bridge-choice="drop"]').click()
+                assert page.locator('[data-bridge-components]').inner_text()=='3'
+                assert page.locator('[data-bridge-lcc]').inner_text()=='3 / 7'
+            elif number=='24':
+                page.locator('[data-label-choice="swap"]').click()
+                assert page.locator('[data-label-raw]').inner_text()=='0%'
+                assert page.locator('[data-label-aligned]').inner_text()=='100%'
+                page.locator('[data-projection-n]').evaluate('(el)=>{el.value="10";el.dispatchEvent(new Event("input",{bubbles:true}))}')
+                assert page.locator('[data-projection-edges]').inner_text()=='45'
+            elif number=='25':
+                page.locator('[data-memory-n]').evaluate('(el)=>{el.value="20000";el.dispatchEvent(new Event("input",{bubbles:true}))}')
+                assert page.locator('[data-memory-dense]').inner_text()=='3200.0 MB'
+                page.locator('[data-sampling-leaves]').evaluate('(el)=>{el.value="9";el.dispatchEvent(new Event("input",{bubbles:true}))}')
+                assert page.locator('[data-sampling-uniform]').inner_text()=='0.1000'
+                assert page.locator('[data-sampling-walk]').inner_text()=='0.5000'
+            if number in ('06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25'):
                 captures=ROOT/'screenshots'
                 captures.mkdir(parents=True,exist_ok=True)
                 page.screenshot(path=str(captures/f'lesson-{number}-desktop.png'),full_page=True)
@@ -211,6 +236,6 @@ def run():
         page.set_content(inline_page('apps/web/lab.html'))
         page.screenshot(path=str(ROOT/'screenshots/s02-graph-lab.png'),full_page=True)
         browser.close()
-    print('Chromium E2E passed: root portal, V2 reader, first-twenty responsive lessons and controls, Graph Lab, comparison, registry and legacy viewer.')
+    print('Chromium E2E passed: root portal, V2 reader, first-twenty-five responsive lessons and controls, Graph Lab, comparison, registry and legacy viewer.')
 
 if __name__=='__main__':run()

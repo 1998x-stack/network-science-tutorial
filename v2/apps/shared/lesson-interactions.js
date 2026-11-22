@@ -295,4 +295,109 @@ function initFourthBatch(doc){
  });
 }
 
-return {erExpected,wsRegime,metricText,baProbability,degreeFrequency,pagerankDistribution,toyModularity,kCoreNodes,sirRisk,sirPathState,cascadeHistory,donationPayoffs,voterCopy,robustnessAfterRemoval,overloadAfterFailure,linkPredictionScores,collectionProjection,multiplexPath,temporalEarliest,init(doc){init(doc);initAdvanced(doc);initThirdBatch(doc);initFourthBatch(doc);}};});
+
+/* Batch 21–25: pure, deterministic arithmetic contracts shared by the lesson UI and unit tests. */
+function node2vecToy(p,q) {
+ if(!Number.isFinite(p)||!Number.isFinite(q)||p<=0||q<=0)throw new RangeError('p and q must be positive');
+ const a=1/p,c=1,d=1/q,total=a+c+d;
+ return {A:a/total,C:c/total,D:d/total};
+}
+function gcnToy(x) {
+ if(!Number.isFinite(x))throw new RangeError('x must be finite');
+ return {normalized:x/Math.sqrt(6),mean:x/3};
+}
+function gatToy(logit) {
+ if(!Number.isFinite(logit))throw new RangeError('logit must be finite');
+ const c=1/(1+Math.exp(-logit));
+ return {A:1-c,C:c};
+}
+function bridgeToy(which) {
+ if(which==='keep')return {components:2,lcc:6,density:1/3};
+ if(which==='drop')return {components:3,lcc:3,density:2/7};
+ throw new RangeError('choose keep or drop');
+}
+function labelAlignmentToy(which) {
+ if(which==='same')return {raw:1,aligned:1,description:'算法 A A B B：完全相同。'};
+ if(which==='swap')return {raw:0,aligned:1,description:'算法 B B A A：编号整体交换，划分仍相同。'};
+ if(which==='mixed')return {raw:.5,aligned:.5,description:'算法 A B B A：无法通过整体置换消除分歧。'};
+ throw new RangeError('unknown partition');
+}
+function projectionEdges(n) {
+ if(!Number.isInteger(n)||n<2||n>10000)throw new RangeError('invalid paper author count');
+ return n*(n-1)/2;
+}
+function sparseMemoryToy(n,m=5*n) {
+ if(!Number.isInteger(n)||n<2||!Number.isInteger(m)||m<0||m>n*(n-1)/2)throw new RangeError('invalid simple graph');
+ return {denseBytes:8*n*n,csrBytes:8*(n+1)+32*m};
+}
+function starSampleToy(leaves) {
+ if(!Number.isInteger(leaves)||leaves<1)throw new RangeError('star needs leaves');
+ return {uniform:1/(leaves+1),stationary:0.5};
+}
+function initFifthBatch(doc){
+ const updateText=(scope,selector,value)=>{const el=scope.querySelector(selector);if(el)el.textContent=String(value);};
+ const press=(scope,attr,chosen)=>scope.querySelectorAll('['+attr+']').forEach(el=>el.setAttribute('aria-pressed',String(el===chosen)));
+ doc.querySelectorAll('[data-demo="n2v"]').forEach(group=>{
+  const p=group.querySelector('[data-n2v-p]'),q=group.querySelector('[data-n2v-q]');
+  const update=()=>{const a=Number(p.value),b=Number(q.value),r=node2vecToy(a,b);
+   updateText(group,'[data-n2v-p-label]',a.toFixed(2));updateText(group,'[data-n2v-q-label]',b.toFixed(2));
+   for(const k of ['A','C','D'])updateText(group,'[data-n2v-'+k.toLowerCase()+']',r[k].toFixed(3));
+   updateText(group,'[data-n2v-note]','总概率 = '+(r.A+r.C+r.D).toFixed(3)+'；调整 p/q 改变局部权重，不产生训练后节点嵌入。');
+  };
+  p.addEventListener('input',update);q.addEventListener('input',update);update();
+ });
+ doc.querySelectorAll('[data-demo="gcn"]').forEach(group=>{
+  const inp=group.querySelector('[data-gcn-x]'),update=()=>{const x=Number(inp.value),r=gcnToy(x);
+   updateText(group,'[data-gcn-x-label]',x.toFixed(2));
+   updateText(group,'[data-gcn-output]',r.normalized.toFixed(4));
+   updateText(group,'[data-gcn-mean]',r.mean.toFixed(4));};
+  inp.addEventListener('input',update);update();
+ });
+ doc.querySelectorAll('[data-demo="gat"]').forEach(group=>{
+  const inp=group.querySelector('[data-gat-logit]'),update=()=>{const l=Number(inp.value),r=gatToy(l);
+   updateText(group,'[data-gat-logit-label]',l.toFixed(2));
+   updateText(group,'[data-gat-a]',r.A.toFixed(3));
+   updateText(group,'[data-gat-c]',r.C.toFixed(3));};
+  inp.addEventListener('input',update);update();
+ });
+ doc.querySelectorAll('[data-demo="bridge"]').forEach(group=>{
+  const update=b=>{press(group,'data-bridge-choice',b);const r=bridgeToy(b.dataset.bridgeChoice);
+   updateText(group,'[data-bridge-components]',r.components);
+   updateText(group,'[data-bridge-lcc]',r.lcc+' / 7');
+   updateText(group,'[data-bridge-density]',r.density.toFixed(6));
+   updateText(group,'[data-bridge-note]',b.dataset.bridgeChoice==='keep'?'桥保留：六节点分量连通，G 孤立。':'移除桥：两组三角形分离，G 仍孤立。');};
+  group.querySelectorAll('[data-bridge-choice]').forEach(b=>b.addEventListener('click',()=>update(b)));
+  update(group.querySelector('[data-bridge-choice="keep"]'));
+ });
+ doc.querySelectorAll('[data-demo="labels"]').forEach(group=>{
+  const update=b=>{press(group,'data-label-choice',b);const r=labelAlignmentToy(b.dataset.labelChoice);
+   updateText(group,'[data-label-raw]',(r.raw*100)+'%');
+   updateText(group,'[data-label-aligned]',(r.aligned*100)+'%');
+   updateText(group,'[data-label-note]','真实标签 A A B B；'+r.description);};
+  group.querySelectorAll('[data-label-choice]').forEach(b=>b.addEventListener('click',()=>update(b)));
+  update(group.querySelector('[data-label-choice="same"]'));
+ });
+ doc.querySelectorAll('[data-demo="projection"]').forEach(group=>{
+  const inp=group.querySelector('[data-projection-n]'),update=()=>{const n=Number(inp.value);
+   updateText(group,'[data-projection-n-label]',n);
+   updateText(group,'[data-projection-bipartite]',n);
+   updateText(group,'[data-projection-edges]',projectionEdges(n));};
+  inp.addEventListener('input',update);update();
+ });
+ doc.querySelectorAll('[data-demo="memory"]').forEach(group=>{
+  const inp=group.querySelector('[data-memory-n]'),update=()=>{const n=Number(inp.value),r=sparseMemoryToy(n);
+   updateText(group,'[data-memory-n-label]',n);
+   updateText(group,'[data-memory-dense]',(r.denseBytes/1e6).toFixed(1)+' MB');
+   updateText(group,'[data-memory-csr]',(r.csrBytes/1e6).toFixed(1)+' MB');};
+  inp.addEventListener('input',update);update();
+ });
+ doc.querySelectorAll('[data-demo="sampling"]').forEach(group=>{
+  const inp=group.querySelector('[data-sampling-leaves]'),update=()=>{const n=Number(inp.value),r=starSampleToy(n);
+   updateText(group,'[data-sampling-leaves-label]',n);
+   updateText(group,'[data-sampling-uniform]',r.uniform.toFixed(4));
+   updateText(group,'[data-sampling-walk]',r.stationary.toFixed(4));};
+  inp.addEventListener('input',update);update();
+ });
+}
+
+return {erExpected,wsRegime,metricText,baProbability,degreeFrequency,pagerankDistribution,toyModularity,kCoreNodes,sirRisk,sirPathState,cascadeHistory,donationPayoffs,voterCopy,robustnessAfterRemoval,overloadAfterFailure,linkPredictionScores,collectionProjection,multiplexPath,temporalEarliest,node2vecToy,gcnToy,gatToy,bridgeToy,labelAlignmentToy,projectionEdges,sparseMemoryToy,starSampleToy,init(doc){init(doc);initAdvanced(doc);initThirdBatch(doc);initFourthBatch(doc);initFifthBatch(doc);}};});

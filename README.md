@@ -2,7 +2,7 @@
 
 一套 **28 章中文网络科学课程**，覆盖图论、网络度量、随机网络、小世界与无标度结构、中心性、社团检测、传播动力学、网络表示学习、图神经网络和综合实践。
 
-课程以独立 HTML 页面发布。正文从具体问题出发，明确模型假设、公式含义、可运行示例、适用边界和原始参考资料。前二十章已完成第一轮内容重构与证据审校；其余章节保留既有内容，按相同质量门槛逐批升级。
+课程以独立 HTML 页面发布。正文从具体问题出发，明确模型假设、公式含义、可运行示例、适用边界和原始参考资料。前二十五章已完成第一轮内容重构与证据审校；其余章节保留既有内容，按相同质量门槛逐批升级。
 
 ## 在线入口
 
@@ -72,7 +72,7 @@ python3 -m http.server 8000
 - 根目录 `NN.html` 是兼容阅读入口，也是 S03 迁移流程的原始来源。
 - `v2/content/lessons/NN.html`、元数据和代码摘录由 `v2/scripts/migrate_lessons.py` 确定性生成；不要直接编辑生成快照。
 - `v2/apps/web/` 页面由 `v2/scripts/build_web.py` 从课程目录、实验结果和迁移正文生成。
-- 第 1–20 章的证据账本位于 `v2/content/evidence/`。这些章节包含独立 SVG、MathML、交互控件、可运行代码和参考文献。
+- 第 1–25 章的证据账本位于 `v2/content/evidence/`。这些章节包含独立 SVG、MathML、交互控件、可运行代码和参考文献。
 - 其余章节的迁移状态不代表科学审校完成；请查看每章 JSON 的 `review_status`。
 
 ## 开发与质量检查
@@ -92,7 +92,7 @@ python3 tests/web/e2e.py
 
 静态检查验证文件、章节导航、链接和构建快照，不等于科学审稿；数值单测验证公式与图不变量，不等于真实世界数据复现；Chromium E2E 验证指定视口与控件行为，未执行的设备不得标为通过。
 
-## 逐批内容审校：第 01–20 章
+## 逐批内容审校：第 01–25 章
 
 | 章节 | 本轮处理 |
 |---|---|
@@ -116,7 +116,27 @@ python3 tests/web/e2e.py
 | 18 | 事件源数据、方向/去重/自环语义、缺失偏差与数据隐私 |
 | 19 | multiplex 节点—层状态、supra-adjacency 与跨层可达性 |
 | 20 | 时间尊重路径、严格递增事件顺序、最早到达及静态聚合陷阱 |
+| 21 | DeepWalk 窗口目标、node2vec 二阶转移、struc2vec 结构角色与未来边泄漏 |
+| 22 | GCN 对称归一化、GAT 邻域 softmax、GraphSAGE 采样、过平滑和过压缩 |
+| 23 | NetworkX 图类型、孤立点、桥与分量、BFS 与 API 交叉验证 |
+| 24 | Karate Club 34/78 来源、社区标签置换、ca-GrQc 合著投影与隐私边界 |
+| 25 | 稀疏 CSR 存储、复杂度、星形图采样偏差、igraph/Neo4j/分布式选型 |
 
 ## 参考文献与许可
 
 课程优先链接原始论文、教材和官方 API 文档。图解由本项目独立绘制；不复制第三方文章的文字、图像或代码。仓库未声明覆盖全部历史素材的通用许可证；再分发前请检查各来源许可并补充项目许可证。
+
+## 第五批：21–25 极深度可视化与科学审计（2026-11-22）
+
+第 21–25 章均完成完整 HTML 重写、原始资料定位、每篇至少六项证据论断、原创 SVG 双图、MathML、真实离线 JS 交互及可复算 Python 示例。V2 阅读器内容由 `v2/scripts/migrate_lessons.py`、`v2/scripts/build_web.py` 从根目录确定性生成，不单独编辑快照。所有论文分数/真实数据集统计与教学模拟分开标注。
+
+实验边界：21–22 的 Python 核对纯数值，不代表训练了 DeepWalk/GNN；23 的 NetworkX、24 的两类置换与 25 的内存公式为可复算模型，未声称在大型社交数据集进行端到端 benchmark。25 的 CSR 理论大小不包括 Python 容器开销、激活或算法工作区。
+
+```bash
+cd v2
+python scripts/migrate_lessons.py --check
+python scripts/build_web.py --check
+PYTHONPATH=src python -m unittest discover -s tests -v
+node --test tests/web/*.test.cjs
+python tests/web/e2e.py
+```
