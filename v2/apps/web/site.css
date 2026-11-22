@@ -57,3 +57,65 @@
 .lesson-article .interactive-demo button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 
 .lesson-article .interactive-demo [data-layout-circular-payload][hidden]{display:none!important}
+
+
+/* Visual reasoning system V3 — diagram-led lessons and accessible local map */
+.main-content{min-width:0}
+.lesson-article .lesson-hero{padding-bottom:20px;margin-bottom:22px}
+.lesson-article .lesson-hero h1{letter-spacing:-.035em;line-height:1.22;text-wrap:balance}
+.lesson-article .reading-meta{border-left:3px solid var(--accent);padding:7px 0 7px 15px;background:linear-gradient(90deg,#16404b88,transparent);border-radius:0 8px 8px 0}
+.lesson-article section[id]{scroll-margin-top:22px}
+.lesson-article section[id]>h2{letter-spacing:-.015em;text-wrap:pretty}
+.lesson-article .visual-storyboard{padding:17px;margin:0 0 22px;background:linear-gradient(145deg,#142e43,#091a2b);border:1px solid #477f89;border-radius:18px;box-shadow:0 17px 48px #0003}
+.lesson-article .visual-storyboard .visual-heading{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:12px;flex-wrap:wrap}
+.lesson-article .visual-storyboard .visual-label{font-size:11px;letter-spacing:.09em;font-weight:800;color:#a3ead7}
+.lesson-article .visual-storyboard .visual-hint{font-size:12px;color:#c6d8e6}
+.lesson-article .visual-storyboard .diagram-viewport{max-width:100%;overflow-x:auto;overflow-y:hidden;border-radius:12px;scrollbar-width:thin;scrollbar-color:#6eacbd transparent;overscroll-behavior-x:contain}
+.lesson-article .visual-storyboard .diagram-viewport img{display:block;width:100%;max-height:none;height:auto;object-fit:contain;border-radius:12px}
+.lesson-article .visual-storyboard figcaption{font-size:14px;line-height:1.8;color:#c5dceb;margin:13px 0 0;max-width:80ch}
+.lesson-article .visual-storyboard figcaption strong{color:#93e9d2}
+.lesson-article .lesson-jump{display:flex;flex-wrap:wrap;align-items:center;gap:7px 10px;border-bottom:1px solid #345267;padding:8px 0 20px;margin:0 0 28px}
+.lesson-article .lesson-jump .jump-label{font-size:11px;font-weight:790;letter-spacing:.11em;color:#91d9c9;margin-right:3px;white-space:nowrap}
+.lesson-article .lesson-jump a{display:inline-flex;align-items:center;min-height:35px;padding:6px 10px;border:1px solid #385872;border-radius:9px;color:#d8e8f3;background:#11283b;font-size:12px;line-height:1.4}
+.lesson-article .lesson-jump a:hover{border-color:#81dbca;background:#214558;color:#fff}
+.lesson-article .lesson-jump a:focus-visible,.lesson-article .diagram-viewport:focus-visible{outline:3px solid #85f0d4;outline-offset:3px}
+.chapter-index a{transition:background-color .16s ease,color .16s ease}
+.chapter-index a:hover{background:#1e4055;color:#fff}
+.lesson-layout .skip-lesson{position:absolute;left:-9999px;top:auto;z-index:80}
+.lesson-layout .skip-lesson:focus{position:fixed;top:10px;left:12px;background:#93e8ce;color:#102536;border-radius:9px;padding:11px 16px}
+.learning-roadmap{padding-top:18px}
+.learning-roadmap .roadmap-visual{margin:0 0 18px;padding:13px;border-radius:18px;border:1px solid #355973;background:#11273b}
+.learning-roadmap .diagram-viewport{max-width:100%;overflow-x:auto;overflow-y:hidden;border-radius:12px;scrollbar-width:thin}
+.learning-roadmap .diagram-viewport img{display:block;width:100%;height:auto}
+.learning-roadmap figcaption{padding:8px 9px 4px;color:#b6ccdf;font-size:13px;line-height:1.7}
+.learning-roadmap .phase-links{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.learning-roadmap .phase-links a{display:flex;flex-direction:column;gap:6px;border:1px solid #355973;border-radius:12px;padding:14px 16px;background:#142b40;min-width:0}
+.learning-roadmap .phase-links a strong{color:#d5f5eb;font-size:15px}
+.learning-roadmap .phase-links a span{color:#abc3d6;font-size:12px}
+.learning-roadmap .phase-links a:hover{border-color:#9ae9d5;background:#204457}
+.learning-roadmap .phase-links a:focus-visible,.learning-roadmap .diagram-viewport:focus-visible{outline:3px solid #96e7d3;outline-offset:3px}
+@media(max-width:900px){
+ .lesson-layout>.panel{max-height:226px;overflow-y:auto;padding:15px}
+ .chapter-index{position:static;max-height:none;overflow:visible}
+ .chapter-index h2::after{content:" · 滚动查看章节";font-size:12px;color:var(--muted);font-weight:400}
+ .learning-roadmap .phase-links{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:640px){
+ .lesson-article .visual-storyboard{padding:11px 10px 14px}
+ .lesson-article .visual-storyboard .diagram-viewport img{min-width:760px}
+ .lesson-article .visual-storyboard .visual-hint{max-width:210px}
+ .lesson-article .lesson-jump{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin}
+ .lesson-article .lesson-jump a{white-space:nowrap}
+ .learning-roadmap .diagram-viewport img{min-width:830px}
+ .learning-roadmap .phase-links{grid-template-columns:1fr}
+ .lesson-layout>.panel{max-height:186px}
+}
+@media print{
+ .lesson-article .visual-storyboard{break-inside:avoid;box-shadow:none}
+ .lesson-article .visual-storyboard .diagram-viewport{overflow:visible}
+ .lesson-article .visual-storyboard .diagram-viewport img{min-width:0;max-width:100%}
+ .lesson-article .lesson-jump{display:none}
+ .learning-roadmap .diagram-viewport{overflow:visible}
+ .learning-roadmap .diagram-viewport img{min-width:0}
+}
+@media(prefers-reduced-motion:reduce){.chapter-index a{transition:none}}
