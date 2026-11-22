@@ -1,330 +1,57 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
-    <title>第26章 网络科学+机器学习</title>
-    <link rel="stylesheet" href="theme.css">
-</head>
-<body>
-<div class="double-border">
-<div class="container">
-    <div class="sidebar">
-        <h3>🌐 课程目录</h3>
-        <ul class="chapter-list">
-            <li><a href="01.html">第1章 网络科学导论</a></li>
-            <li><a href="02.html">第2章 图论基础</a></li>
-            <li><a href="03.html">第3章 网络基本度量</a></li>
-            <li><a href="04.html">第4章 随机网络模型</a></li>
-            <li><a href="05.html">第5章 小世界网络</a></li>
-            <li><a href="06.html">第6章 无标度网络</a></li>
-            <li><a href="07.html">第7章 度分布与网络异质性</a></li>
-            <li><a href="08.html">第8章 中心性分析</a></li>
-            <li><a href="09.html">第9章 PageRank与链接分析</a></li>
-            <li><a href="10.html">第10章 社团检测（上）</a></li>
-            <li><a href="11.html">第11章 社团检测（下）</a></li>
-            <li><a href="12.html">第12章 网络传播动力学</a></li>
-            <li><a href="13.html">第13章 信息与谣言传播</a></li>
-            <li><a href="14.html">第14章 网络上的博弈</a></li>
-            <li><a href="15.html">第15章 网络鲁棒性与脆弱性</a></li>
-            <li><a href="16.html">第16章 链路预测</a></li>
-            <li><a href="17.html">第17章 网络可视化</a></li>
-            <li><a href="18.html">第18章 网络数据采集</a></li>
-            <li><a href="19.html">第19章 多层网络</a></li>
-            <li><a href="20.html">第20章 时序与动态网络</a></li>
-            <li><a href="21.html">第21章 网络嵌入与表示学习</a></li>
-            <li><a href="22.html">第22章 图神经网络入门</a></li>
-            <li><a href="23.html">第23章 NetworkX实战</a></li>
-            <li><a href="24.html">第24章 社交网络分析案例</a></li>
-            <li><a href="25.html">第25章 大规模网络分析</a></li>
-            <li><a href="26.html" class="active">第26章 网络科学+机器学习</a></li>
-            <li><a href="27.html">第27章 网络科学前沿</a></li>
-            <li><a href="28.html">第28章 综合实战项目</a></li>
-        </ul>
-    </div>
-    <div class="main-content">
-        <h1>第26章 网络科学+机器学习</h1>
-
-        <p>同学们，欢迎来到第六部分——前沿与项目篇！在前面25章中，我们系统地学习了网络科学的基础理论、分析方法、动力学机制和实战工具。从这一章开始，我们将把目光投向网络科学最激动人心的前沿地带：它如何与机器学习深度融合，催生出全新的技术范式。</p>
-
-        <p>你可能会注意到一个趋势：近五年来，几乎所有顶级的机器学习会议（NeurIPS、ICML、ICLR）上，图相关的论文占比都在持续攀升。Graph Neural Networks、Graph Transformers、Graph Foundation Models 这些概念从一个学术圈的小众方向，逐渐变成了整个AI社区的热门话题。为什么？因为网络结构提供了一种表达关系性知识的天然语言，而传统的机器学习模型（如全连接网络、CNN）并不能很好地处理这种非欧几里得结构的数据。</p>
-
-        <p>本章将探讨网络科学如何赋能机器学习的三个核心方向：推荐系统、知识图谱和最新的Graph Foundation Models。我们会看到，传统的机器学习任务——如特征工程、正则化和模型设计——如何因网络视角的引入而发生根本性的改变。</p>
-
-        <h2>网络科学赋能机器学习</h2>
-
-        <p>在深入具体应用之前，我们先从宏观上理解网络科学能为机器学习带来什么。传统机器学习假设样本是独立同分布的（i.i.d.假设）——每个数据点与其他数据点无关。但在真实世界中，这个假设几乎总是被违反的：用户之间相互影响，基因之间存在调控关系，网页通过超链接彼此连接。</p>
-
-        <p>网络科学提供了三个层面的赋能：</p>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>层面</th>
-                    <th>传统ML做法</th>
-                    <th>引入网络后的改进</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><strong>特征工程</strong></td>
-                    <td>手工设计特征，依赖领域知识</td>
-                    <td>自动从图结构中提取网络特征（度、中心性、社团归属等）</td>
-                </tr>
-                <tr>
-                    <td><strong>正则化</strong></td>
-                    <td>L1/L2惩罚、dropout</td>
-                    <td>利用网络结构约束模型参数，鼓励相邻节点有相似预测</td>
-                </tr>
-                <tr>
-                    <td><strong>模型架构</strong></td>
-                    <td>独立同分布假设</td>
-                    <td>消息传递机制，利用邻居信息聚合增强节点表示</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <p><strong>网络特征工程（Network Feature Engineering）</strong>是最直接的结合方式。在做监督学习任务时，我们不仅可以使用节点的自身属性，还可以将网络拓扑度量作为额外特征加入：节点的度、PageRank值、介数中心性、聚类系数、所属社团ID等。事实证明，这些网络特征往往携带了大量与预测目标相关的信号。</p>
-
-        <p>举个例子。假设我们在一家社交平台做用户流失预测。除了用户的登录频率、发帖数等行为特征外，如果我们加入用户在其社交网络中的"位置"特征——比如他是社群的中心人物还是边缘人物、他的好友中已有多少人流失——预测准确率通常会有显著提升。这是因为网络结构反映了用户的社会嵌入程度，而这种嵌入程度本身就是流失行为的重要预测因子。</p>
-
-        <p><strong>网络正则化（Network Regularization）</strong>则是另一个重要的结合点。在许多问题上，我们认为在图上相邻的节点应该具有相似的预测值。比如在网页分类中，一个网页的类别很可能与它链接到的网页类别相关。网络正则化的核心思想就是在损失函数中加入一项惩罚：</p>
-
-        <pre><code># 网络正则化的数学形式示意
-# L_total = L_supervised + λ * L_network
-
-# L_network 的一种常见形式（图拉普拉斯正则化）：
-# L_network = Σ_{i,j} A_{ij} * ||f(x_i) - f(x_j)||²
-#
-# 其中 A_{ij} 是邻接矩阵，f(x_i) 是节点i的预测值
-# 这个惩罚项鼓励有边相连的节点有相似的预测
-
-# 在实际应用中，可以使用PyTorch + PyG实现：
-import torch
-import torch.nn.functional as F
-
-def graph_laplacian_regularization(predictions, edge_index):
-    """
-    计算图拉普拉斯正则化项
-    predictions: [N, C] 节点预测
-    edge_index: [2, E] 边索引
-    """
-    src, dst = edge_index
-    diff = predictions[src] - predictions[dst]  # [E, C]
-    return torch.mean(torch.norm(diff, dim=1) ** 2)
-
-# 将此项加入总损失即可
-total_loss = supervised_loss + lambda_reg * graph_laplacian_regularization(pred, edge_index)</code></pre>
-
-        <div class="tip">
-            <strong>实践经验：</strong>我在一次电商用户购买预测项目中就使用了网络正则化。用户之间的"同收货地址"关系构成了一个共住网络，我们在这个网络上施加了图拉普拉斯正则化，最终AUC提升了约3.5%。关键教训是：网络正则化的强度λ需要仔细调参，太大则所有节点预测趋同（过度平滑），太小则没有效果。一般建议从λ=0.01开始网格搜索。
-        </div>
-
-        <h2>图数据与推荐系统</h2>
-
-        <p>推荐系统是网络科学与机器学习结合最成功的应用场景之一。事实上，推荐系统的核心问题——预测用户对物品的偏好——可以自然地被建模为一个链路预测问题。</p>
-
-        <p>想象一个二部图（bipartite graph）：左侧是用户节点，右侧是物品节点（电影、商品、文章），边代表用户与物品之间的交互（如评分、购买、点击）。推荐系统的目标就是预测这个二部图中尚未出现的边——即用户可能会喜欢但尚未发现物品的"潜在连接"。</p>
-
-        <p><strong>协同过滤作为链路预测。</strong>传统的协同过滤方法——无论是基于用户的（user-based）还是基于物品的（item-based）——本质上都是在利用二部图的拓扑结构信息。User-based CF的核心是：在用户-物品二部图中，找到与目标用户最相似的其他用户，然后推荐这些用户喜欢的物品。这种"相似"关系的度量（如余弦相似度、皮尔逊相关系数），其实就是图结构中的节点相似性度量。</p>
-
-        <p>更现代的基于图的方法——如NGCF（Neural Graph Collaborative Filtering）和LightGCN——则直接在用户-物品图上进行消息传递。它们的核心思想是：用户在图上经过多层传播后，能够聚合来自其交互物品的信息，以及通过这些物品连接到其他用户的信息，从而得到更加丰富的用户表示。</p>
-
-        <p><strong>社交推荐（Social Recommendation）。</strong>在拥有社交网络数据的平台上（如微博、Twitter、微信），我们可以利用用户之间的社交关系来辅助推荐。这实际上是构建了一个异质图：同时包含用户-用户社交边和用户-物品交互边。</p>
-
-        <p>社交推荐背后的直觉很简单：你的朋友喜欢的东西，你很可能也喜欢。但这里有一个微妙的陷阱——我在后面讲案例时会详细展开。</p>
-
-        <pre><code># 使用PyG实现LightGCN的核心消息传递逻辑
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-from torch_geometric.nn import MessagePassing
-
-class LightGCNConv(MessagePassing):
-    """LightGCN的卷积层 - 简单而有效的消息传递"""
-    def __init__(self):
-        super().__init__(aggr='add')  # 聚合方式为求和
-
-    def forward(self, x, edge_index, edge_weight=None):
-        # x: [N, D] 节点特征
-        # edge_index: [2, E] 边索引
-        return self.propagate(edge_index, x=x, edge_weight=edge_weight)
-
-    def message(self, x_j, edge_weight):
-        # 消息 = 邻居特征 * 边权重（归一化）
-        return x_j if edge_weight is None else edge_weight.view(-1, 1) * x_j
-
-    def __repr__(self):
-        return f'{self.__class__.__name__}()'
-
-# LightGCN去掉了非线性变换和特征变换矩阵
-# 只保留归一化的邻域聚合，在推荐任务上反而表现更好</code></pre>
-
-        <div class="highlight">
-            <strong>关键洞察：</strong>推荐系统领域的顶级会议RecSys近年来一个明显的趋势是——单纯依靠ID嵌入的协同过滤方法正在让位于融合了图结构信息的图推荐方法。Google在2023年发表的论文中报告，在其生产推荐系统中改用图神经网络架构后，用户平均观看时长提升了4.3%。这在一个拥有数十亿用户的平台上是一个巨大的提升。
-        </div>
-
-        <h2>知识图谱</h2>
-
-        <p>如果说前面的讨论关注的是利用网络结构来改进机器学习模型，那么知识图谱（Knowledge Graph, KG）则是另一个方向——用图结构来组织和表示知识本身。</p>
-
-        <p>知识图谱以三元组（triple）的形式表示知识：（头实体, 关系, 尾实体）。比如（北京, 是首都, 中国）、（爱因斯坦, 发现了, 相对论）。这些三元组构成了一个有向标签图（directed labeled graph），其中节点是实体，边是关系。大规模知识图谱如Freebase（包含超过20亿条三元组）、Wikidata（超过10亿条）和Google's Knowledge Graph（超过700亿条）是现代搜索引擎和智能助手的重要基础设施。</p>
-
-        <p><strong>知识图谱补全（Knowledge Graph Completion, KGC）</strong>是知识图谱领域的核心任务。由于现实中的知识图谱往往是不完整的——许多实体间的关系尚未被收录——我们需要预测缺失的三元组。这本质上就是在知识图谱图上的链路预测问题，只不过这里的边是有类型（关系）的。</p>
-
-        <p>经典的知识图谱嵌入方法如TransE、RotatE、ComplEx等，其核心思想是将实体和关系映射到低维向量空间中，使得成立的三元组满足某种几何约束。这里有一个有趣的对比：</p>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>模型</th>
-                    <th>核心思想</th>
-                    <th>几何解释</th>
-                    <th>典型数据集得分</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>TransE</td>
-                    <td>h + r ≈ t</td>
-                    <td>平移变换</td>
-                    <td>WN18RR: MRR 0.226</td>
-                </tr>
-                <tr>
-                    <td>RotatE</td>
-                    <td>h ∘ r ≈ t（逐元素旋转）</td>
-                    <td>复数空间旋转</td>
-                    <td>WN18RR: MRR 0.476</td>
-                </tr>
-                <tr>
-                    <td>ComplEx</td>
-                    <td>Re(h·r·conj(t)) 最大化</td>
-                    <td>复数空间双线性</td>
-                    <td>WN18RR: MRR 0.480</td>
-                </tr>
-                <tr>
-                    <td>R-GCN</td>
-                    <td>图神经网络+关系类型</td>
-                    <td>消息传递+关系特定的变换</td>
-                    <td>FB15k-237: MRR 0.249</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <p>有意思的是，这些方法虽然来自不同的研究传统——前面的平移/旋转方法来自知识图谱社区，R-GCN来自图神经网络社区——但它们都在做同一件事：利用图结构来学习更好的节点和边的表示。</p>
-
-        <div class="warning">
-            <strong>踩坑提醒：</strong>我在实际构建领域知识图谱时犯过一个典型错误。我们为一个医疗项目构建了包含疾病、症状、药物、检查等实体类型的知识图谱，使用TransE进行嵌入。初步结果看起来很好，但仔细检查发现：模型实际上学习了"捷径"——它发现只要同时出现"头痛"和"发热"，那么预测"感冒"的得分就会很高，而不需要真正理解症状与疾病之间的因果路径。解决方法是使用了R-GCN，加入了对关系类型的感知，并引入了路径约束。这也提醒我们：知识图谱补全的"高准确率"不一定意味着"真正理解了知识"。
-        </div>
-
-        <p>另外值得一提的是NELL（Never-Ending Language Learner）项目——一个来自CMU的持续学习系统。NELL从2007年开始24/7地爬取网页，利用已有的三元组作为种子，通过半监督学习不断发现新的实体和关系，然后将新知识加入图谱，用于下一轮学习。到2013年，NELL已经积累了超过5000万条三元组。这个项目展示了网络科学与机器学习在规模上的极致结合：知识图谱本身在不断演化，而模型需要在这种动态图上持续学习。</p>
-
-        <h2>Graph Foundation Models</h2>
-
-        <p>2023年以来，AI社区最热门的词汇之一就是"Foundation Model"——大规模预训练模型，如GPT-4、BERT、CLIP。一个自然的想法是：能否为图数据构建类似的Foundation Model？答案是：研究者们正在全力推进，而且已经取得了一些令人瞩目的进展。</p>
-
-        <p><strong>Graph Foundation Model（GFM）</strong>的目标是：在大量多样的图数据上进行预训练，使模型获得通用的图结构理解能力，然后通过零样本（zero-shot）或少样本（few-shot）方式泛化到未见过的图任务上。这有点像GPT在自然语言上的能力——不需要针对每个下游任务重新训练。</p>
-
-        <p>目前GFM的研究进展可以分为几个方向：</p>
-
-        <ul>
-            <li><strong>大规模图预训练：</strong>在数十亿节点的大规模图数据上预训练GNN，学习通用的节点和结构表示。阿里巴巴的FGL（Fast Graph Learning）框架在大规模商品关系图上预训练了一个GNN backbone，能够零样本迁移到新的商品品类上。</li>
-            <li><strong>图上的上下文学习（In-Context Learning on Graphs）：</strong>受大语言模型的启发，研究者尝试在图上构造"提示"（prompt）——通过设计子图模式来引导模型执行特定任务。比如，给定一个子图，模型需要完成缺失节点的预测。不同于传统GNN需要为每个任务微调，上下文学习允许模型在看到提示后直接推理。</li>
-            <li><strong>多模态图基础模型：</strong>将图结构与文本、图像等其他模态对齐。一个例子是Google的"图文图谱对齐"工作——将网页结构图与网页文本内容联合训练，使得模型既能理解结构关系，也能理解语义内容。</li>
-        </ul>
-
-        <pre><code># 图提示学习（Graph Prompting）的简化实现思路
-# 目标是让预训练模型适应新任务而无需微调
-
-class GraphPrompt(nn.Module):
-    """为图任务设计的可学习提示模板"""
-    def __init__(self, hidden_dim, prompt_length=5):
-        super().__init__()
-        # 可学习的提示token
-        self.prompt_tokens = nn.Parameter(
-            torch.randn(prompt_length, hidden_dim)
-        )
-
-    def forward(self, x, edge_index, task_type):
-        # 将提示token附加到图的节点特征前
-        if task_type == 'node_classification':
-            # 在目标节点周围构造提示子图
-            prompt_x = torch.cat([self.prompt_tokens, x], dim=0)
-            # 添加提示token之间的连接
-            return prompt_x, edge_index
-        elif task_type == 'graph_classification':
-            # 对整图做提示
-            return x + self.prompt_tokens.mean(dim=0)
-
-# 预训练GNN + 图提示 = 不需要微调即可适应新任务
-# 这在大规模生产环境中大幅降低了部署成本</code></pre>
-
-        <p>值得注意的是，GFM目前仍处于非常早期的阶段。与自然语言处理中的大模型不同，图数据天生具有异质性——社交网络的结构模式与分子图的结构模式截然不同。一个在社交网络上预训练的模型未必能很好地泛化到分子图。如何设计真正通用的图基础模型，是当前最具挑战性的开放问题之一。</p>
-
-        <h2>案例：社交推荐</h2>
-
-        <p>让我们看一个完整的案例，将本章讨论的多个概念串联起来——在社交网络上的推荐系统。</p>
-
-        <p>假设我们运营一个音乐分享平台，用户可以在平台上关注其他用户（形成关注网络），也可以收藏歌曲（形成用户-歌曲交互网络）。我们要做的任务是：为每个用户推荐他们可能喜欢的歌曲。</p>
-
-        <p>我们采取以下步骤：</p>
-
-        <p><strong>第一步：构建异质图。</strong>我们构建一个包含两种节点（用户和歌曲）和两种边（关注关系和收藏关系）的异质图。这个图包含了所有信息。</p>
-
-        <p><strong>第二步：网络特征提取。</strong>从图中提取每个用户的结构特征：在关注网络上的PageRank值（衡量影响力）、聚类系数（衡量社交圈紧密程度）、所属社团（音乐品味社群）等。</p>
-
-        <p><strong>第三步：融合网络正则化和图神经网络的推荐模型。</strong>模型架构如下：</p>
-
-        <ul>
-            <li>用户和歌曲分别通过嵌入层得到初始表示</li>
-            <li>在异质图上运行两层消息传递：用户在关注网络中聚合朋友的信息，同时在交互网络中聚合歌曲的信息</li>
-            <li>最终的用户表示 = 用户基础嵌入 + 社交邻居聚合 + 收藏歌曲聚合</li>
-            <li>加入社交正则化项：关注关系强的用户对之间的表示应该更接近</li>
-        </ul>
-
-        <p><strong>第四步：评估与上线。</strong>使用HitRate和NDCG作为评估指标。</p>
-
-        <pre><code># 社交推荐的简化实现
-import torch.nn as nn
-
-class SocialRecommender(nn.Module):
-    """融合社交网络的推荐模型"""
-    def __init__(self, num_users, num_items, dim=64):
-        super().__init__()
-        self.user_emb = nn.Embedding(num_users, dim)
-        self.item_emb = nn.Embedding(num_items, dim)
-        # GNN层聚合社交邻居信息
-        self.social_gnn = LightGCNConv()
-        # GNN层聚合交互物品信息
-        self.interact_gnn = LightGCNConv()
-
-    def forward(self, user_ids, item_ids, social_edge, interact_edge):
-        user_base = self.user_emb(user_ids)
-        # 社交邻居聚合
-        user_social = self.social_gnn(user_base, social_edge)
-        # 交互物品信息聚合（通过物品到用户的消息传递）
-        item_embeds = self.item_emb(torch.arange(num_items))
-        user_from_items = self.interact_gnn(item_embeds, interact_edge)
-        # 融合三种表示
-        user_final = user_base + 0.5 * user_social + 0.3 * user_from_items
-        item_final = self.item_emb(item_ids)
-        return (user_final * item_final).sum(dim=1)  # 内积得分</code></pre>
-
-        <div class="highlight">
-            <strong>经验分享：</strong>在实际项目中我们发现了一个反直觉的现象——并不是所有社交关系都对推荐有帮助。用户的关注关系中存在大量"礼貌性关注"（互相关注但不一定有共同的音乐品味）。我们后来引入了一个"关系强度"权重：根据用户之间的互动频率（评论、转发、分享）来加权社交边，弱化那些"僵尸关注"的影响。这一改动使得推荐HitRate@10提升了约7%。这个教训是：在网络科学应用中，"边的质量"往往比"边的数量"更重要。
-        </div>
-
-        <p>这个案例展示了网络科学和机器学习的几个结合点：异质图建模、网络特征提取、图神经网络消息传递、网络正则化以及关系权重设计。每一个环节都对最终效果有实质性影响。</p>
-
-        <p>下一章，我们将把目光投向网络科学更广阔的前沿应用——从脑网络到量子网络，从计算社会科学到AI公平性。你会发现，网络科学的影响力远远超出了技术领域，正在深刻改变我们对医学、社会甚至物理世界的理解。</p>
-
-        <div class="footer-nav">
-            <a href="25.html">← 上一章</a>
-            <a href="index.html">📖 返回目录</a>
-            <a href="27.html">下一章 →</a>
-        </div>
-    </div>
-</div>
-</div>
-</body>
-</html>
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="用户物品二部图、LightGCN 对称归一化、BPR 排序损失、知识图谱 TransE 与时间外评估。"><title>第26章 网络科学+机器学习 | 网络科学</title><link rel="stylesheet" href="v2/apps/web/site.css"></head><body><header class="topnav shell"><a class="brand" href="index.html"><span class="brand-mark">◉</span><span>NETWORK SCIENCE<small>网络科学 · 结构与复杂系统</small></span></a><nav class="navlinks" aria-label="站点导航"><a href="index.html">课程首页</a><a href="v2/apps/web/lab.html">Graph Lab</a><a href="v2/apps/web/compare.html">模型比较</a><a href="v2/apps/web/datasets.html">数据集</a></nav></header><main class="shell lesson-layout"><aside class="panel"><nav class="chapter-index" aria-label="28章课程导航"><h2>课程目录</h2><ol><li><a href="01.html">01 · 网络科学导论</a></li><li><a href="02.html">02 · 图论基础</a></li><li><a href="03.html">03 · 网络基本度量</a></li><li><a href="04.html">04 · 随机网络模型</a></li><li><a href="05.html">05 · 小世界网络</a></li><li><a href="06.html">06 · 无标度网络</a></li><li><a href="07.html">07 · 度分布与网络异质性</a></li><li><a href="08.html">08 · 中心性分析</a></li><li><a href="09.html">09 · PageRank与链接分析</a></li><li><a href="10.html">10 · 社团检测（上）</a></li><li><a href="11.html">11 · 社团检测（下）</a></li><li><a href="12.html">12 · 网络传播动力学</a></li><li><a href="13.html">13 · 信息与谣言传播</a></li><li><a href="14.html">14 · 网络上的博弈</a></li><li><a href="15.html">15 · 网络鲁棒性与脆弱性</a></li><li><a href="16.html">16 · 链路预测</a></li><li><a href="17.html">17 · 网络可视化</a></li><li><a href="18.html">18 · 网络数据采集</a></li><li><a href="19.html">19 · 多层网络</a></li><li><a href="20.html">20 · 时序与动态网络</a></li><li><a href="21.html">21 · 网络嵌入与表示学习</a></li><li><a href="22.html">22 · 图神经网络入门</a></li><li><a href="23.html">23 · NetworkX实战</a></li><li><a href="24.html">24 · 社交网络分析案例</a></li><li><a href="25.html">25 · 大规模网络分析</a></li><li><a href="26.html" class="active" aria-current="page">26 · 网络科学+机器学习</a></li><li><a href="27.html">27 · 网络科学前沿</a></li><li><a href="28.html">28 · 综合实战项目</a></li></ol></nav></aside><div class="main-content"><article class="lesson-article"><header class="lesson-hero"><p class="eyebrow">GRAPH RECOMMENDATION / COLLABORATIVE FILTERING / KNOWLEDGE GRAPHS</p><h1>第26章 网络科学+机器学习</h1><p class="dek">推荐的交互边从何而来？LightGCN 为什么按度归一化？BPR 如何学习排序？知识图谱如何与用户—物品图分开建模？</p><p class="reading-meta">核心问题：点击意味着喜欢吗？没有点击能不能当作真实负标签？</p></header>
+<section id="question"><h2>1. 先定义图：用户和商品连接意味着什么？</h2>
+<p>图推荐的基础对象是二部图 G=(U∪I,E)，U 是用户集、I 是物品集，一条边 (u,i) 表示某时间窗内观察到的某种行为——点击、购买、收藏或观看。用户—用户的社交边与用户—物品的点击边语义不同：合并这两类边前，必须区分节点和关系类型、方向、时间、事件次数与可见性。用户没有点击某物品，可能是没有被曝光、物品尚未上架或埋点丢失，<strong>未观测到不等于“不喜欢”</strong>。</p>
+<p>考虑两名用户 U1、U2 和两个物品 X、Y：U1 与 X、Y 有观察交互，U2 只与 Y 有交互。这张无向二部图共有 4 节点、3 条边，度数为 d(U1)=2、d(U2)=1、d(X)=1、d(Y)=2；没有 U1—U2 这样的实边。真实推荐应用应保留曝光、反馈和事件时间，使统计相关、用户兴趣和平台选择机制不被混为同一事物。</p>
+<figure class="lesson-figure"><img src="assets/lessons/26-a.svg" alt="用户 U1 连接 X Y，用户 U2 连接 Y；四节点三边二部图，度数分别为2、1、1、2。"><figcaption>原创合成二部图，边只代表已观察交互，不代表未连接物品为负样本。</figcaption></figure>
+<table class="lesson-table"><thead><tr><th>数据记录</th><th>关系含义</th><th>不能直接推断</th></tr></thead><tbody><tr><td>impression</td><td>用户有机会看到某物品</td><td>会产生兴趣</td></tr><tr><td>click</td><td>某次曝光后点击</td><td>长期真实偏好</td></tr><tr><td>purchase</td><td>按某价格完成交易</td><td>物品对所有用户都适用</td></tr><tr><td>无日志</td><td>观察窗口中没有该行为</td><td>物品被明确否定</td></tr><tr><td>未来事件</td><td>测试窗口才会出现的边</td><td>训练时可以提前用来算邻居</td></tr></tbody></table></section>
+<section id="lightgcn"><h2>2. LightGCN 的双向归一化传播：不等同于普通平均</h2>
+<p>LightGCN（He 等，SIGIR 2020）针对协同过滤，使用用户—物品二部邻接 A 的对称度归一化传播 S=D⁻¹/²AD⁻¹/²，减少普通 GCN 常见的特征变换与非线性层；节点初始嵌入可作为可学习参数。若 E⁽⁰⁾∈R⁽|U|+|I|⁾×d，传播 E⁽ℓ+1⁾=SE⁽ℓ⁾，最终将各层按权重 αℓ 融合。这里的 E 不是标签矩阵。与一般 GCN 不同，本页展示的基础 LightGCN <strong>没有自动加入自环</strong>，因此不能机械套用前一章 GCN 的 A+I。</p>
+<div class="math-scroll" tabindex="0" role="region" aria-label="LightGCN 无自环的对称度归一化"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="LightGCN 无自环的对称度归一化"><mrow><msup><mi>E</mi><mrow><mi>ℓ</mi><mo>+</mo><mn>1</mn></mrow></msup><mo>=</mo><msup><mi>D</mi><mrow><mo>−</mo><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mi>A</mi><msup><mi>D</mi><mrow><mo>−</mo><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><msup><mi>E</mi><mi>ℓ</mi></msup></mrow></math></div>
+<p>只让物品 X 的一维初始信号 e(X)=1，其余节点信号为 0。U1 从 X 接收的归一化权重是 1/√(d(U1)d(X))=1/√2≈0.707107，而不是把两个邻居 X、Y 直接均值后得到的 1/2。U2 的结果是 0，因为其唯一邻居 Y 当前输入为 0。此处只是单层算子的黄金测试，<strong>没有训练 LightGCN，也没有评价推荐效果</strong>。</p>
+<div class="interactive-demo" data-demo="final-lightgcn"><h3>交互：观察归一化与普通均值的差异</h3><div class="demo-controls"><label for="final-e-x">X 的初始信号：<output data-f26-x-label>1.00</output></label><input id="final-e-x" type="range" min="0" max="2" step="0.25" value="1" data-f26-x></div><div class="metric-grid"><div><span>归一化 U1</span><strong data-f26-norm>0.7071</strong></div><div><span>普通均值 U1</span><strong data-f26-mean>0.5000</strong></div></div><p class="demo-output" data-f26-note aria-live="polite">当前算子不含自环，Y 初值为 0；这不是预测概率。</p></div>
+<p>高频物品度数高会影响归一化权重，交互不均匀会导致表示更容易向热门区域传播。对于孤立节点 d=0，应显式处理除零，而不是将 NaN 当合法向量；层数增多也不能保证泛化能力提升。</p></section>
+<section id="bpr"><h2>3. BPR：从一个正例和一个未观测候选构造排序目标</h2>
+<p>Rendle 等（UAI 2009）的 BPR 以 (u,i,j) 三元组学习：i 是训练期观察正反馈，j 是按明确规则抽出的未观察候选。令 Δ=s(u,i)−s(u,j)，最小化 -logσ(Δ)=log(1+e⁻Δ)。它逼近的是<strong>相对排序</strong>，不是把 σ(Δ) 直接解释成某用户点击物品的校准概率；被采为负例的 j 也未必是用户明确拒绝的物品。</p>
+<div class="math-scroll" tabindex="0" role="region" aria-label="BPR 单三元组排序损失"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="BPR 单三元组排序损失"><mrow><mi>L</mi><mo>(</mo><mi>Δ</mi><mo>)</mo><mo>=</mo><mo>−</mo><mi>log</mi><mi>σ</mi><mo>(</mo><mi>Δ</mi><mo>)</mo><mo>=</mo><mi>log</mi><mo>(</mo><mn>1</mn><mo>+</mo><msup><mi>e</mi><mrow><mo>−</mo><mi>Δ</mi></mrow></msup><mo>)</mo></mrow></math></div>
+<p>Δ=0 的损失为 ln2≈0.693147；Δ=2 的损失约为 0.126928；Δ=−2 时约为 2.126928。真实训练中还需注明正则项、梯度更新、采样分布、物品可用性与数据时间窗口。</p>
+<div class="interactive-demo" data-demo="final-bpr"><h3>交互：调整正负物品打分差</h3><div class="demo-controls"><label for="final-delta">分差 Δ：<output data-f26-delta-label>0.0</output></label><input id="final-delta" type="range" min="-2" max="2" step="0.5" value="0" data-f26-delta></div><div class="metric-grid"><div><span>σ(Δ)</span><strong data-f26-sigmoid>0.5000</strong></div><div><span>BPR loss</span><strong data-f26-loss>0.693147</strong></div></div><p class="demo-output" data-f26-bpr-note aria-live="polite">完全由公式生成的合成值，不代表任何业务 A/B 实验。</p></div></section>
+<section id="knowledge"><h2>4. 知识图谱的关系三元组与 TransE 平移几何</h2>
+<p>知识图谱将事实表示为 (h,r,t)，分别是头实体、关系类型和尾实体。比如 (药物甲,作用于,蛋白 P) 和 (蛋白 P,关联,疾病 D) 使用不同的关系；即便构成路径，也不能推出药物甲可以治疗疾病 D。TransE（Bordes 等，NeurIPS 2013）用 h+r≈t 约束低维向量，常用 L1 或 L2 距离。人工二维例子 h=(1,2)、r=(2,−1)、t=(3,1) 给出距离 0；替换 t=(3,2) 则距离为 1，数值仅核对几何机制，<strong>不能鉴定现实事实</strong>。</p>
+<div class="math-scroll" tabindex="0" role="region" aria-label="TransE 二维或 d 维平移距离"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="TransE 二维或 d 维平移距离"><mrow><mi>d</mi><mo>(</mo><mi>h</mi><mo>,</mo><mi>r</mi><mo>,</mo><mi>t</mi><mo>)</mo><mo>=</mo><mo>‖</mo><mi>h</mi><mo>+</mo><mi>r</mi><mo>−</mo><mi>t</mi><msub><mo>‖</mo><mn>2</mn></msub></mrow></math></div>
+<figure class="lesson-figure"><img src="assets/lessons/26-c.svg" alt="向量 h=(1,2) 加上关系向量 r=(2,-1) 得到 t=(3,1) 的二维 TransE 平移示意。"><figcaption>二维合成坐标验证 h+r=t。真实多关系图需要类型、方向、来源与关系约束，不得把距离小当因果事实。</figcaption></figure>
+<p>对一对多、对称和复杂复合关系，单纯的平移假设可能不足；R-GCN 等其他模型以多关系特定参数处理图结构，但其建模选择仍要与任务、数据量和权限相匹配。负三元组应遵守实体类型与观察边界，避免用未知即假的闭世界假设。</p></section>
+<section id="leakage"><h2>5. 时间切分为何必须先于图传播？</h2>
+<p>预测第 4 周会出现的用户—物品边，就要把第 1–3 周事件构成训练图，再计算所有节点度数、邻居、负采样候选和嵌入。把全时间图拿来跑图神经网络，再分割最后的监督标签会提前读取未来邻接，属于结构泄漏。</p>
+<figure class="lesson-figure"><img src="assets/lessons/26-b.svg" alt="推荐训练期第1到3周、未来测试期第4周的分离流程；禁止测试边反馈至训练表示。"><figcaption>时间外协议：未来边只做标签。图中所有时间和节点均为合成示例。</figcaption></figure>
+<p>还必须固定候选空间：全物品候选评估与每个正样本配 99 个负样本的评估通常不可直接比较。Recall@K 是 K 个结果中命中的相关物品数除以该用户测试时窗全部相关物品数；没有正例的用户要定义剔除还是记零。OGB 不同子任务采用的指标与切分协议不同，应使用官方评估器，而不是仅引用一个数字。</p>
+</section>
+<section id="code"><h2>6. 标准库可执行的数学验证代码</h2>
+<pre><code class="language-python">from math import exp, log1p, sqrt, isclose
+
+def lightgcn_one_step(x):
+    return x / sqrt(2 * 1)
+
+def bpr_loss(delta):
+    return log1p(exp(-delta))
+
+def transe(h, relation, tail):
+    return sqrt(sum((a + b - c) ** 2
+                    for a, b, c in zip(h, relation, tail)))
+
+assert isclose(lightgcn_one_step(1), 1 / sqrt(2))
+assert isclose(bpr_loss(0), log1p(1))
+assert isclose(bpr_loss(2), 0.1269280110429725)
+assert isclose(transe((1, 2), (2, -1), (3, 1)), 0)
+assert isclose(transe((1, 2), (2, -1), (3, 2)), 1)
+print("lightgcn=", round(lightgcn_one_step(1), 6),
+      "bpr(2)=", round(bpr_loss(2), 6))</code></pre>
+<p>这些数值的证明不依赖训练框架或互联网，适合作为 Lightning/PyTorch 版实现前的黄金单测。真实项目还要补训练集数据契约、曝光信息、模型参数、消融、验证集选型和多个随机种子；本例没有训练模型，不声称任何外部数据集的 Recall 提升。</p></section>
+<section id="limits"><h2>7. 当图关系弱于内容信号时，应如何选择基线？</h2>
+<p>用户互动极少、新物品比例高、属性图延迟大或数据授权不清时，简单 popularity、内容相似性或双塔召回可能更适合。图上传播也可能放大热门物品的曝光优势；加入更多社会边不会自动提升用户满意度。有效的研究路线应依次回答<strong>行为语义、时间可见性、候选池、基线、任务指标、部署成本与伦理风险</strong>。</p></section>
+<section id="references"><h2>原始论文、协议与核验边界</h2><ol class="source-list">
+<li><a href="https://proceedings.mlr.press/r7/rendle09a.html">Rendle 等（2009），BPR</a>。</li>
+<li><a href="https://arxiv.org/abs/2002.02126">He 等（2020），LightGCN</a>。</li>
+<li><a href="https://proceedings.neurips.cc/paper_files/paper/2013/hash/1cecc7a77928ca8133fa24680a88d2f9-Abstract.html">Bordes 等（2013），TransE</a>。</li>
+<li><a href="https://ogb.stanford.edu/docs/linkprop/">OGB Link Prediction 官方拆分及评估器协议</a>。</li>
+<li><a href="https://arxiv.org/abs/1703.06103">Schlichtkrull 等，R-GCN 多关系建模</a>。</li></ol>
+<p>所有图形和程序均为合成的数学教学实验；没有训练 LightGCN、复现论文 benchmark 或使用真实用户数据。</p></section></article></div><div class="footer-nav"><a href="25.html">← 第25章</a><a href="index.html">课程首页</a><a href="27.html">第27章 →</a></div></main><footer class="footer shell">网络科学 · 从结构机制到可信研究</footer><script defer src="v2/apps/shared/lesson-interactions.js"></script></body></html>

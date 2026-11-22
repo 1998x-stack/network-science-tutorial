@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.0.0",
+  "chapter": "26",
+  "review_status": "reviewed",
+  "claims": [
+    {
+      "id": "capstone-26-1",
+      "claim": "BPR models personalized ranking from implicit feedback rather than explicit dislike labels",
+      "source_url": "https://proceedings.mlr.press/r7/rendle09a.html",
+      "locator": "BPR method and implicit feedback assumptions",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "capstone-26-2",
+      "claim": "BPR per-triple loss equals log(1+exp(-score difference)) before regularization",
+      "source_url": "https://proceedings.mlr.press/r7/rendle09a.html",
+      "locator": "BPR optimization objective",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "capstone-26-3",
+      "claim": "Toy BPR loss for delta zero is ln2, for delta two is approximately 0.126928",
+      "source_url": "https://proceedings.mlr.press/r7/rendle09a.html",
+      "locator": "Derived math from BPR objective, no performance measurement",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "capstone-26-4",
+      "claim": "LightGCN uses degree-normalized embedding propagation on user-item graph and layer aggregation",
+      "source_url": "https://arxiv.org/abs/2002.02126",
+      "locator": "LightGCN model formulation",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "capstone-26-5",
+      "claim": "Toy LightGCN output for one nonzero item signal is 1/sqrt(2), not 1/2",
+      "source_url": "https://arxiv.org/abs/2002.02126",
+      "locator": "Derived from 4-node bipartite graph under no-self-loop convention",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "capstone-26-6",
+      "claim": "TransE represents relational knowledge as embedding translations",
+      "source_url": "https://proceedings.neurips.cc/paper_files/paper/2013/hash/1cecc7a77928ca8133fa24680a88d2f9-Abstract.html",
+      "locator": "TransE model principle",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "capstone-26-7",
+      "claim": "The synthetic h=(1,2),r=(2,-1),t=(3,1) has translation error zero",
+      "source_url": "https://proceedings.neurips.cc/paper_files/paper/2013/hash/1cecc7a77928ca8133fa24680a88d2f9-Abstract.html",
+      "locator": "Derived synthetic vector arithmetic, no real knowledge assertion",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "capstone-26-8",
+      "claim": "Link prediction datasets require explicit splitting and task-specific evaluation",
+      "source_url": "https://ogb.stanford.edu/docs/linkprop/",
+      "locator": "Open Graph Benchmark dataset split and evaluator definitions",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "capstone-26-9",
+      "claim": "Future edges cannot enter train graph embeddings for leakage-free future link prediction",
+      "source_url": "https://ogb.stanford.edu/docs/linkprop/",
+      "locator": "Derived temporal split protocol, no benchmark score",
+      "status": "derived",
+      "kind": "derived"
+    }
+  ]
+}
