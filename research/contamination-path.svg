@@ -4,12 +4,12 @@
 <text x="252" y="103" fill="#97ecd9" font-size="24" text-anchor="middle">正确：t≤3</text>
 <text x="748" y="103" fill="#f4c5a4" font-size="24" text-anchor="middle">错误：加入 BD@5</text>
 
-<path d="M130 174 L288 174 L373 272" stroke="#86c5ce" stroke-width="5" fill="none"/>
+<path d="M288 174 L373 272" stroke="#86c5ce" stroke-width="5" fill="none"/>
 
 <circle cx="130" cy="174" r="34" fill="#257184" stroke="#e3efee" stroke-width="2"/><text x="130" y="183" text-anchor="middle" fill="#fff" font-size="26">B</text><circle cx="288" cy="174" r="34" fill="#a1703c" stroke="#e3efee" stroke-width="2"/><text x="288" y="183" text-anchor="middle" fill="#fff" font-size="26">D</text><circle cx="373" cy="272" r="34" fill="#257184" stroke="#e3efee" stroke-width="2"/><text x="373" y="281" text-anchor="middle" fill="#fff" font-size="26">E</text>
 <text x="252" y="315" text-anchor="middle" fill="#ecf6f5" font-size="20">CN(B,E) = 0</text>
-<path d="M628 174 L786 174 L871 272" stroke="#86c5ce" stroke-width="5" fill="none"/>
-<path d="M628 174 L871 272" stroke="#f3ad7c" stroke-width="6" stroke-dasharray="11 8" fill="none"/>
+<path d="M786 174 L871 272" stroke="#86c5ce" stroke-width="5" fill="none"/>
+<path d="M628 174 L786 174" stroke="#f3ad7c" stroke-width="6" stroke-dasharray="11 8" fill="none"/>
 <circle cx="628" cy="174" r="34" fill="#257184" stroke="#e3efee" stroke-width="2"/><text x="628" y="183" text-anchor="middle" fill="#fff" font-size="26">B</text><circle cx="786" cy="174" r="34" fill="#a1703c" stroke="#e3efee" stroke-width="2"/><text x="786" y="183" text-anchor="middle" fill="#fff" font-size="26">D</text><circle cx="871" cy="272" r="34" fill="#257184" stroke="#e3efee" stroke-width="2"/><text x="871" y="281" text-anchor="middle" fill="#fff" font-size="26">E</text>
 <text x="750" y="315" text-anchor="middle" fill="#ecf6f5" font-size="20">CN(B,E) = 1</text>
 <text x="500" y="386" text-anchor="middle" fill="#cfdfec" font-size="16">右图只是揭示泄漏风险：未来 B–D 一旦加入训练图，测试候选 B–D 甚至变为已有边。</text></g></svg>
