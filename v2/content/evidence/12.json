@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0.0",
+  "chapter": "12",
+  "review_status": "reviewed",
+  "claims": [
+    {
+      "id": "sir-sis-mechanism",
+      "claim": "SIR has one-way S→I→R transition while SIS permits reinfection after recovery; transition rules, not graph topology alone, determine dynamics.",
+      "source_url": "https://doi.org/10.1103/PhysRevE.66.016128",
+      "locator": "Newman 2002, SIR model description; compare SIS discussion in Pastor-Satorras 2001",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "independent-exposure",
+      "claim": "For m conditionally independent infectious contacts of equal per-contact probability beta, infection chance is 1-(1-beta)^m.",
+      "source_url": "https://doi.org/10.1103/PhysRevE.66.016128",
+      "locator": "Derived from independent edge-transmission probability under the specified model",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "sir-bond-percolation",
+      "claim": "For locally tree-like uncorrelated configuration networks, the epidemic/giant-outbreak threshold in an SIR bond-percolation approximation uses transmissibility T and excess-degree branching factor.",
+      "source_url": "https://doi.org/10.1103/PhysRevE.66.016128",
+      "locator": "Newman 2002, network percolation and degree generating functions",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "sis-hmf-threshold",
+      "claim": "SIS heterogeneous mean-field threshold lambda_c=<k>/<k^2> is distinct from SIR bond-percolation threshold and is approximation-dependent.",
+      "source_url": "https://doi.org/10.1103/PhysRevLett.86.3200",
+      "locator": "Pastor-Satorras and Vespignani 2001, degree-resolved SIS mean-field analysis",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "finite-scale",
+      "claim": "Finite network degree cutoffs and correlations affect observed epidemic thresholds.",
+      "source_url": "https://doi.org/10.1103/PhysRevE.65.035108",
+      "locator": "Pastor-Satorras and Vespignani 2002, finite size scaling",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "toy-path",
+      "claim": "On a five-node path, synchronous one-step SIR with p=1 infects one new vertex per step and has infected counts [1,1,1,1,1,0].",
+      "source_url": "https://networkx.org/documentation/stable/reference/generated/networkx.generators.classic.path_graph.html",
+      "locator": "Derived from explicitly specified update function and path_graph(5)",
+      "status": "derived",
+      "kind": "derived"
+    }
+  ]
+}
