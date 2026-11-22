@@ -3,7 +3,7 @@ const assert=require('node:assert/strict');
 const Lesson=require('../../apps/shared/lesson-interactions.js');
 test('BA choice probabilities normalize to one',()=>{
  assert.equal(Lesson.baProbability(3,10),.3);
- assert.equal([3,2,2,2,1].reduce((a,k)=>a+Lesson.baProbability(k,10),0),1);
+ assert.ok(Math.abs([3,2,2,2,1].reduce((a,k)=>a+Lesson.baProbability(k,10),0)-1)<1e-12);
  assert.throws(()=>Lesson.baProbability(3,0),RangeError);
 });
 test('degree distribution from eight vertices includes isolates',()=>{
