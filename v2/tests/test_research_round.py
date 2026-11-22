@@ -113,6 +113,34 @@ class SecondRoundScientificAudit(unittest.TestCase):
         self.assertIn('data-ui-item-future',guide)
         self.assertIn("ogb.stanford.edu/docs/linkprop",guide)
 
+    def test_11_deep_reader_links_resolve_to_research_page(self):
+        target=ROOT/"research/temporal-leakage.html"
+        self.assertTrue(target.is_file())
+        for chapter in CROSS_CHAPTERS:
+            with self.subTest(chapter=chapter):
+                file=V2/"apps/web/lessons"/f"{chapter}.html"
+                content=file.read_text(encoding="utf-8")
+                relative="../../../../research/temporal-leakage.html"
+                self.assertIn(f'href="{relative}"',content)
+                self.assertNotIn('href="research/temporal-leakage.html"',content)
+                self.assertEqual((file.parent/relative).resolve(),target.resolve())
+
+    def test_12_leakage_diagram_depicts_correct_future_edge(self):
+        import xml.etree.ElementTree as ET
+        graphic=ROOT/"research/contamination-path.svg"
+        ns="{http://www.w3.org/2000/svg}"
+        root=ET.parse(graphic).getroot()
+        self.assertIsNotNone(root.find(ns+"title"))
+        self.assertIsNotNone(root.find(ns+"desc"))
+        edges={tag.attrib["d"] for tag in root.findall(".//"+ns+"path")}
+        # The legal left-hand subgraph shows only D-E; the incorrect
+        # right-hand graph adds future B-D, not B-E.
+        self.assertIn("M288 174 L373 272",edges)
+        self.assertIn("M786 174 L871 272",edges)
+        self.assertIn("M628 174 L786 174",edges)
+        self.assertNotIn("M130 174 L288 174 L373 272",edges)
+        self.assertNotIn("M628 174 L871 272",edges)
+
     def test_10_claim_ledgers_trace_scope(self):
         for chapter in CROSS_CHAPTERS:
             claims=json.loads((V2/"content/evidence"/f"{chapter}.json").read_text(encoding="utf-8"))["claims"]
