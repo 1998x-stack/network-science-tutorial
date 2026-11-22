@@ -45,14 +45,14 @@ def cascade(threshold, steps=4):
         history.append(set(active))
     return history
 
-one = cascade(1)
+trace_simple = cascade(1)
 two = cascade(2)
-assert [len(x) for x in one] == [2,4,5,6,6]
+assert [len(x) for x in trace_simple] == [2,4,5,6,6]
 assert [len(x) for x in two] == [2,3,4,5,5]
 assert two[1] == {&quot;A&quot;,&quot;B&quot;,&quot;C&quot;}
 assert two[2] == {&quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;D&quot;}
-assert &quot;F&quot; in one[-1] and &quot;F&quot; not in two[-1]
-print(&quot;m=1:&quot;, one, &quot;m=2:&quot;, two)</code></pre>
+assert &quot;F&quot; in trace_simple[-1] and &quot;F&quot; not in two[-1]
+print(&quot;m=1:&quot;, trace_simple, &quot;m=2:&quot;, two)</code></pre>
 <p>这是<strong>固定门槛、永久采纳、同步更新</strong>模型的计算验证，不是对任何具体谣言、平台传播算法或真实用户意愿的预测。</p></section>
 <section id="caveats"><h2>哪些行为不能直接由图推断？</h2>
 <p>一个人是否看到、相信或采纳消息可能由算法推荐、时间窗口、个人偏好、来源可信度与线下交流共同决定。阈值模型不含“信息真伪”变量，也无法自动区分接触、阅读、转发与信念变化；这些需要观测定义与单独数据。对于真实数据，最好区分可观察的转发行为和无法直接观察的信念。</p></section>
