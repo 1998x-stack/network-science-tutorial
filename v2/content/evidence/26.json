@@ -74,6 +74,14 @@
       "locator": "Derived temporal split protocol, no benchmark score",
       "status": "derived",
       "kind": "derived"
+    },
+    {
+      "id": "round2-26-temporal",
+      "claim": "A held-out U2-X future click changes LightGCN symmetric normalized U1-X edge weight, so collaborative propagation requires temporal boundary.",
+      "source_url": "https://ogb.stanford.edu/docs/linkprop/",
+      "locator": "OGB time-split link tasks compared to explicit toy cutoff; no real world benchmark claimed; see v2/tests/test_research_round.py",
+      "status": "derived",
+      "kind": "derived"
     }
   ]
 }

@@ -58,6 +58,14 @@
       "locator": "Dataset collection and anonymization statements",
       "status": "verified",
       "kind": "reference"
+    },
+    {
+      "id": "round2-24-temporal",
+      "claim": "Bundled NetworkX Karate Club graph has public static structure, not trustworthy per-edge timestamps for a claimed historical time-forecast experiment.",
+      "source_url": "https://ogb.stanford.edu/docs/linkprop/",
+      "locator": "OGB time-split link tasks compared to explicit toy cutoff; no real world benchmark claimed; see v2/tests/test_research_round.py",
+      "status": "derived",
+      "kind": "derived"
     }
   ]
 }
