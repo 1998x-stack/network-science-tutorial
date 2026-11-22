@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0.0",
+  "chapter": "20",
+  "review_status": "reviewed",
+  "claims": [
+    {
+      "id": "temporal-review",
+      "claim": "Temporal networks treat contacts as time-stamped events or snapshots and require paths to respect event ordering.",
+      "source_url": "https://doi.org/10.1016/j.physrep.2012.03.001",
+      "locator": "Holme and Saramäki (2012), temporal paths and event-sequence representations",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "temporal-path",
+      "claim": "Temporal path lengths and centrality depend on contact time order and may diverge from static aggregated graph metrics.",
+      "source_url": "https://doi.org/10.1103/PhysRevE.84.016105",
+      "locator": "Pan and Saramäki (2011), time-respecting paths and temporal path lengths",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "strict-semantics",
+      "claim": "The teaching scan uses strictly increasing instantaneous undirected contact times and frozen previous arrivals within each equal-timestamp batch.",
+      "source_url": "https://doi.org/10.1016/j.physrep.2012.03.001",
+      "locator": "A specifically stated strict time-respecting path convention; independent executable oracle",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "ordered-reach",
+      "claim": "For A-B@1, B-C@2 and C-D@3, earliest arrivals from A@0 are A0,B1,C2,D3.",
+      "source_url": "https://doi.org/10.1103/PhysRevE.84.016105",
+      "locator": "Derived from explicit timestamp triples and verified scanning algorithm",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "scrambled-reach",
+      "claim": "For A-B@3, B-C@1 and C-D@2, A can reach B at 3 but cannot reach C or D under strict increasing event times.",
+      "source_url": "https://doi.org/10.1103/PhysRevE.84.016105",
+      "locator": "Derived from same static edges but rearranged times",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "same-time",
+      "claim": "For A-B, B-C, C-D all occurring at t=1, strict-before-event snapshots prevent multi-hop forwarding within one timestamp.",
+      "source_url": "https://doi.org/10.1016/j.physrep.2012.03.001",
+      "locator": "Derived from declared instantaneous-event semantics; alternative same-time semantics are possible",
+      "status": "derived",
+      "kind": "derived"
+    }
+  ]
+}

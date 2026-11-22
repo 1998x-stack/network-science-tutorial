@@ -1,34 +1,24 @@
-# 在NetworkX中实现基于相似性的链路预测
+import math
 import networkx as nx
-import pandas as pd
 
-# 创建一个小型社交网络
-G = nx.karate_club_graph()
+train = nx.Graph([("A","B"), ("A","C"), ("B","C"),
+                  ("B","D"), ("C","D"), ("D","E")])
+assert not train.has_edge("A","D")
+assert not train.has_edge("A","E")
 
-# 使用NetworkX内置的预测函数
-pred_cn = list(nx.common_neighbors(G, 0, 4))
-print(f"节点0和4的共同邻居: {pred_cn}")
+def scores(u, v):
+    a, b = set(train.neighbors(u)), set(train.neighbors(v))
+    common = a & b
+    cn = len(common)
+    jaccard = cn / len(a | b) if a | b else 0.0
+    adamic_adar = sum(1 / math.log(train.degree(z)) for z in common)
+    return cn, jaccard, adamic_adar
 
-# 对所有未连接节点对计算AA指数
-def aa_score(G, u, v):
-    """Adamic-Adar指数"""
-    if G.has_edge(u, v) or u == v:
-        return -float('inf')
-    score = 0.0
-    for w in nx.common_neighbors(G, u, v):
-        score += 1.0 / np.log(G.degree(w))
-    return score
-
-import numpy as np
-scores = []
-nodes = list(G.nodes())
-for i, u in enumerate(nodes):
-    for v in nodes[i+1:]:
-        if not G.has_edge(u, v):
-            scores.append((u, v, aa_score(G, u, v)))
-
-# 按分数排序，分数越高越可能连接
-scores.sort(key=lambda x: x[2], reverse=True)
-print("最有可能产生连接的Top-5节点对：")
-for u, v, s in scores[:5]:
-    print(f"  ({u}, {v}) -> AA分数: {s:.4f}")
+cn, j, aa = scores("A", "D")
+assert cn == 2
+assert math.isclose(j, 2/3)
+assert math.isclose(aa, 2 / math.log(3))
+assert scores("A","E") == (0,0.0,0)
+nx_aa = list(nx.adamic_adar_index(train, [("A","D")]))[0][2]
+assert math.isclose(nx_aa, aa)
+print("A-D score:", cn, j, round(aa, 6))

@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0.0",
+  "chapter": "17",
+  "review_status": "reviewed",
+  "claims": [
+    {
+      "id": "coordinates-not-distances",
+      "claim": "Force-directed and manual layouts assign drawing coordinates; Euclidean display distances are not necessarily measured geographic or graph distances.",
+      "source_url": "https://doi.org/10.1002/spe.4380211102",
+      "locator": "Fruchterman and Reingold (1991), drawing by force-directed placement",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "fr-forces",
+      "claim": "A classical Fruchterman–Reingold model uses attractive and repulsive force magnitudes scaled by d²/k and k²/d respectively.",
+      "source_url": "https://doi.org/10.1002/spe.4380211102",
+      "locator": "Original algorithm's force-function definition",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "forceatlas-not-spring",
+      "claim": "ForceAtlas2 is a separate visualization layout algorithm from the generic NetworkX spring_layout implementation.",
+      "source_url": "https://doi.org/10.1371/journal.pone.0098679",
+      "locator": "Jacomy et al. (2014), ForceAtlas2 method and implementation context",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "layout-api",
+      "claim": "NetworkX spring_layout accepts seed and circular_layout uses deterministic geometric positioning.",
+      "source_url": "https://networkx.org/documentation/stable/reference/generated/networkx.drawing.layout.spring_layout.html",
+      "locator": "Official NetworkX layout interface and documented parameters",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "toy-topology",
+      "claim": "Both hand-placed teaching drawings depict exactly 6 labeled vertices and 7 specified undirected edges.",
+      "source_url": "https://networkx.org/documentation/stable/reference/classes/generated/networkx.Graph.edges.html",
+      "locator": "Derived from enumerated edge set, independently checked using NetworkX and SVG construction",
+      "status": "derived",
+      "kind": "derived"
+    }
+  ]
+}

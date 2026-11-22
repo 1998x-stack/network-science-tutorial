@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0.0",
+  "chapter": "16",
+  "review_status": "reviewed",
+  "claims": [
+    {
+      "id": "link-problem",
+      "claim": "Link prediction formalizes scoring previously unconnected node pairs for future network link formation.",
+      "source_url": "https://doi.org/10.1002/asi.20591",
+      "locator": "Liben-Nowell and Kleinberg (2007), introduction and link prediction task",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "adamic-adar",
+      "claim": "Adamic–Adar weights each common neighbor z by 1/log(degree(z)); the score is not a calibrated link probability.",
+      "source_url": "https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.link_prediction.adamic_adar_index.html",
+      "locator": "Official NetworkX definition and undirected graph conditions",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "toy-scores",
+      "claim": "On the explicit 5-node, 6-edge train graph, CN(A,D)=2, Jaccard=2/3, Adamic–Adar=2/log(3).",
+      "source_url": "https://networkx.org/documentation/stable/reference/algorithms/link_prediction.html",
+      "locator": "Derived from stated graph, set calculations, and NetworkX oracle",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "time-respecting-eval",
+      "claim": "Temporal link prediction separates past observed structure from future edge labels to avoid information leakage.",
+      "source_url": "https://doi.org/10.1002/asi.20591",
+      "locator": "Definition of social network evolution prediction; explicitly specified train/test evaluation convention",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "candidate-limits",
+      "claim": "Predictions over observed nonedges require documented negative candidates, class proportions and time windows; unobserved edges are not necessarily true negatives.",
+      "source_url": "https://networkx.org/documentation/stable/reference/algorithms/link_prediction.html",
+      "locator": "NetworkX scores are calculated for specified ebunch; evaluation protocol is external to the score",
+      "status": "derived",
+      "kind": "derived"
+    }
+  ]
+}

@@ -149,7 +149,7 @@ def validate(root: Path) -> list[str]:
             errors.append(f"{filename}: sidebar missing chapter link to {missing}")
     if len(chapters) >= 5:
         allowed_evidence = {"verified", "derived", "illustrative"}
-        for index in range(1, 16):
+        for index in range(1, 21):
             number = f"{index:02d}"
             page_path = root / f"{number}.html"
             evidence_path = root / "v2" / "content" / "evidence" / f"{number}.json"
@@ -193,7 +193,7 @@ def main() -> int:
             print("ERROR:", error, file=sys.stderr)
         print(f"Site check failed: {len(errors)} problem(s)", file=sys.stderr)
         return 1
-    print("Site check passed: metadata, 28 chapters, navigation, local links, and first-fifteen evidence assets")
+    print("Site check passed: metadata, 28 chapters, navigation, local links, and first-twenty evidence assets")
     return 0
 
 

@@ -3,78 +3,48 @@
   "chapter": "19",
   "title": "多层网络",
   "source_path": "19.html",
-  "source_git_blob": "ea889e438052c4909a8ef97d7c02d30cf928c408",
-  "review_status": "migrated_unreviewed",
+  "source_git_blob": "2d649b4911eba0890e504cd32e1ca86ae2d03dfc",
+  "review_status": "reviewed",
   "headings": [
     {
       "depth": 2,
-      "title": "单层网络的局限"
+      "title": "两个人在同一个网络里不相连，换个关系层却可能相连"
     },
     {
       "depth": 2,
-      "title": "多层网络定义"
-    },
-    {
-      "depth": 3,
-      "title": "Multiplex vs Interdependent vs Multilayer"
-    },
-    {
-      "depth": 3,
-      "title": "形式化定义"
+      "title": "实体、层、节点—层对是不同的概念"
     },
     {
       "depth": 2,
-      "title": "相互依赖网络"
-    },
-    {
-      "depth": 3,
-      "title": "级联失效——从意大利大停电说起"
-    },
-    {
-      "depth": 3,
-      "title": "理论模型"
+      "title": "为什么需要 supra-adjacency，而非直接做边的并集？"
     },
     {
       "depth": 2,
-      "title": "多层中心性"
+      "title": "从 B 的社交状态去到 D 的合作状态"
     },
     {
       "depth": 3,
-      "title": "Multiplex PageRank"
-    },
-    {
-      "depth": 3,
-      "title": "统一度与多路聚类系数"
+      "title": "比较不同的层间转换假设"
     },
     {
       "depth": 2,
-      "title": "分析工具"
-    },
-    {
-      "depth": 3,
-      "title": "muxViz"
-    },
-    {
-      "depth": 3,
-      "title": "Pymnet"
+      "title": "多层模型解决了什么，又额外引入什么？"
     },
     {
       "depth": 2,
-      "title": "案例：城市交通多层网络"
+      "title": "代码：构建双层图，和扁平投影交叉对照"
+    },
+    {
+      "depth": 2,
+      "title": "原始论文与模型边界"
     }
   ],
   "examples": [
     {
       "id": "01",
       "path": "content/examples/19/01.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
-    },
-    {
-      "id": "02",
-      "path": "content/examples/19/02.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
+      "language": "python",
+      "review_status": "tested"
     }
   ]
 }

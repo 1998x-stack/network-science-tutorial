@@ -1,19 +1,26 @@
-# 构建一个简单的多重网络的展开邻接矩阵
-import numpy as np
+import networkx as nx
 
-# 3个节点，2层
-A1 = np.array([[0, 1, 0],  # 层1: 好友关系
-               [1, 0, 1],
-               [0, 1, 0]])
+actors = list("ABCD")
+social = [("A","B"),("B","C")]
+collab = [("A","C"),("C","D")]
+supra = nx.Graph()
+for layer in ("social","collab"):
+    supra.add_nodes_from((v,layer) for v in actors)
+for u,v in social:
+    supra.add_edge((u,"social"),(v,"social"))
+for u,v in collab:
+    supra.add_edge((u,"collab"),(v,"collab"))
+for v in actors:
+    supra.add_edge((v,"social"),(v,"collab"))
 
-A2 = np.array([[0, 0, 1],  # 层2: 同事关系
-               [0, 0, 1],
-               [1, 1, 0]])
+start, goal = ("B","social"), ("D","collab")
+assert (supra.number_of_nodes(),supra.number_of_edges()) == (8,8)
+assert nx.shortest_path_length(supra,start,goal) == 3
 
-# 层间耦合矩阵（单位矩阵——同一节点跨层相连）
-C = np.eye(3)
+blocked = supra.copy()
+blocked.remove_edges_from([((v,"social"),(v,"collab")) for v in actors])
+assert not nx.has_path(blocked,start,goal)
 
-# 展开邻接矩阵 (6x6)
-supra = np.block([[A1, C],
-                  [C, A2]])
-print("Supra-adjacency matrix:\n", supra)
+flat = nx.Graph(social+collab)
+assert nx.shortest_path_length(flat,"B","D") == 2
+print("supra path:", nx.shortest_path(supra,start,goal))

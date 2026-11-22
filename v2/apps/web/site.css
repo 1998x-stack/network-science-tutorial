@@ -47,3 +47,13 @@
 .lesson-article .math-scroll{max-width:100%;overflow-x:auto;scrollbar-width:thin}
 @media(max-width:400px){.lesson-article .interactive-demo .metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.lesson-article .interactive-demo .metric-grid strong{font-size:20px}}
 @media(prefers-reduced-motion:reduce){.lesson-article .interactive-demo *{animation:none!important;transition:none!important}}
+
+/* S07: link prediction, network visualization, data provenance and temporal comparison */
+.lesson-article .interactive-demo figure{margin:14px 0;padding:0;max-width:100%}
+.lesson-article .interactive-demo figure img{width:100%;max-height:340px;height:auto;display:block;object-fit:contain}
+.lesson-article .interactive-demo figure figcaption{font-size:13px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lesson-article .interactive-demo [data-layout-image]{transition:none}
+.lesson-article .interactive-demo .demo-controls button[aria-pressed="true"]{box-shadow:inset 0 0 0 1px #70dbc3}
+.lesson-article .interactive-demo button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+
+.lesson-article .interactive-demo [data-layout-circular-payload][hidden]{display:none!important}

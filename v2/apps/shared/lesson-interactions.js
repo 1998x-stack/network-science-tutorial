@@ -201,4 +201,98 @@ function initThirdBatch(doc) {
  });
 }
 
-return {erExpected,wsRegime,metricText,baProbability,degreeFrequency,pagerankDistribution,toyModularity,kCoreNodes,sirRisk,sirPathState,cascadeHistory,donationPayoffs,voterCopy,robustnessAfterRemoval,overloadAfterFailure,init(doc){init(doc);initAdvanced(doc);initThirdBatch(doc);}};});
+
+function linkPredictionScores(candidate){
+ if(candidate==='AD')return {cn:2,jaccard:2/3,adamic:2/Math.log(3),common:['B','C']};
+ if(candidate==='AE')return {cn:0,jaccard:0,adamic:0,common:[]};
+ throw new RangeError('unknown training-graph candidate');
+}
+function collectionProjection(kind){
+ if(kind==='events')return {count:6,nodes:5,explanation:'六条独立的原始交互事件；方向、时间与同一对节点的重复事件均保留。'};
+ if(kind==='graph')return {count:4,nodes:5,explanation:'无向简单图：A→B 与 B→A 合并，自环 C→C 排除；剩余 A–B、B–C、C–D、D–E 四条边。'};
+ throw new RangeError('unknown collection projection');
+}
+function multiplexPath(mode){
+ if(mode==='allowed')return {distance:3,switches:1,explanation:'多层路径：B_social → C_social → C_collab → D_collab，共 3 条边、1 次层间切换。'};
+ if(mode==='flat')return {distance:2,switches:null,explanation:'扁平化把不同关系合并：B → C → D 是 2 条边，但已无法表达层间转换。'};
+ if(mode==='blocked')return {distance:null,switches:0,explanation:'跨层边被禁用：(B,social) 到 (D,collab) 不可达；两个层虽然共享实体名字，却是分离状态。'};
+ throw new RangeError('unknown multilayer coupling mode');
+}
+function temporalEarliest(schedule) {
+ const plans={
+  ordered:[['A','B',1],['B','C',2],['C','D',3]],
+  scrambled:[['A','B',3],['B','C',1],['C','D',2]],
+  simultaneous:[['A','B',1],['B','C',1],['C','D',1]]
+ };
+ if(!Object.prototype.hasOwnProperty.call(plans,schedule))throw new RangeError('unknown schedule');
+ const events=plans[schedule],arrivals={A:0};
+ const times=[...new Set(events.map(item=>item[2]))].sort((a,b)=>a-b);
+ for(const t of times){
+  const prior={...arrivals},pending={...arrivals};
+  for(const [a,b,when] of events){
+   if(when!==t)continue;
+   for(const [source,target] of [[a,b],[b,a]]){
+    if(Object.prototype.hasOwnProperty.call(prior,source)&&prior[source]<t){
+     pending[target]=Math.min(pending[target]??Infinity,t);
+    }
+   }
+  }
+  Object.assign(arrivals,pending);
+ }
+ return arrivals;
+}
+function initFourthBatch(doc){
+ const press=(group,attr,selected)=>group.querySelectorAll('['+attr+']').forEach(b=>b.setAttribute('aria-pressed',String(b===selected)));
+ doc.querySelectorAll('[data-demo="link-prediction"]').forEach(group=>{
+  const cn=group.querySelector('[data-lp-cn]'),j=group.querySelector('[data-lp-j]'),aa=group.querySelector('[data-lp-aa]'),out=group.querySelector('[data-lp-explain]');
+  group.querySelectorAll('[data-lp-pair]').forEach(b=>b.addEventListener('click',()=>{
+   const candidate=b.dataset.lpPair,r=linkPredictionScores(candidate);
+   press(group,'data-lp-pair',b);
+   cn.textContent=String(r.cn);j.textContent=r.jaccard.toFixed(4);aa.textContent=r.adamic.toFixed(4);
+   out.textContent=candidate==='AD'?'A–D 的共同邻居是 B、C。评分来自训练图，不表示已发生新边。':'A–E 没有共同邻居：在这个基于邻居的特征里分数为零；不等于未来永远不连边。';
+  }));
+ });
+ doc.querySelectorAll('[data-demo="layout"]').forEach(group=>{
+  const picture=group.querySelector('[data-layout-image]'),caption=group.querySelector('[data-layout-caption]'),out=group.querySelector('[data-layout-output]');
+  const defaultImage=picture.getAttribute('src');
+  const circularImage=group.querySelector('[data-layout-circular-payload]').getAttribute('src');
+  group.querySelectorAll('[data-layout-mode]').forEach(b=>b.addEventListener('click',()=>{
+   const mode=b.dataset.layoutMode;
+   press(group,'data-layout-mode',b);
+   picture.setAttribute('src',mode==='circular'?circularImage:defaultImage);
+   picture.setAttribute('alt',mode==='schematic'?'两组三角形由 C–D 一条桥相连的结构示意布局。':'相同六节点七边在圆周上的示意布局。');
+   caption.textContent=mode==='schematic'?'当前展示手工结构布局；全部七条边保持不变。':'当前展示圆周布局；全部七条边保持不变。';
+   out.textContent=mode==='schematic'?'结构示意：桥边 C–D 易于辨认，图中横向距离不是任何实测距离。':'圆周示意：节点均匀排布、边交叉可能改变，但七条边的存在状态完全不变。';
+  }));
+ });
+ doc.querySelectorAll('[data-demo="collection"]').forEach(group=>{
+  const count=group.querySelector('[data-collection-count]'),nodes=group.querySelector('[data-collection-nodes]'),out=group.querySelector('[data-collection-output]');
+  group.querySelectorAll('[data-collection-view]').forEach(b=>b.addEventListener('click',()=>{
+   const view=b.dataset.collectionView,r=collectionProjection(view);
+   press(group,'data-collection-view',b);
+   count.textContent=String(r.count);nodes.textContent=String(r.nodes);out.textContent=r.explanation;
+  }));
+ });
+ doc.querySelectorAll('[data-demo="multilayer"]').forEach(group=>{
+  const length=group.querySelector('[data-multi-length]'),switches=group.querySelector('[data-multi-switch]'),out=group.querySelector('[data-multi-output]');
+  group.querySelectorAll('[data-multi-mode]').forEach(b=>b.addEventListener('click',()=>{
+   const mode=b.dataset.multiMode,r=multiplexPath(mode);
+   press(group,'data-multi-mode',b);
+   length.textContent=r.distance===null?'不可达':String(r.distance);
+   switches.textContent=r.switches===null?'已折叠':String(r.switches);
+   out.textContent=r.explanation;
+  }));
+ });
+ doc.querySelectorAll('[data-demo="temporal"]').forEach(group=>{
+  const count=group.querySelector('[data-temporal-count]'),arrival=group.querySelector('[data-temporal-arrival]'),out=group.querySelector('[data-temporal-output]');
+  group.querySelectorAll('[data-temporal-schedule]').forEach(b=>b.addEventListener('click',()=>{
+   const schedule=b.dataset.temporalSchedule,r=temporalEarliest(schedule);
+   press(group,'data-temporal-schedule',b);
+   count.textContent=Object.keys(r).length+' / 4';
+   arrival.textContent=r.D===undefined?'不可达':String(r.D);
+   out.textContent=schedule==='ordered'?'严格时间递增：A@0 → B@1 → C@2 → D@3。静态图的距离始终是 3 条边。':schedule==='scrambled'?'错序：B–C@1 和 C–D@2 都早于 A–B@3；A 只能在 t=3 到达 B。':'同时：三条边都在 t=1，严格递增模型不允许同一时间的多跳；A 只到 B。';
+  }));
+ });
+}
+
+return {erExpected,wsRegime,metricText,baProbability,degreeFrequency,pagerankDistribution,toyModularity,kCoreNodes,sirRisk,sirPathState,cascadeHistory,donationPayoffs,voterCopy,robustnessAfterRemoval,overloadAfterFailure,linkPredictionScores,collectionProjection,multiplexPath,temporalEarliest,init(doc){init(doc);initAdvanced(doc);initThirdBatch(doc);initFourthBatch(doc);}};});
