@@ -3,66 +3,52 @@
   "chapter": "13",
   "title": "信息与谣言传播",
   "source_path": "13.html",
-  "source_git_blob": "e5daf44fc83daccec8b8e2862732497a17c42759",
-  "review_status": "migrated_unreviewed",
+  "source_git_blob": "909f59e4aeb50f9cde114dadd281f1d23211b8f2",
+  "review_status": "reviewed",
   "headings": [
     {
       "depth": 2,
-      "title": "信息传播vs疾病传播"
+      "title": "一条远距离联系，为什么有时是捷径，有时却不起作用？"
     },
     {
       "depth": 2,
-      "title": "信息级联"
-    },
-    {
-      "depth": 3,
-      "title": "阈值模型"
-    },
-    {
-      "depth": 3,
-      "title": "为什么会发生信息级联"
+      "title": "三种常被混称的“传播”"
     },
     {
       "depth": 2,
-      "title": "弱关系的力量"
+      "title": "确定性阈值：每一轮从旧状态统一计算"
     },
     {
       "depth": 2,
-      "title": "影响力最大化"
+      "title": "同一张图，从一个邻居到两个邻居"
     },
     {
       "depth": 3,
-      "title": "Kempe-Kleinberg-Tardos框架"
-    },
-    {
-      "depth": 3,
-      "title": "应用场景"
+      "title": "切换采纳门槛，并拖动时间轴"
     },
     {
       "depth": 2,
-      "title": "社交媒体中的谣言"
+      "title": "弱关系与社会强化之间的张力"
     },
     {
-      "depth": 3,
-      "title": "回音室与过滤气泡"
+      "depth": 2,
+      "title": "代码：按同步规则逐轮得到两条可复核轨迹"
     },
     {
-      "depth": 3,
-      "title": "谣言的检测与缓解"
+      "depth": 2,
+      "title": "哪些行为不能直接由图推断？"
+    },
+    {
+      "depth": 2,
+      "title": "模型来源与论文"
     }
   ],
   "examples": [
     {
       "id": "01",
       "path": "content/examples/13/01.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
-    },
-    {
-      "id": "02",
-      "path": "content/examples/13/02.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
+      "language": "python",
+      "review_status": "tested"
     }
   ]
 }

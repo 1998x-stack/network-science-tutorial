@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0.0",
+  "chapter": "14",
+  "review_status": "reviewed",
+  "claims": [
+    {
+      "id": "cooperation-conditional",
+      "claim": "The b/c > k cooperation criterion is derived for specific graph and weak-selection updating conditions, not arbitrary games or topologies.",
+      "source_url": "https://doi.org/10.1038/nature04605",
+      "locator": "Ohtsuki et al. (2006), assumptions for a simple rule and graph updating",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "donation-payoff",
+      "claim": "The one-round donation-game payoff equals benefit from cooperative neighbors minus per-neighbor cost paid by cooperators under the explicitly specified interaction convention.",
+      "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2430087/",
+      "locator": "Original article and donation-game benefit-cost convention; teaching formula derived",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "voter-neutral",
+      "claim": "In the voter model, a randomly selected node copies a neighbor's binary state according to a specified update rule, without consulting donation-game payoffs.",
+      "source_url": "https://doi.org/10.1214/aop/1176996306",
+      "locator": "Holley and Liggett (1975), Voter Model; present example is a finite asynchronous pull variant",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "bounded-confidence",
+      "claim": "Hegselmann–Krause bounded-confidence dynamics average opinions among agents within a confidence radius.",
+      "source_url": "https://www.jasss.org/5/3/2.html",
+      "locator": "Hegselmann and Krause (2002), continuous opinions and confidence radius",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "toy-game",
+      "claim": "The four-node path with states 1,1,0,0 and donation benefit 3, cost 1 yields payoffs 2,1,3,0.",
+      "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2430087/",
+      "locator": "Derived from explicit per-edge donation payoff formula and executable oracle",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "toy-confidence",
+      "claim": "For opinions 0.1,0.2,0.9 and inclusive confidence epsilon 0.2, one synchronous update gives 0.15,0.15,0.9.",
+      "source_url": "https://www.jasss.org/5/3/2.html",
+      "locator": "Derived from specified self-inclusive uniform averaging update",
+      "status": "derived",
+      "kind": "derived"
+    }
+  ]
+}

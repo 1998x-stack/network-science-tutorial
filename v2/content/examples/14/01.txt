@@ -1,1 +1,22 @@
-dx_s/dt = x_s × (f_s - φ)
+import networkx as nx
+
+g = nx.path_graph(["A", "B", "C", "D"])
+strategy = {"A": 1, "B": 1, "C": 0, "D": 0}
+b, cost = 3, 1
+
+def payoffs(states):
+    return {v: b * sum(states[u] for u in g.neighbors(v))
+                 - cost * g.degree(v) * states[v] for v in g}
+
+assert [payoffs(strategy)[v] for v in "ABCD"] == [2, 1, 3, 0]
+after = dict(strategy)
+after["B"] = strategy["C"]  # one asynchronous voter copy
+assert [after[v] for v in "ABCD"] == [1, 0, 0, 0]
+
+opinions = [0.1, 0.2, 0.9]
+epsilon = 0.2
+updated = [sum(y for y in opinions if abs(y-x) <= epsilon)
+           / sum(abs(y-x) <= epsilon for y in opinions)
+           for x in opinions]
+assert all(abs(a-b) < 1e-12 for a,b in zip(updated, [0.15,0.15,0.9]))
+print("payoffs:", payoffs(strategy), "voter copy:", after)

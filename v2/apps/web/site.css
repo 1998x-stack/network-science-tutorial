@@ -38,3 +38,12 @@
 .lesson-article .math-scroll math{max-width:none}
 .lesson-article a:focus-visible,.lesson-article button:focus-visible,.lesson-article input:focus-visible,.lesson-article .math-scroll:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 @media(max-width:500px){.lesson-article .interactive-demo{padding:14px}.lesson-article .interactive-demo .demo-controls{gap:6px}.lesson-article .interactive-demo .demo-controls button{padding:8px 10px}}
+
+/* S06 | chapter 11-15 interactive diagrams and math regions */
+.lesson-article .interactive-demo .metric-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:10px;margin:14px 0}
+.lesson-article .interactive-demo .demo-output{overflow-wrap:anywhere}
+.lesson-article .lesson-figure img{display:block;max-width:100%;height:auto;object-fit:contain}
+.lesson-article .lesson-table{font-variant-numeric:tabular-nums}
+.lesson-article .math-scroll{max-width:100%;overflow-x:auto;scrollbar-width:thin}
+@media(max-width:400px){.lesson-article .interactive-demo .metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.lesson-article .interactive-demo .metric-grid strong{font-size:20px}}
+@media(prefers-reduced-motion:reduce){.lesson-article .interactive-demo *{animation:none!important;transition:none!important}}

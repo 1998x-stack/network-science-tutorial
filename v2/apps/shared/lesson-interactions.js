@@ -66,4 +66,139 @@ function initAdvanced(doc){
  });
 }
 
-return {erExpected,wsRegime,metricText,baProbability,degreeFrequency,pagerankDistribution,toyModularity,init(doc){init(doc);initAdvanced(doc);}};});
+
+function kCoreNodes(k) {
+ if (!Number.isInteger(k) || k<0 || k>10) throw new RangeError('invalid core level');
+ const adj={A:['B','X','L1'],B:['A','X'],X:['A','B','C','D'],
+ C:['X','D'],D:['X','C','L2'],L1:['A'],L2:['D']};
+ let remaining=new Set(Object.keys(adj));
+ while(true){
+  const bad=[...remaining].filter(v=>adj[v].filter(w=>remaining.has(w)).length<k);
+  if(bad.length===0)break;
+  for(const v of bad)remaining.delete(v);
+ }
+ return [...remaining].sort();
+}
+function sirRisk(beta,m){
+ if(!Number.isFinite(beta)||beta<0||beta>1||!Number.isInteger(m)||m<0)throw new RangeError('invalid infection parameters');
+ return 1-Math.pow(1-beta,m);
+}
+function sirPathState(t){
+ if(!Number.isInteger(t)||t<0||t>5)throw new RangeError('invalid SIR step');
+ return Array.from({length:5},(_,i)=>i<t?'R':i===t?'I':'S');
+}
+function cascadeHistory(threshold,steps=4){
+ if(![1,2].includes(threshold)||!Number.isInteger(steps)||steps<0||steps>100)throw new RangeError('invalid cascade parameters');
+ const adj={A:['C'],B:['C','D'],C:['A','B','D','E'],D:['B','C','E'],E:['C','D','F'],F:['E']};
+ let active=new Set(['A','B']),history=[[...active].sort()];
+ for(let t=0;t<steps;t++){
+  const added=Object.keys(adj).filter(v=>!active.has(v)&&adj[v].filter(u=>active.has(u)).length>=threshold);
+  active=new Set([...active,...added]);
+  history.push([...active].sort());
+ }
+ return history;
+}
+function donationPayoffs(benefit,cost=1){
+ if(!Number.isFinite(benefit)||!Number.isFinite(cost)||benefit<0||cost<0)throw new RangeError('invalid donation game parameters');
+ return [benefit-cost,benefit-2*cost,benefit,0];
+}
+function voterCopy(neighbor){
+ if(neighbor==='A')return ['C','C','D','D'];
+ if(neighbor==='C')return ['C','D','D','D'];
+ throw new RangeError('B can only copy A or C');
+}
+function robustnessAfterRemoval(choice){
+ if(choice==='leaf')return {largest:6,remaining:6,fraction:1};
+ if(choice==='hub')return {largest:1,remaining:6,fraction:1/6};
+ throw new RangeError('invalid node removal');
+}
+function overloadAfterFailure(capacity){
+ if(!Number.isFinite(capacity)||capacity<0)throw new RangeError('invalid capacity');
+ const load=4+4/2;
+ return {load,extra:load>capacity?2:0};
+}
+function initThirdBatch(doc) {
+ const press=(group,attr,selected)=>group.querySelectorAll('['+attr+']').forEach(b=>b.setAttribute('aria-pressed',String(b===selected)));
+ doc.querySelectorAll('[data-demo="core"]').forEach(group=>{
+  const out=group.querySelector('[data-core-output]');
+  group.querySelectorAll('[data-core-k]').forEach(b=>b.addEventListener('click',()=>{
+   const k=Number(b.dataset.coreK),nodes=kCoreNodes(k);
+   press(group,'data-core-k',b);
+   out.textContent=k+'-core 保留 '+nodes.length+' 个节点：'+(nodes.length?nodes.join('、'):'空集')+'。';
+  }));
+ });
+ doc.querySelectorAll('[data-demo="sir-risk"]').forEach(group=>{
+  const beta=group.querySelector('[data-sir-beta]'),label=group.querySelector('[data-sir-beta-label]'),out=group.querySelector('[data-sir-risk-output]');
+  let m=2;
+  const update=()=>{
+   const b=Number(beta.value);
+   label.textContent=b.toFixed(2);
+   out.textContent='m='+m+'，β='+b.toFixed(2)+'；至少一次成功的理论概率 = '+(100*sirRisk(b,m)).toFixed(2)+'%。';
+  };
+  group.querySelectorAll('[data-sir-m]').forEach(button=>button.addEventListener('click',()=>{m=Number(button.dataset.sirM);press(group,'data-sir-m',button);update();}));
+  beta.addEventListener('input',update);update();
+ });
+ doc.querySelectorAll('[data-demo="sir-path"]').forEach(group=>{
+  const slider=group.querySelector('[data-sir-t]'),label=group.querySelector('[data-sir-t-label]'),out=group.querySelector('[data-sir-state]');
+  const draw=()=>{
+   const t=Number(slider.value),s=sirPathState(t);
+   label.textContent=String(t);
+   for(const status of ['S','I','R'])group.querySelector('[data-sir-'+status.toLowerCase()+']').textContent=String(s.filter(v=>v===status).length);
+   out.textContent='t='+t+'：'+s.map((v,i)=>'ABCDE'[i]+'='+v).join('，')+'。';
+  };
+  slider.addEventListener('input',draw);draw();
+ });
+ doc.querySelectorAll('[data-demo="cascade"]').forEach(group=>{
+  const slider=group.querySelector('[data-cascade-step]'),label=group.querySelector('[data-cascade-t-label]'),out=group.querySelector('[data-cascade-status]');
+  let rule=2;
+  const draw=()=>{
+   const t=Number(slider.value),history=cascadeHistory(rule,4),active=history[t];
+   const last=t?history[t-1]:[];
+   const newly=active.filter(v=>!last.includes(v));
+   label.textContent=String(t);
+   group.querySelector('[data-cascade-count]').textContent=active.length+' / 6';
+   group.querySelector('[data-cascade-new]').textContent=String(newly.length);
+   out.textContent='t='+t+'：已采纳 '+active.join('、')+'；未采纳 '+['A','B','C','D','E','F'].filter(v=>!active.includes(v)).join('、')+'。';
+  };
+  group.querySelectorAll('[data-cascade-rule]').forEach(b=>b.addEventListener('click',()=>{rule=Number(b.dataset.cascadeRule);press(group,'data-cascade-rule',b);draw();}));
+  slider.addEventListener('input',draw);draw();
+ });
+ doc.querySelectorAll('[data-demo="game"]').forEach(group=>{
+  const slider=group.querySelector('[data-game-benefit]'),label=group.querySelector('[data-game-b-label]'),out=group.querySelector('[data-game-result]');
+  const draw=()=>{
+   const b=Number(slider.value),pay=donationPayoffs(b);
+   label.textContent=b.toFixed(1);
+   ['a','b','c','d'].forEach((name,i)=>group.querySelector('[data-game-'+name+']').textContent=pay[i].toFixed(1));
+   out.textContent='b='+b.toFixed(1)+'，c=1；当前策略始终为 C、C、D、D。改变收益参数并不会自动更新策略。';
+  };
+  slider.addEventListener('input',draw);draw();
+ });
+ doc.querySelectorAll('[data-demo="voter"]').forEach(group=>{
+  const out=group.querySelector('[data-voter-result]');
+  group.querySelectorAll('[data-voter-neighbor]').forEach(b=>b.addEventListener('click',()=>{
+   const from=b.dataset.voterNeighbor,s=voterCopy(from);
+   press(group,'data-voter-neighbor',b);
+   out.textContent='B 复制 '+from+' 后变为'+(s[1]==='C'?'合作':'背叛')+'；全网状态为 '+s.join('、')+'。';
+  }));
+ });
+ doc.querySelectorAll('[data-demo="robust"]').forEach(group=>{
+  const size=group.querySelector('[data-robust-size]'),r=group.querySelector('[data-robust-r]'),note=group.querySelector('[data-robust-note]');
+  group.querySelectorAll('[data-robust-choice]').forEach(b=>b.addEventListener('click',()=>{
+   press(group,'data-robust-choice',b);
+   const which=b.dataset.robustChoice,v=robustnessAfterRemoval(which);
+   size.textContent=v.largest+' / '+v.remaining;r.textContent=v.fraction.toFixed(3);
+   note.textContent=which==='hub'?'移除中心枢纽：六个叶子彼此断开，最大连通分量只有 1/6。':'移除叶子：剩余 6 个节点仍连成一块，连通比例 1。';
+  }));
+ });
+ doc.querySelectorAll('[data-demo="overload"]').forEach(group=>{
+  const load=group.querySelector('[data-overload-load]'),count=group.querySelector('[data-overload-fail]'),status=group.querySelector('[data-overload-status]');
+  group.querySelectorAll('[data-overload-cap]').forEach(b=>b.addEventListener('click',()=>{
+   press(group,'data-overload-cap',b);
+   const capacity=Number(b.dataset.overloadCap),v=overloadAfterFailure(capacity);
+   load.textContent=String(v.load);count.textContent=String(v.extra);
+   status.textContent=v.extra?'容量 '+capacity+'，小于重新分配后的负载 6：A 与 C 均超载失效；包括原始 B 故障在内，共 3 台停止工作。':'容量 '+capacity+'，等于每台剩余负载 6：A 与 C 继续工作，但不再通过已失效的 B 连通。';
+  }));
+ });
+}
+
+return {erExpected,wsRegime,metricText,baProbability,degreeFrequency,pagerankDistribution,toyModularity,kCoreNodes,sirRisk,sirPathState,cascadeHistory,donationPayoffs,voterCopy,robustnessAfterRemoval,overloadAfterFailure,init(doc){init(doc);initAdvanced(doc);initThirdBatch(doc);}};});

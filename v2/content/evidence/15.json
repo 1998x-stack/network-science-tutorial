@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0.0",
+  "chapter": "15",
+  "review_status": "reviewed",
+  "claims": [
+    {
+      "id": "error-attack-difference",
+      "claim": "In certain heterogeneous network models, random node failures and targeted removal of important hubs produce different connectivity responses.",
+      "source_url": "https://doi.org/10.1038/35019019",
+      "locator": "Albert, Jeong and Barabási (2000), Nature abstract and network comparison",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "attack-correction",
+      "claim": "The original Nature article has a published correction concerning particular measurements/figures; the described attack-response conclusions should be attributed to the corrected record.",
+      "source_url": "https://www.nature.com/articles/35054111",
+      "locator": "Correction: Error and attack tolerance of complex networks",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "random-resilience",
+      "claim": "Random breakdown percolation for network degree distributions is distinct from deliberate high-degree attacks.",
+      "source_url": "https://doi.org/10.1103/PhysRevLett.85.4626",
+      "locator": "Cohen et al. (2000), random breakdown analysis",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "intentional-attack",
+      "claim": "Intentional high-degree attacks require a different removal protocol and can be analyzed using intentional breakdown methods.",
+      "source_url": "https://doi.org/10.1103/PhysRevLett.86.3682",
+      "locator": "Cohen et al. (2001), targeted removal framework",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "load-cascades",
+      "claim": "Load redistribution after a failure can trigger additional overload failures; this dynamic mechanism differs from static connectivity loss.",
+      "source_url": "https://doi.org/10.1103/PhysRevE.66.065102",
+      "locator": "Motter and Lai (2002), Cascade-based attacks on complex networks",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "toy-lcc",
+      "claim": "Deleting star hub 0 versus leaf 6 gives 1/6 versus 1 in surviving-node LCC fraction; path center gives 3/6.",
+      "source_url": "https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.components.connected_components.html",
+      "locator": "Derived from star_graph(6), path_graph(7) and independently checked connected components",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "toy-overload",
+      "claim": "If one failed server load of 4 is split equally onto two servers initially at load 4, new load is 6 and additional failure count depends on whether capacity is 5 or 6.",
+      "source_url": "https://doi.org/10.1103/PhysRevE.66.065102",
+      "locator": "Illustrative one-round redistribution toy, explicitly not reproducing the Motter–Lai model",
+      "status": "derived",
+      "kind": "derived"
+    }
+  ]
+}

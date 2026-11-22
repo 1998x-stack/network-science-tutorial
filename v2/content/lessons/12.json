@@ -3,86 +3,56 @@
   "chapter": "12",
   "title": "网络传播动力学",
   "source_path": "12.html",
-  "source_git_blob": "711cadf5748c9853a705000ffc29043751f5b0ae",
-  "review_status": "migrated_unreviewed",
+  "source_git_blob": "d3bfecebce552a03a886f2d6dbacf45a02e9446d",
+  "review_status": "reviewed",
   "headings": [
     {
       "depth": 2,
-      "title": "传染病建模基础"
-    },
-    {
-      "depth": 3,
-      "title": "仓室模型"
-    },
-    {
-      "depth": 3,
-      "title": "平均场方程"
+      "title": "连成一片的网络，为什么传播结果仍可能截然不同？"
     },
     {
       "depth": 2,
-      "title": "网络上的传播"
-    },
-    {
-      "depth": 3,
-      "title": "网络结构如何改变传播"
-    },
-    {
-      "depth": 3,
-      "title": "异质性平均场理论"
+      "title": "区分状态与传播事件：SIR 和 SIS"
     },
     {
       "depth": 2,
-      "title": "传播阈值"
-    },
-    {
-      "depth": 2,
-      "title": "渗流视角"
-    },
-    {
-      "depth": 2,
-      "title": "免疫策略"
+      "title": "从每条独立接触边推导感染概率"
     },
     {
       "depth": 3,
-      "title": "随机免疫"
-    },
-    {
-      "depth": 3,
-      "title": "目标免疫"
-    },
-    {
-      "depth": 3,
-      "title": "熟人免疫"
+      "title": "同时调整单边概率与暴露邻居数"
     },
     {
       "depth": 2,
-      "title": "COVID-19案例：网络科学的视角"
+      "title": "把同步更新的时间顺序固定下来"
+    },
+    {
+      "depth": 3,
+      "title": "逐步查看五节点路径的 SIR 状态"
+    },
+    {
+      "depth": 2,
+      "title": "为什么“传播阈值”不是一个通用常数？"
+    },
+    {
+      "depth": 2,
+      "title": "可复现实验：一步感染期的同步 SIR"
+    },
+    {
+      "depth": 2,
+      "title": "常见混淆与适用边界"
+    },
+    {
+      "depth": 2,
+      "title": "原始研究与公式依据"
     }
   ],
   "examples": [
     {
       "id": "01",
       "path": "content/examples/12/01.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
-    },
-    {
-      "id": "02",
-      "path": "content/examples/12/02.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
-    },
-    {
-      "id": "03",
-      "path": "content/examples/12/03.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
-    },
-    {
-      "id": "04",
-      "path": "content/examples/12/04.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
+      "language": "python",
+      "review_status": "tested"
     }
   ]
 }

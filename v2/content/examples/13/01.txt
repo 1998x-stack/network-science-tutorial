@@ -1,25 +1,24 @@
-# 简单阈值模型的模拟
 import networkx as nx
-import random
 
-def threshold_cascade(G, seeds, threshold=0.25):
+g = nx.Graph([("A","C"), ("B","C"), ("B","D"),
+              ("C","D"), ("C","E"), ("D","E"), ("E","F")])
+seeds = {"A", "B"}
+
+def cascade(threshold, steps=4):
     active = set(seeds)
-    changed = True
-    while changed:
-        changed = False
-        for node in G.nodes():
-            if node in active:
-                continue
-            neighbors = list(G.neighbors(node))
-            if not neighbors:
-                continue
-            active_neighbors = sum(1 for n in neighbors if n in active)
-            if active_neighbors / len(neighbors) >= threshold:
-                active.add(node)
-                changed = True
-    return active
+    history = [set(active)]
+    for _ in range(steps):
+        added = {v for v in g if v not in active
+                 and len(set(g.neighbors(v)) & active) >= threshold}
+        active = active | added
+        history.append(set(active))
+    return history
 
-G = nx.erdos_renyi_graph(1000, 0.01)
-seeds = random.sample(list(G.nodes()), 50)
-final_active = threshold_cascade(G, seeds, threshold=0.25)
-print(f"初始种子: 50 → 最终活跃: {len(final_active)}")
+trace_simple = cascade(1)
+two = cascade(2)
+assert [len(x) for x in trace_simple] == [2,4,5,6,6]
+assert [len(x) for x in two] == [2,3,4,5,5]
+assert two[1] == {"A","B","C"}
+assert two[2] == {"A","B","C","D"}
+assert "F" in trace_simple[-1] and "F" not in two[-1]
+print("m=1:", trace_simple, "m=2:", two)

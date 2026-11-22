@@ -62,7 +62,7 @@ def run():
         page.locator('.lesson[data-number="04"] .open-lesson').dispatch_event('click',{'button':1,'ctrlKey':True})
         # Page links are verified in static-generation tests. Do not navigate from about:blank.
         # S04/S05: ten independently authored lessons, standalone SVGs, MathML and tested controls.
-        for number in ('01','02','03','04','05','06','07','08','09','10'):
+        for number in ('01','02','03','04','05','06','07','08','09','10','11','12','13','14','15'):
             page.set_viewport_size({'width':1440,'height':900})
             page.set_content(inline_page(f'apps/web/lessons/{number}.html'))
             assert page.locator('.migrated-article figure').count()>=1
@@ -105,7 +105,34 @@ def run():
             elif number=='10':
                 page.locator('[data-mod-part="all"]').click()
                 assert page.locator('[data-mod-value]').inner_text()=='0.000000'
-            if number in ('06','07','08','09','10'):
+            elif number=='11':
+                page.locator('[data-core-k="2"]').click()
+                assert '5 个节点' in page.locator('[data-core-output]').inner_text()
+                page.locator('[data-core-k="3"]').click()
+                assert '0 个节点' in page.locator('[data-core-output]').inner_text()
+            elif number=='12':
+                page.locator('[data-sir-m="2"]').click()
+                page.locator('[data-sir-beta]').evaluate('(el)=>{el.value="0.5";el.dispatchEvent(new Event("input",{bubbles:true}))}')
+                assert '75.00%' in page.locator('[data-sir-risk-output]').inner_text()
+                page.locator('[data-sir-t]').evaluate('(el)=>{el.value="4";el.dispatchEvent(new Event("input",{bubbles:true}))}')
+                assert page.locator('[data-sir-r]').inner_text()=='4'
+                assert page.locator('[data-sir-i]').inner_text()=='1'
+            elif number=='13':
+                page.locator('[data-cascade-step]').evaluate('(el)=>{el.value="4";el.dispatchEvent(new Event("input",{bubbles:true}))}')
+                assert page.locator('[data-cascade-count]').inner_text()=='5 / 6'
+                page.locator('[data-cascade-rule="1"]').click()
+                assert page.locator('[data-cascade-count]').inner_text()=='6 / 6'
+            elif number=='14':
+                page.locator('[data-game-benefit]').evaluate('(el)=>{el.value="4";el.dispatchEvent(new Event("input",{bubbles:true}))}')
+                assert page.locator('[data-game-b]').inner_text()=='2.0'
+                page.locator('[data-voter-neighbor="C"]').click()
+                assert 'C、D、D、D' in page.locator('[data-voter-result]').inner_text()
+            elif number=='15':
+                page.locator('[data-robust-choice="hub"]').click()
+                assert page.locator('[data-robust-r]').inner_text()=='0.167'
+                page.locator('[data-overload-cap="6"]').click()
+                assert page.locator('[data-overload-fail]').inner_text()=='0'
+            if number in ('06','07','08','09','10','11','12','13','14','15'):
                 captures=ROOT/'screenshots'
                 captures.mkdir(parents=True,exist_ok=True)
                 page.screenshot(path=str(captures/f'lesson-{number}-desktop.png'),full_page=True)
@@ -148,6 +175,6 @@ def run():
         page.set_content(inline_page('apps/web/lab.html'))
         page.screenshot(path=str(ROOT/'screenshots/s02-graph-lab.png'),full_page=True)
         browser.close()
-    print('Chromium E2E passed: root portal, V2 reader, first-ten responsive lessons and controls, Graph Lab, comparison, registry and legacy viewer.')
+    print('Chromium E2E passed: root portal, V2 reader, first-fifteen responsive lessons and controls, Graph Lab, comparison, registry and legacy viewer.')
 
 if __name__=='__main__':run()

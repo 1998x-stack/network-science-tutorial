@@ -3,62 +3,56 @@
   "chapter": "15",
   "title": "网络鲁棒性与脆弱性",
   "source_path": "15.html",
-  "source_git_blob": "6b43ccc08330dc72cf2c4fe4798f7544e44d911c",
-  "review_status": "migrated_unreviewed",
+  "source_git_blob": "2c008c684a931b7c77488d6b20529a42e830d2ee",
+  "review_status": "reviewed",
   "headings": [
     {
       "depth": 2,
-      "title": "鲁棒性与脆弱性的悖论"
+      "title": "同样失去一个节点，网络可能从无恙变成碎片"
     },
     {
       "depth": 2,
-      "title": "故障与攻击模拟"
+      "title": "先问“什么功能还存在”，再选择指标"
     },
     {
       "depth": 2,
-      "title": "级联失效"
-    },
-    {
-      "depth": 2,
-      "title": "2003年美加大停电：一次级联失效的教科书案例"
-    },
-    {
-      "depth": 2,
-      "title": "网络加固策略"
+      "title": "随机失效与定向删除：为什么比较方法重要？"
     },
     {
       "depth": 3,
-      "title": "保护枢纽节点"
-    },
-    {
-      "depth": 3,
-      "title": "增加冗余"
-    },
-    {
-      "depth": 3,
-      "title": "拓扑优化"
-    },
-    {
-      "depth": 3,
-      "title": "提前发现关键节点"
+      "title": "只删除一个节点，比较星形网络的两种情形"
     },
     {
       "depth": 2,
-      "title": "互联网的鲁棒性"
+      "title": "渗流视角：阈值依赖网络与移除机制"
+    },
+    {
+      "depth": 2,
+      "title": "拓扑还在，不代表系统负载能承受"
+    },
+    {
+      "depth": 3,
+      "title": "固定负载，仅调整两台剩余服务器的容量"
+    },
+    {
+      "depth": 2,
+      "title": "代码：同样节点数和边数的精确移除实验"
+    },
+    {
+      "depth": 2,
+      "title": "什么时候不能只看枢纽？"
+    },
+    {
+      "depth": 2,
+      "title": "原始研究与基线"
     }
   ],
   "examples": [
     {
       "id": "01",
       "path": "content/examples/15/01.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
-    },
-    {
-      "id": "02",
-      "path": "content/examples/15/02.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
+      "language": "python",
+      "review_status": "tested"
     }
   ]
 }

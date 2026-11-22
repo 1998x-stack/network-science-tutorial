@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0.0",
+  "chapter": "13",
+  "review_status": "reviewed",
+  "claims": [
+    {
+      "id": "threshold-lineage",
+      "claim": "Threshold models of collective behavior formalize heterogeneous adoption thresholds and equilibrium group decisions.",
+      "source_url": "https://doi.org/10.1086/226707",
+      "locator": "Granovetter (1978), Threshold Models of Collective Behavior",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "cascades",
+      "claim": "Global cascades can arise in social threshold models under particular network connectivity and threshold regimes.",
+      "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC122850/",
+      "locator": "Watts (2002), A simple model of global cascades on random networks",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "complex-contagion",
+      "claim": "Complex contagions may require reinforcement from multiple distinct sources and need not benefit from single long-range ties as single-contact contagions do.",
+      "source_url": "https://doi.org/10.1086/521848",
+      "locator": "Centola and Macy (2007), Complex Contagions and the Weakness of Long Ties",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "synchronous-rule",
+      "claim": "Synchronous progressive absolute-neighbor-threshold dynamics only use the previous step's active set to compute the next active set.",
+      "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC122850/",
+      "locator": "Explicit classroom implementation of Watts-type threshold dynamics, with unchanging adopters",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "toy-cascade",
+      "claim": "The specified 6-node 7-edge graph yields active counts [2,4,5,6,6] for m=1 and [2,3,4,5,5] for m=2.",
+      "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC122850/",
+      "locator": "Independent calculation for stated graph, seeds and progressive update convention",
+      "status": "derived",
+      "kind": "derived"
+    }
+  ]
+}
