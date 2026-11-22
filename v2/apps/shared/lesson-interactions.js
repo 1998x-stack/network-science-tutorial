@@ -400,4 +400,75 @@ function initFifthBatch(doc){
  });
 }
 
-return {erExpected,wsRegime,metricText,baProbability,degreeFrequency,pagerankDistribution,toyModularity,kCoreNodes,sirRisk,sirPathState,cascadeHistory,donationPayoffs,voterCopy,robustnessAfterRemoval,overloadAfterFailure,linkPredictionScores,collectionProjection,multiplexPath,temporalEarliest,node2vecToy,gcnToy,gatToy,bridgeToy,labelAlignmentToy,projectionEdges,sparseMemoryToy,starSampleToy,init(doc){init(doc);initAdvanced(doc);initThirdBatch(doc);initFourthBatch(doc);initFifthBatch(doc);}};});
+
+/* Chapters 26–28: pure numerical contracts and progressively enhanced controls. */
+function lightGCN26(x) {
+ if(!Number.isFinite(x))throw new RangeError('finite initial signal required');
+ return {symmetric:x/Math.sqrt(2),naive:x/2};
+}
+function bpr26(delta) {
+ if(!Number.isFinite(delta))throw new RangeError('finite score difference required');
+ return {sigmoid:1/(1+Math.exp(-delta)),loss:Math.log1p(Math.exp(-delta))};
+}
+function brain27(tau) {
+ if(!Number.isFinite(tau)||tau<0||tau>1)throw new RangeError('0 <= threshold <= 1');
+ const count=[.8,.6,.2].filter(w=>w+1e-10>=tau).length;
+ return {edges:count,components:count>=2?1:count===1?2:3};
+}
+function fairness27(count) {
+ if(!Number.isInteger(count)||count<0||count>4)throw new RangeError('count 0..4');
+ return {a:.75,b:count/4,gap:Math.abs(.75-count/4)};
+}
+function capstone28(cutoff) {
+ if(cutoff===1)return {edges:2,score:0,futureIncluded:false};
+ if(cutoff===3)return {edges:5,score:1,futureIncluded:false};
+ throw new RangeError('cutoff must be 1 or 3');
+}
+function initSixthBatch(doc) {
+ const write=(group,selector,value)=>{const el=group.querySelector(selector);if(el)el.textContent=String(value);};
+ doc.querySelectorAll('[data-demo="final-lightgcn"]').forEach(group=>{
+  const slider=group.querySelector('[data-f26-x]');
+  const update=()=>{const x=Number(slider.value),v=lightGCN26(x);
+   write(group,'[data-f26-x-label]',x.toFixed(2));
+   write(group,'[data-f26-norm]',v.symmetric.toFixed(4));
+   write(group,'[data-f26-mean]',v.naive.toFixed(4));};
+  slider.addEventListener('input',update);update();
+ });
+ doc.querySelectorAll('[data-demo="final-bpr"]').forEach(group=>{
+  const slider=group.querySelector('[data-f26-delta]');
+  const update=()=>{const x=Number(slider.value),v=bpr26(x);
+   write(group,'[data-f26-delta-label]',x.toFixed(1));
+   write(group,'[data-f26-sigmoid]',v.sigmoid.toFixed(4));
+   write(group,'[data-f26-loss]',v.loss.toFixed(6));};
+  slider.addEventListener('input',update);update();
+ });
+ doc.querySelectorAll('[data-demo="final-brain"]').forEach(group=>{
+  const slider=group.querySelector('[data-f27-tau]');
+  const update=()=>{const x=Number(slider.value),v=brain27(x);
+   write(group,'[data-f27-tau-label]',x.toFixed(1));
+   write(group,'[data-f27-edges]',v.edges+' / 3');
+   write(group,'[data-f27-components]',v.components);};
+  slider.addEventListener('input',update);update();
+ });
+ doc.querySelectorAll('[data-demo="final-fairness"]').forEach(group=>{
+  const slider=group.querySelector('[data-f27-b]');
+  const update=()=>{const count=Number(slider.value),v=fairness27(count);
+   write(group,'[data-f27-b-label]',count);
+   write(group,'[data-f27-a-rate]',(100*v.a)+'%');
+   write(group,'[data-f27-b-rate]',(100*v.b)+'%');
+   write(group,'[data-f27-gap]',(100*v.gap)+' pp');};
+  slider.addEventListener('input',update);update();
+ });
+ doc.querySelectorAll('[data-demo="final-capstone"]').forEach(group=>{
+  const buttons=[...group.querySelectorAll('[data-f28-cutoff]')];
+  const update=button=>{const cutoff=Number(button.dataset.f28Cutoff),v=capstone28(cutoff);
+   buttons.forEach(x=>x.setAttribute('aria-pressed',String(x===button)));
+   write(group,'[data-f28-edges]',v.edges);
+   write(group,'[data-f28-score]',v.score);
+   write(group,'[data-f28-leak]',v.futureIncluded?'是':'否');
+   write(group,'[data-f28-note]',cutoff===1?'仅 AB、AC 两条训练边；D 和 E 暂时孤立。':'截至 t=3 有五条训练边；未来 BD@5 不在训练邻接。');};
+  buttons.forEach(x=>x.addEventListener('click',()=>update(x)));
+  update(group.querySelector('[data-f28-cutoff="3"]'));
+ });
+}
+return {erExpected,wsRegime,metricText,baProbability,degreeFrequency,pagerankDistribution,toyModularity,kCoreNodes,sirRisk,sirPathState,cascadeHistory,donationPayoffs,voterCopy,robustnessAfterRemoval,overloadAfterFailure,linkPredictionScores,collectionProjection,multiplexPath,temporalEarliest,node2vecToy,gcnToy,gatToy,bridgeToy,labelAlignmentToy,projectionEdges,sparseMemoryToy,starSampleToy,lightGCN26,bpr26,brain27,fairness27,capstone28,init(doc){init(doc);initAdvanced(doc);initThirdBatch(doc);initFourthBatch(doc);initFifthBatch(doc);initSixthBatch(doc);}};});
