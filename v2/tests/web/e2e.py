@@ -61,13 +61,14 @@ def run():
         assert '已完成 1 / 28' in page.locator('#progress-count').inner_text()
         page.locator('.lesson[data-number="04"] .open-lesson').dispatch_event('click',{'button':1,'ctrlKey':True})
         # Page links are verified in static-generation tests. Do not navigate from about:blank.
-        # S04: five independently authored lessons, standalone SVGs, MathML and real controls.
-        for number in ('01','02','03','04','05'):
+        # S04/S05: ten independently authored lessons, standalone SVGs, MathML and tested controls.
+        for number in ('01','02','03','04','05','06','07','08','09','10'):
             page.set_viewport_size({'width':1440,'height':900})
             page.set_content(inline_page(f'apps/web/lessons/{number}.html'))
             assert page.locator('.migrated-article figure').count()>=1
             assert page.locator('.migrated-article img').first.evaluate('(el)=>el.complete&&el.naturalWidth>0')
             assert page.locator('.migrated-article math').count()>=1
+            assert page.locator('.migrated-article math').first.evaluate('(el)=>el.getBoundingClientRect().width>0&&el.getBoundingClientRect().height>0')
             for width in (768,390,360):
                 page.set_viewport_size({'width':width,'height':840})
                 assert page.evaluate('document.documentElement.scrollWidth <= innerWidth+3'), (number,width)
@@ -88,6 +89,29 @@ def run():
             elif number=='05':
                 page.locator('[data-ws-beta]').evaluate('(el)=>{el.value="0.5";el.dispatchEvent(new Event("input",{bubbles:true}))}')
                 assert '中等重连' in page.locator('[data-ws-regime]').inner_text()
+            elif number=='06':
+                page.locator('[data-ba-node="E"]').click()
+                assert '10%' in page.locator('[data-ba-result]').inner_text()
+            elif number=='07':
+                page.locator('[data-degree-k="3"]').click()
+                assert '12.5%' in page.locator('[data-degree-result]').inner_text()
+            elif number=='08':
+                page.locator('[data-cent-kind="between"]').click()
+                assert '6/10' in page.locator('[data-cent-result]').inner_text()
+            elif number=='09':
+                page.locator('[data-pr-steps]').evaluate('(el)=>{el.value="1";el.dispatchEvent(new Event("input",{bubbles:true}))}')
+                assert page.locator('[data-pr-node="B"]').inner_text()=='0.5156'
+                assert '1.000000' in page.locator('[data-pr-note]').inner_text()
+            elif number=='10':
+                page.locator('[data-mod-part="all"]').click()
+                assert page.locator('[data-mod-value]').inner_text()=='0.000000'
+            if number in ('06','07','08','09','10'):
+                captures=ROOT/'screenshots'
+                captures.mkdir(parents=True,exist_ok=True)
+                page.screenshot(path=str(captures/f'lesson-{number}-desktop.png'),full_page=True)
+                page.set_viewport_size({'width':390,'height':840})
+                page.screenshot(path=str(captures/f'lesson-{number}-mobile.png'),full_page=True)
+                page.set_viewport_size({'width':1440,'height':900})
             page.emulate_media(media='print')
             assert page.locator('.migrated-article figure').first.is_visible()
             page.emulate_media(media='screen')
@@ -124,6 +148,6 @@ def run():
         page.set_content(inline_page('apps/web/lab.html'))
         page.screenshot(path=str(ROOT/'screenshots/s02-graph-lab.png'),full_page=True)
         browser.close()
-    print('Chromium E2E passed: root portal, V2 reader, first-five responsive lessons and controls, Graph Lab, comparison, registry and legacy viewer.')
+    print('Chromium E2E passed: root portal, V2 reader, first-ten responsive lessons and controls, Graph Lab, comparison, registry and legacy viewer.')
 
 if __name__=='__main__':run()

@@ -1,1 +1,14 @@
-P_cum(k) = Σ_{q=k}^{∞} P(q)
+from collections import Counter
+import networkx as nx
+graph = nx.Graph()
+graph.add_nodes_from(range(8))
+graph.add_edges_from([(0, 1), (0, 2), (0, 3), (0, 4),
+                      (0, 5), (1, 2), (2, 3)])
+degrees = [degree for _, degree in graph.degree()]
+counts = Counter(degrees)
+assert dict(sorted(counts.items())) == {0: 2, 1: 2, 2: 2, 3: 1, 5: 1}
+assert sum(degrees) == 2 * graph.number_of_edges()
+mean = sum(degrees) / len(degrees)
+second = sum(k * k for k in degrees) / len(degrees)
+assert mean == 1.75 and second == 5.5
+print("P(k) =", {k: v / 8 for k, v in sorted(counts.items())})

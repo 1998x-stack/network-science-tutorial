@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0.0",
+  "chapter": "08",
+  "review_status": "reviewed",
+  "claims": [
+    {
+      "id": "centrality-definitions",
+      "claim": "Degree, shortest-path betweenness and eigenvector centrality operationalize different aspects of node importance.",
+      "source_url": "https://doi.org/10.2307/3033543",
+      "locator": "Freeman (1977), network centrality based on betweenness; compare current NetworkX definitions",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "betweenness-formula",
+      "claim": "Betweenness counts fractions of shortest paths between pairs, excluding endpoints by default.",
+      "source_url": "https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.centrality.betweenness_centrality.html",
+      "locator": "Definition, normalized and endpoints parameters",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "toy-bridge",
+      "claim": "In two triangles connected by a single bridge, its endpoint nodes have normalized undirected betweenness 0.6.",
+      "source_url": "https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.centrality.betweenness_centrality.html",
+      "locator": "Derived from explicit 6-node 7-edge graph and NetworkX oracle test",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "weighted-shortest-path",
+      "claim": "Weighted betweenness treats weights as distances and requires appropriate positive weights.",
+      "source_url": "https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.centrality.betweenness_centrality.html",
+      "locator": "Weight parameter and zero-weight caveat",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "brandes",
+      "claim": "Brandes described more efficient algorithms for computing shortest-path betweenness.",
+      "source_url": "https://doi.org/10.1080/0022250X.2001.9990249",
+      "locator": "Brandes (2001), A Faster Algorithm for Betweenness Centrality",
+      "status": "verified",
+      "kind": "reference"
+    }
+  ]
+}

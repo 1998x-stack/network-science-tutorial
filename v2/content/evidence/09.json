@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0.0",
+  "chapter": "09",
+  "review_status": "reviewed",
+  "claims": [
+    {
+      "id": "pagerank-origin",
+      "claim": "The PageRank model is described in the Stanford report The PageRank Citation Ranking: Bringing Order to the Web.",
+      "source_url": "https://ilpubs.stanford.edu:8090/422/",
+      "locator": "Page, Brin, Motwani & Winograd, Stanford technical report",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "pagerank-definition",
+      "claim": "PageRank uses a random-surfer transition with teleportation for directed links.",
+      "source_url": "https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.link_analysis.pagerank_alg.pagerank.html",
+      "locator": "PageRank algorithm, damping and personalization arguments",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "dangling-repair",
+      "claim": "Dangling nodes with no outedges redistribute probability mass using the dangling distribution, avoiding probability leakage.",
+      "source_url": "https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.link_analysis.pagerank_alg.pagerank.html",
+      "locator": "Dangling parameter and default personalization redistribution",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "hits-distinct",
+      "claim": "HITS computes separate hub and authority scores, unlike PageRank's single stationary distribution.",
+      "source_url": "https://doi.org/10.1145/324133.324140",
+      "locator": "Kleinberg (1999), Authoritative Sources in a Hyperlinked Environment",
+      "status": "verified",
+      "kind": "reference"
+    }
+  ]
+}

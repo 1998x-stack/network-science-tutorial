@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0.0",
+  "chapter": "10",
+  "review_status": "reviewed",
+  "claims": [
+    {
+      "id": "modularity",
+      "claim": "Modularity compares observed within-community links to a configuration-model null expectation.",
+      "source_url": "https://doi.org/10.1103/PhysRevE.69.026113",
+      "locator": "Newman & Girvan (2004), community evaluation and modularity equation",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "toy-modularity",
+      "claim": "For two triangles joined by one bridge, the two-part partition has modularity 5/14 and the single-community partition has modularity zero.",
+      "source_url": "https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.community.quality.modularity.html",
+      "locator": "Derived from 7 edges, 3 edges within each part and total degree 7 per part",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "girvan-newman",
+      "claim": "Girvan–Newman iteratively removes high edge-betweenness links to expose divisive communities.",
+      "source_url": "https://doi.org/10.1103/PhysRevE.69.026113",
+      "locator": "Newman & Girvan (2004), divisive algorithm",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "louvain",
+      "claim": "Louvain performs local modularity optimization followed by aggregation.",
+      "source_url": "https://doi.org/10.1088/1742-5468/2008/10/P10008",
+      "locator": "Blondel et al. (2008), method",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "resolution-limit",
+      "claim": "Modularity optimization can merge smaller communities because of an intrinsic resolution limit.",
+      "source_url": "https://doi.org/10.1073/pnas.0605965104",
+      "locator": "Fortunato & Barthélemy (2007), Resolution Limit in Community Detection",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "leiden",
+      "claim": "Leiden improves guarantees related to badly connected Louvain communities.",
+      "source_url": "https://doi.org/10.1038/s41598-019-41695-z",
+      "locator": "Traag, Waltman & van Eck (2019), Leiden algorithm",
+      "status": "verified",
+      "kind": "reference"
+    }
+  ]
+}

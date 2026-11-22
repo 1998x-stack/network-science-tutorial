@@ -3,52 +3,48 @@
   "chapter": "06",
   "title": "无标度网络",
   "source_path": "06.html",
-  "source_git_blob": "44ebf362f4dfc458e76769d7b327127e5cf1362d",
-  "review_status": "migrated_unreviewed",
+  "source_git_blob": "d67dc4f41184d4fb0799236c6e1f498153af0a80",
+  "review_status": "reviewed",
   "headings": [
     {
       "depth": 2,
-      "title": "从随机到偏好"
+      "title": "为什么有些节点拥有远多于其他节点的连接？"
     },
     {
       "depth": 2,
-      "title": "幂律分布"
+      "title": "先增长，再按连接数量选择目标"
     },
     {
       "depth": 2,
-      "title": "优先连接机制"
+      "title": "把一次连接选择拆开"
+    },
+    {
+      "depth": 3,
+      "title": "同一张图的权重抽签"
     },
     {
       "depth": 2,
-      "title": "BA模型算法"
+      "title": "为什么模型会出现长尾？"
     },
     {
       "depth": 2,
-      "title": "BA模型性质"
+      "title": "使用确定性种子生成一个 BA 网络"
     },
     {
       "depth": 2,
-      "title": "无标度网络的意义"
+      "title": "哪些结论不能直接推出？"
+    },
+    {
+      "depth": 2,
+      "title": "原始资料与技术参考"
     }
   ],
   "examples": [
     {
       "id": "01",
       "path": "content/examples/06/01.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
-    },
-    {
-      "id": "02",
-      "path": "content/examples/06/02.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
-    },
-    {
-      "id": "03",
-      "path": "content/examples/06/03.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
+      "language": "python",
+      "review_status": "tested"
     }
   ]
 }
