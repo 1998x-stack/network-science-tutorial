@@ -41,6 +41,18 @@ def run():
         page.evaluate('''() => {const kv=new Map();Object.defineProperty(window,'localStorage',{configurable:true,value:{getItem:k=>kv.get(k)??null,setItem:(k,v)=>kv.set(k,String(v))}});}''')
         page.set_content(inline_page('../index.html'))
         assert page.locator('.lesson').count()==28
+        assert page.locator('#learning-roadmap img').count()==1
+        assert page.locator('#learning-roadmap img').first.evaluate('(el)=>el.complete&&el.naturalWidth==1250')
+        assert page.locator('.phase-links a').count()==6
+        assert page.locator('.phase-links a[href="24.html"]').count()==1
+        page.set_viewport_size({'width':360,'height':800})
+        assert page.evaluate('document.documentElement.scrollWidth <= innerWidth+3'), 'root portal on 360px'
+        assert page.locator('#learning-roadmap .diagram-viewport').evaluate('(el)=>el.scrollWidth>el.clientWidth')
+        captures=ROOT/'screenshots'
+        captures.mkdir(parents=True,exist_ok=True)
+        page.screenshot(path=str(captures/'visual-roadmap-mobile.png'),full_page=True)
+        page.set_viewport_size({'width':1440,'height':900})
+        page.screenshot(path=str(captures/'visual-roadmap-desktop.png'),full_page=True)
         assert '已完成 0 / 28' in page.locator('#progress-count').inner_text()
         page.locator('#chapter-search').fill('PageRank')
         assert page.locator('.lesson:visible').count()==1
@@ -66,12 +78,26 @@ def run():
             page.set_viewport_size({'width':1440,'height':900})
             page.set_content(inline_page(f'apps/web/lessons/{number}.html'))
             assert page.locator('.migrated-article figure').count()>=1
+            visual=page.locator('.migrated-article .visual-storyboard')
+            assert visual.count()==1,number
+            assert visual.get_attribute('data-visual-chapter')==number
+            assert visual.locator('img').count()==1
+            assert visual.locator('img').evaluate('(el)=>el.complete&&el.naturalWidth===1100')
+            assert visual.locator('figcaption').inner_text().startswith('检验点：')
+            assert page.locator('.migrated-article .lesson-jump a').count()==4
+            for href in page.locator('.migrated-article .lesson-jump a').evaluate_all('(els)=>els.map(el=>el.getAttribute("href"))'):
+                assert page.locator('[id="'+href[1:]+'"]').count()>=1,(number,href)
+            assert page.locator('.migrated-article .visual-storyboard .diagram-viewport').get_attribute('tabindex')=='0'
             assert page.locator('.migrated-article img').first.evaluate('(el)=>el.complete&&el.naturalWidth>0')
             assert page.locator('.migrated-article math').count()>=1
             assert page.locator('.migrated-article math').first.evaluate('(el)=>el.getBoundingClientRect().width>0&&el.getBoundingClientRect().height>0')
             for width in (768,390,360):
                 page.set_viewport_size({'width':width,'height':840})
                 assert page.evaluate('document.documentElement.scrollWidth <= innerWidth+3'), (number,width)
+                if width in (360,390):
+                    assert page.locator('.migrated-article .diagram-viewport').evaluate('(el)=>el.scrollWidth>el.clientWidth'),(number,width)
+                    page.locator('.migrated-article .diagram-viewport').focus()
+                    assert page.locator('.migrated-article .diagram-viewport').evaluate('(el)=>document.activeElement===el')
             page.set_viewport_size({'width':1440,'height':900})
             if number=='01':
                 page.locator('[data-lesson-action="euler-check"]').click()
@@ -210,7 +236,7 @@ def run():
                 assert page.locator('[data-f28-leak]').inner_text()=='否'
                 page.locator('[data-f28-cutoff="3"]').click()
                 assert page.locator('[data-f28-score]').inner_text()=='1'
-            if number in ('06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28'):
+            if number in ('01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28'):
                 captures=ROOT/'screenshots'
                 captures.mkdir(parents=True,exist_ok=True)
                 page.screenshot(path=str(captures/f'lesson-{number}-desktop.png'),full_page=True)
@@ -290,6 +316,6 @@ def run():
         page.set_content(inline_page('apps/web/lab.html'))
         page.screenshot(path=str(ROOT/'screenshots/s02-graph-lab.png'),full_page=True)
         browser.close()
-    print('Chromium E2E passed: root portal, V2 reader, all 28 responsive lessons and controls, research audit explorer, Graph Lab, comparison, registry and legacy viewer.')
+    print('Chromium E2E passed: root portal, V2 reader, all 28 visual storyboards and responsive lessons, research audit explorer, Graph Lab, comparison, registry and legacy viewer.')
 
 if __name__=='__main__':run()
