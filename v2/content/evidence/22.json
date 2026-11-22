@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0.0",
+  "chapter": "22",
+  "review_status": "reviewed",
+  "claims": [
+    {
+      "id": "advanced-22-01",
+      "claim": "GCN propagation uses self-loop adjacency and symmetric degree normalization",
+      "source_url": "https://arxiv.org/abs/1609.02907",
+      "locator": "Propagation rule with tilde A and tilde D",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "advanced-22-02",
+      "claim": "In A-B-C with loops and x=[1,0,0], node B gets 1/sqrt(6) in one linear step",
+      "source_url": "https://arxiv.org/abs/1609.02907",
+      "locator": "Derived exactly from Kipf-Welling normalization",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "advanced-22-03",
+      "claim": "GAT computes attention normalized over graph neighborhood",
+      "source_url": "https://arxiv.org/abs/1710.10903",
+      "locator": "Masked self-attention coefficients",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "advanced-22-04",
+      "claim": "GraphSAGE learns inductive neighborhood-aggregation functions and supports sampling",
+      "source_url": "https://papers.nips.cc/paper/2017/hash/5dd9db5e033da9c6fb5ba83c7a7ebea9-Abstract.html",
+      "locator": "Algorithm 1 and aggregator variants",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "advanced-22-05",
+      "claim": "Over-squashing is associated with information bottlenecks for long-range graph dependencies",
+      "source_url": "https://arxiv.org/abs/2006.05205",
+      "locator": "Information bottleneck analysis",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "advanced-22-06",
+      "claim": "Toy two-way softmax is illustrative attention, not trained GAT output",
+      "source_url": "https://arxiv.org/abs/1710.10903",
+      "locator": "Derived two-neighbor normalization calculation",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "advanced-22-07",
+      "claim": "Graph message passing evaluation must exclude future edges when predicting new links",
+      "source_url": "https://arxiv.org/abs/1609.02907",
+      "locator": "Derived leakage-safe task protocol, not an original paper benchmark",
+      "status": "derived",
+      "kind": "derived"
+    }
+  ]
+}

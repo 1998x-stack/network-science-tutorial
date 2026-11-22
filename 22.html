@@ -1,353 +1,54 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
-    <title>第22章 图神经网络入门</title>
-    <link rel="stylesheet" href="theme.css">
-</head>
-<body>
-<div class="double-border">
-<div class="container">
-    <div class="sidebar">
-        <h3>🧠 课程目录</h3>
-        <ul class="chapter-list">
-            <li><a href="01.html">第1章 网络科学导论</a></li>
-            <li><a href="02.html">第2章 图论基础</a></li>
-            <li><a href="03.html">第3章 网络基本度量</a></li>
-            <li><a href="04.html">第4章 随机网络模型</a></li>
-            <li><a href="05.html">第5章 小世界网络</a></li>
-            <li><a href="06.html">第6章 无标度网络</a></li>
-            <li><a href="07.html">第7章 度分布与网络异质性</a></li>
-            <li><a href="08.html">第8章 中心性分析</a></li>
-            <li><a href="09.html">第9章 PageRank与链接分析</a></li>
-            <li><a href="10.html">第10章 社团检测（上）</a></li>
-            <li><a href="11.html">第11章 社团检测（下）</a></li>
-            <li><a href="12.html">第12章 网络传播动力学</a></li>
-            <li><a href="13.html">第13章 信息与谣言传播</a></li>
-            <li><a href="14.html">第14章 网络上的博弈</a></li>
-            <li><a href="15.html">第15章 网络鲁棒性与脆弱性</a></li>
-            <li><a href="16.html">第16章 链路预测</a></li>
-            <li><a href="17.html">第17章 网络可视化</a></li>
-            <li><a href="18.html">第18章 网络数据采集</a></li>
-            <li><a href="19.html">第19章 多层网络</a></li>
-            <li><a href="20.html">第20章 时序与动态网络</a></li>
-            <li><a href="21.html">第21章 网络嵌入与表示学习</a></li>
-            <li><a href="22.html" class="active">第22章 图神经网络入门</a></li>
-            <li><a href="23.html">第23章 NetworkX实战</a></li>
-            <li><a href="24.html">第24章 社交网络分析案例</a></li>
-            <li><a href="25.html">第25章 大规模网络分析</a></li>
-            <li><a href="26.html">第26章 网络科学+机器学习</a></li>
-            <li><a href="27.html">第27章 网络科学前沿</a></li>
-            <li><a href="28.html">第28章 综合实战项目</a></li>
-        </ul>
-    </div>
-    <div class="main-content">
-        <h1>第22章 图神经网络入门</h1>
-
-        <p>同学们好！上一章我们学习了网络嵌入，它通过随机游走为每个节点学习一个固定向量。但DeepWalk和Node2Vec有一个本质局限：它们只是"查表式"的嵌入——每个节点有自己独立的向量，且训练时看不到节点的属性特征。如果有一个新节点加入网络，你必须重新训练整个模型。图神经网络（Graph Neural Network, GNN）的出现彻底改变了这一局面，它让网络上的表示学习真正进入了"深度学习时代"。</p>
-
-        <h2>为什么需要图神经网络</h2>
-
-        <p>回顾上一章的浅层嵌入方法，它们虽然有效，但存在三个核心痛点。</p>
-
-        <p><strong>痛点一：无法泛化到未见节点（Transductive vs Inductive）。</strong>DeepWalk 和 Node2Vec 是直推式的（transductive）：它们在训练时"看到"了所有节点，并且为每个节点分配了一个嵌入向量。如果有一个新节点加入网络，你需要重新运行随机游走并重新训练整个模型。这在大规模动态网络中是一个严重的瓶颈——想想看，一个社交网络每天有数百万新用户注册，每次都重新训练是不现实的。</p>
-
-        <p><strong>痛点二：忽略了节点属性。</strong>在很多实际场景中，节点本身携带丰富的信息：论文有摘要和关键词、用户有个人资料和发布的内容、蛋白质有序列和结构特征。浅层嵌入方法完全忽略了这些属性信息——它们只考虑图的拓扑结构。而 GNN 可以天然地融合拓扑信息和节点属性。</p>
-
-        <p><strong>痛点三：缺乏层次化的特征学习。</strong>在图像处理中，CNN通过堆叠卷积层来自动学习从边缘到纹理再到物体的层次化特征。浅层网络嵌入没有这种层次化结构——它们只是一次性的"查表"映射。GNN 通过多层消息传递，可以逐层聚合越来越远距离的信息，形成层次化的表示。</p>
-
-        <div class="highlight">
-            <strong>核心洞察：</strong>如果要把浅层嵌入和GNN做一个类比的话，浅层嵌入就像是"词袋模型"（每个词有独立向量但看不到上下文），而GNN就像是"BERT"（每个词的表示由其上下文动态决定）。GNN的突破在于：节点的表示不是独立的，而是通过图结构从邻居节点"聚合"而来的。
-        </div>
-
-        <h2>消息传递框架</h2>
-
-        <p>绝大多数 GNN 模型都可以统一到一个框架下——<strong>消息传递（Message Passing）</strong>。这个框架的核心思想非常直观：每个节点通过与其邻居交换信息来更新自己的表示。</p>
-
-        <p>对于一个节点 v，第 k 层消息传递可以分为两步：</p>
-
-        <ol>
-            <li><strong>聚合（Aggregate）</strong>：将邻居节点在第 k-1 层的表示收集起来，通过某种聚合函数（求和、平均、最大值等）合并成一个"消息"。</li>
-            <li><strong>更新（Combine/Update）</strong>：将节点自身的表示与聚合得到的消息结合起来，通过一个可学习的函数（通常是全连接层+激活函数）得到第 k 层的表示。</li>
-        </ol>
-
-        <p>数学上可以写成：</p>
-
-        <p><strong>a<sub>v</sub><sup>(k)</sup> = AGGREGATE<sup>(k)</sup>( { h<sub>u</sub><sup>(k-1)</sup> : u in N(v) } )</strong></p>
-        <p><strong>h<sub>v</sub><sup>(k)</sup> = COMBINE<sup>(k)</sup>( h<sub>v</sub><sup>(k-1)</sup>, a<sub>v</sub><sup>(k)</sup> )</strong></p>
-
-        <p>其中 h<sub>v</sub><sup>(k)</sup> 是节点 v 在第 k 层的表示，N(v) 是 v 的邻居集合。</p>
-
-        <h3>置换不变性（Permutation Invariance）</h3>
-
-        <p>聚合函数有一个重要的数学要求：它必须对节点邻居的顺序不敏感。因为图本身没有"顺序"的概念——你列举邻居的时候，无论按什么顺序，聚合结果都应该一样。满足这个性质的函数包括 sum、mean、max 等，但不包括 concat 或按位置的加权和。这是 GNN 与 CNN/RRN 的一个根本区别——CNN 依赖空间顺序，GNN 则必须对无序数据操作。</p>
-
-        <h2>GCN——图卷积网络</h2>
-
-        <p>GCN（Graph Convolutional Network）是图神经网络领域最具影响力的模型之一，由Thomas Kipf和Max Welling在2017年提出。它可以说是"每个学GNN的人都要读的第一篇论文"。</p>
-
-        <h3>谱域 vs 空域</h3>
-
-        <p>在进入 GCN 的细节之前，需要简单了解两种不同的设计思路：</p>
-
-        <p><strong>谱域方法（Spectral）</strong>从图信号处理的角度出发，利用图的拉普拉斯矩阵的特征分解来定义卷积操作。这种方法的优点是数学优美，但缺点是：(1) 需要计算拉普拉斯矩阵的特征分解，计算复杂度为 O(N³)；(2) 学到的卷积核是图结构相关的，无法在不同结构的图之间迁移。</p>
-
-        <p><strong>空域方法（Spatial）</strong>则是直接在图的邻居关系上定义聚合操作——这正是前面提到的消息传递框架。GCN 本质上是一种空域方法（尽管最初的推导是从谱域切入的），它的每一层只是对邻居节点的特征进行加权求和和变换。</p>
-
-        <h3>Kipf & Welling GCN</h3>
-
-        <p>Kipf和Welling提出的GCN的每一层可以表示为：</p>
-
-        <p><strong>H<sup>(l+1)</sup> = sigma( D<sup>-1/2</sup> A' D<sup>-1/2</sup> H<sup>(l)</sup> W<sup>(l)</sup> )</strong></p>
-
-        <p>其中：</p>
-        <ul>
-            <li>A' = A + I 是添加了自环的邻接矩阵（让节点在聚合时包含自身的信息）</li>
-            <li>D 是 A' 的度矩阵</li>
-            <li>D<sup>-1/2</sup> A' D<sup>-1/2</sup> 是归一化的邻接矩阵（防止高阶节点的表示值过大）</li>
-            <li>H<sup>(l)</sup> 是第 l 层的所有节点的特征矩阵</li>
-            <li>W<sup>(l)</sup> 是第 l 层的可学习权重矩阵</li>
-            <li>sigma 是激活函数（常用ReLU）</li>
-        </ul>
-
-        <p>这个公式看起来有点吓人，但它本质上是做了三件简单的事情：<strong>求和邻居特征、归一化、过线性层。</strong></p>
-
-        <pre><code># GCN层的简化实现（PyTorch风格）
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-
-class GCNLayer(nn.Module):
-    def __init__(self, in_features, out_features):
-        super().__init__()
-        self.W = nn.Linear(in_features, out_features)
-
-    def forward(self, A_hat, X):
-        # A_hat: 归一化邻接矩阵 (N x N)
-        # X: 节点特征矩阵 (N x in_features)
-        # 消息聚合: A_hat @ X
-        agg = torch.mm(A_hat, X)  # 对每个节点，加权求和邻居特征
-        # 线性变换 + 激活
-        return F.relu(self.W(agg))
-
-# 构建一个2层GCN
-class GCN(nn.Module):
-    def __init__(self, n_features, hidden_dim, n_classes):
-        super().__init__()
-        self.layer1 = GCNLayer(n_features, hidden_dim)
-        self.layer2 = GCNLayer(hidden_dim, n_classes)
-
-    def forward(self, A_hat, X):
-        h = self.layer1(A_hat, X)
-        h = self.layer2(A_hat, h)
-        return F.log_softmax(h, dim=1)
-</code></pre>
-
-        <p>Kipf 和 Welling 在论文中展示了：仅仅使用一个2层的GCN，在Cora、Citeseer和Pubmed三个引文网络数据集上，半监督节点分类的准确率就大幅超过了当时的所有方法。更令人印象深刻的是，这个模型只有几十行代码（他们在GitHub上放了一个非常简洁的TensorFlow实现），却带来了质的飞跃。</p>
-
-        <div class="tip">
-            <strong>为什么GCN这么有效？</strong>一个直观的理解是：GCN的每一层都在做"平滑"操作——它将邻居的特征进行加权平均，使得相邻节点的表示趋于相似。多层GCN则允许信息从更远的节点传播过来。在引文网络中，这种现象非常合理：一篇论文的类别（如"深度学习"或"数据库"）通常可以通过它引用的论文的类别来推断。这正是GCN能够"传递"标签信息做出准确分类的原因。
-        </div>
-
-        <h2>GAT——图注意力网络</h2>
-
-        <p>GCN的一个隐含假设是：所有邻居对中心节点的影响是<strong>相同</strong>的（聚合时按度归一化权重）。但这个假设在多数场景下不成立。在你的社交网络中，有些朋友的意见对你影响更大，另一些则不那么重要。GAT（Graph Attention Network，Velickovic等，2018年）让模型<strong>自己学习</strong>每个邻居的重要性。</p>
-
-        <h3>注意力机制</h3>
-
-        <p>GAT的核心创新是在聚合之前，先计算一个注意力系数 alpha_{uv}，表示节点 u 对节点 v 的重要性。具体计算方式如下：</p>
-
-        <ol>
-            <li>将节点 u 和节点 v 的表示拼接起来：concat(h_u, h_v)</li>
-            <li>通过一个可学习的向量 a 做点积，得到一个标量分数</li>
-            <li>用 LeakyReLU 激活后，通过 softmax 在所有邻居上归一化</li>
-        </ol>
-
-        <p>这种"自注意力"机制使得模型能够为不同的邻居分配不同的权重。例如，在引文网络中，一篇论文可能更关注同领域的引用，而给跨领域的引用较低的权重——注意力机制可以自动学习这种偏好，而不需要人为指定。</p>
-
-        <h3>多头注意力（Multi-Head Attention）</h3>
-
-        <p>为了增加模型的表达能力，GAT引入了<strong>多头注意力</strong>：同时计算 K 组独立的注意力系数和变换，然后将 K 个结果拼接（或平均）起来。这种做法在Transformer中已经被验证非常有效，它的效果类似于集成学习——每个注意力头可以关注不同的"关系维度"。</p>
-
-        <pre><code># GAT注意力机制的简化实现
-class GATLayer(nn.Module):
-    def __init__(self, in_features, out_features, dropout=0.6, alpha=0.2):
-        super().__init__()
-        self.W = nn.Linear(in_features, out_features)
-        self.a = nn.Parameter(torch.zeros(1, 2 * out_features))
-        self.dropout = nn.Dropout(dropout)
-        self.leakyrelu = nn.LeakyReLU(alpha)
-
-    def forward(self, h, adj):
-        # h: 节点特征 (N x in_features)
-        Wh = self.W(h)  # (N x out_features)
-
-        # 计算所有节点对的注意力分数
-        Wh1 = Wh @ self.a[:, :self.out_features].T  # (N x 1)
-        Wh2 = Wh @ self.a[:, self.out_features:].T  # (N x 1)
-        e = self.leakyrelu(Wh1 + Wh2.T)  # (N x N) 未归一化注意力
-
-        # 掩码：只保留有边的节点对
-        attention = torch.where(adj > 0, e, -1e10 * torch.ones_like(e))
-        attention = F.softmax(attention, dim=1)
-        attention = self.dropout(attention)
-
-        # 加权聚合邻居特征
-        h_prime = attention @ Wh
-        return h_prime
-</code></pre>
-
-        <p>GAT的一个实用优势是：注意力系数提供了<strong>可解释性</strong>。你可以可视化哪些邻居对中心节点的决策影响最大，这在某些需要解释的领域（如药物发现）中非常宝贵。</p>
-
-        <h2>GraphSAGE——归纳式学习</h2>
-
-        <p>GCN和GAT都是直推式的——它们在训练时假设测试时也会看到相同的节点集合。但真实世界的图是动态的——新用户加入、新论文发表、新商品上架。GraphSAGE（Hamilton等，2017年）专门解决了这个问题，它将GNN从直推式（transductive）推广到了<strong>归纳式（inductive）</strong>。</p>
-
-        <h3>邻居采样（Neighborhood Sampling）</h3>
-
-        <p>GraphSAGE的关键创新在于：它不是用所有的邻居来聚合消息，而是每层<strong>随机采样固定数量的邻居</strong>。这个设计有两大好处：</p>
-
-        <ul>
-            <li><strong>计算可扩展性</strong>：即使在度非常高的节点上，每层的计算量也是固定的（比如固定采3个邻居），可以轻松扩展到数十亿节点的图。</li>
-            <li><strong>归纳能力</strong>：模型学习的是"如何聚合邻居的特征"，而不是"为特定节点学一个向量"。当新节点加入时，只需要获取它的邻居和特征，就可以通过训练好的聚合函数计算它的嵌入。</li>
-        </ul>
-
-        <h3>三种聚合器</h3>
-
-        <p>GraphSAGE提出了三种不同的聚合函数，每一种对应不同的"邻居消息组合方式"：</p>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>聚合器</th>
-                    <th>操作</th>
-                    <th>特点</th>
-                    <th>适用场景</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Mean</td>
-                    <td>对邻居向量求平均</td>
-                    <td>对称、简单、高效</td>
-                    <td>大多数场景的默认选择</td>
-                </tr>
-                <tr>
-                    <td>LSTM</td>
-                    <td>按随机顺序输入LSTM</td>
-                    <td>表达能力更强，但不对称</td>
-                    <td>邻居有序列属性的情况</td>
-                </tr>
-                <tr>
-                    <td>Pooling</td>
-                    <td>每个邻居过MLP后取最大</td>
-                    <td>对称、鲁棒、能捕捉关键邻居</td>
-                    <td>需要关注最显著邻居时</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <div class="warning">
-            <strong>选型经验：</strong>根据我的实践经验，对于大多数中小规模图（节点数万以内），GCN和GAT通常优于GraphSAGE，因为它们利用了全部邻居信息。但对于大规模图（百万级以上），GraphSAGE的采样策略使其成为唯一可行的选择。另外，如果你需要处理不断变化的数据（如实时推荐），GraphSAGE的归纳能力是无可替代的。
-        </div>
-
-        <h2>PyTorch Geometric入门</h2>
-
-        <p>了解了理论基础后，让我们来动手实践。目前最流行的GNN框架有两个：PyTorch Geometric（PyG）和DGL（Deep Graph Library）。接下来我们用 PyG 来构建一个简单的 GNN 模型。</p>
-
-        <h3>安装与基本概念</h3>
-
-        <p>PyTorch Geometric 的安装非常方便（假设你已经安装了 PyTorch）：</p>
-
-        <pre><code>pip install torch_geometric
-</code></pre>
-
-        <p>在 PyG 中，图数据用 <code>Data</code> 对象表示，核心属性包括：</p>
-
-        <ul>
-            <li><code>x</code>：节点特征矩阵 (N x F)</li>
-            <li><code>edge_index</code>：边的索引 (2 x E)，COO格式</li>
-            <li><code>y</code>：节点标签（监督学习时使用）</li>
-            <li><code>train_mask / val_mask / test_mask</code>：划分训练集、验证集和测试集</li>
-        </ul>
-
-        <h3>实战：节点分类</h3>
-
-        <p>下面我们用一个完整的例子来训练一个GNN模型，在Cora数据集上做节点分类：</p>
-
-        <pre><code>import torch
-import torch.nn.functional as F
-from torch_geometric.nn import GCNConv
-from torch_geometric.datasets import Planetoid
-
-# 1. 加载Cora数据集
-dataset = Planetoid(root='/tmp/Cora', name='Cora')
-data = dataset[0]
-print(f"图信息: {data}")
-print(f"节点数: {data.num_nodes}, 边数: {data.num_edges}")
-print(f"特征维度: {data.num_features}, 类别数: {dataset.num_classes}")
-
-# 2. 定义2层GCN模型
-class GCN(torch.nn.Module):
-    def __init__(self, in_channels, hidden_channels, out_channels):
-        super().__init__()
-        self.conv1 = GCNConv(in_channels, hidden_channels)
-        self.conv2 = GCNConv(hidden_channels, out_channels)
-
-    def forward(self, x, edge_index):
-        x = self.conv1(x, edge_index)
-        x = F.relu(x)
-        x = F.dropout(x, p=0.5, training=self.training)
-        x = self.conv2(x, edge_index)
-        return F.log_softmax(x, dim=1)
-
-# 3. 训练
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-model = GCN(dataset.num_features, 16, dataset.num_classes).to(device)
-data = data.to(device)
-optimizer = torch.optim.Adam(model.parameters(), lr=0.01, weight_decay=5e-4)
-
-model.train()
-for epoch in range(200):
-    optimizer.zero_grad()
-    out = model(data.x, data.edge_index)
-    loss = F.nll_loss(out[data.train_mask], data.y[data.train_mask])
-    loss.backward()
-    optimizer.step()
-
-    # 每10个epoch输出验证准确率
-    if epoch % 10 == 0:
-        model.eval()
-        pred = model(data.x, data.edge_index).argmax(dim=1)
-        acc = (pred[data.val_mask] == data.y[data.val_mask]).float().mean()
-        print(f'Epoch {epoch:3d}, Loss: {loss:.4f}, Val Acc: {acc:.4f}')
-        model.train()
-
-# 4. 测试
-model.eval()
-pred = model(data.x, data.edge_index).argmax(dim=1)
-test_acc = (pred[data.test_mask] == data.y[data.test_mask]).float().mean()
-print(f'测试集准确率: {test_acc:.4f}')
-</code></pre>
-
-        <p>这个只有几十行代码的模型，在 Cora 数据集上通常能达到 80% 以上的测试准确率。你只需要替换不同的数据集和修改几行网络结构，就可以应用到各种实际问题上。</p>
-
-        <div class="tip">
-            <strong>新手常见问题：</strong>如果你刚开始用PyG，有一个最常犯的错误——<code>edge_index</code>必须是<code>LongTensor</code>类型（即索引为整数）。如果你从其他格式导入数据时不小心把边表转成了浮点数，PyG会静默地"接受"但内部计算会出错。建议在构建Data对象后，用<code>data.validate()</code>检查一下数据格式是否合法。
-        </div>
-
-        <p>GNN的研究非常活跃，本章我们只触及了冰山一角。除了GCN、GAT和GraphSAGE，还有很多重要的模型如GIN（图同构网络，理论上表达能力最强）、GatedGNN、EdgeConv（处理点云数据）等。不过，掌握了本章的消息传递框架和经典模型，你就有了理解后续所有GNN变体的基础。</p>
-
-        <p>带着这些知识，从下一章开始，我们进入了课程的最后一个大板块——<strong>实战篇</strong>。第23章我们将使用NetworkX进行一系列动手实验，把前面学到的理论真正付诸实践。我们第23章见！</p>
-
-        <div class="footer-nav">
-            <a href="21.html">← 上一章</a>
-            <a href="index.html">📖 返回目录</a>
-            <a href="23.html">下一章 →</a>
-        </div>
-    </div>
-</div>
-</div>
-</body>
-</html>
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="沿三节点图手算 GCN 的归一化，再比较注意力与归纳式采样，明确图学习中的同质性假设、信息瓶颈和实验协议。"><title>第22章 图神经网络入门 | 网络科学</title><link rel="stylesheet" href="v2/apps/web/site.css"></head><body><header class="topnav shell"><a class="brand" href="index.html"><span class="brand-mark">◉</span><span>NETWORK SCIENCE<small>网络科学 · 结构与复杂系统</small></span></a><nav class="navlinks" aria-label="站点导航"><a href="index.html">课程首页</a><a href="v2/apps/web/lab.html">Graph Lab</a><a href="v2/apps/web/compare.html">模型比较</a><a href="v2/apps/web/datasets.html">数据集</a></nav></header><main class="shell lesson-layout"><aside class="panel"><nav class="chapter-index" aria-label="28章课程导航"><h2>课程目录</h2><ol><li><a href="01.html">01 · 网络科学导论</a></li><li><a href="02.html">02 · 图论基础</a></li><li><a href="03.html">03 · 网络基本度量</a></li><li><a href="04.html">04 · 随机网络模型</a></li><li><a href="05.html">05 · 小世界网络</a></li><li><a href="06.html">06 · 无标度网络</a></li><li><a href="07.html">07 · 度分布与网络异质性</a></li><li><a href="08.html">08 · 中心性分析</a></li><li><a href="09.html">09 · PageRank与链接分析</a></li><li><a href="10.html">10 · 社团检测（上）</a></li><li><a href="11.html">11 · 社团检测（下）</a></li><li><a href="12.html">12 · 网络传播动力学</a></li><li><a href="13.html">13 · 信息与谣言传播</a></li><li><a href="14.html">14 · 网络上的博弈</a></li><li><a href="15.html">15 · 网络鲁棒性与脆弱性</a></li><li><a href="16.html">16 · 链路预测</a></li><li><a href="17.html">17 · 网络可视化</a></li><li><a href="18.html">18 · 网络数据采集</a></li><li><a href="19.html">19 · 多层网络</a></li><li><a href="20.html">20 · 时序与动态网络</a></li><li><a href="21.html">21 · 网络嵌入与表示学习</a></li><li><a href="22.html" class="active" aria-current="page">22 · 图神经网络入门</a></li><li><a href="23.html">23 · NetworkX实战</a></li><li><a href="24.html">24 · 社交网络分析案例</a></li><li><a href="25.html">25 · 大规模网络分析</a></li><li><a href="26.html">26 · 网络科学+机器学习</a></li><li><a href="27.html">27 · 网络科学前沿</a></li><li><a href="28.html">28 · 综合实战项目</a></li></ol></nav></aside><div class="main-content"><article class="lesson-article"><header class="lesson-hero"><p class="eyebrow">MESSAGE PASSING / GCN · GAT · GRAPH SAGE</p><h1>第22章 图神经网络入门</h1><p class="dek">沿三节点图手算 GCN 的归一化，再比较注意力与归纳式采样，明确图学习中的同质性假设、信息瓶颈和实验协议。</p><p class="reading-meta">核心问题：如果节点特征为零，它还能从邻居学到信息吗？同一层的聚合究竟怎样加权？</p></header>
+<section id="question"><h2>1. GNN 先要定义输入、邻居和要预测的对象</h2>
+<p>图神经网络（GNN）把图的关系结构与节点/边特征结合起来。给定图 G=(V,E)、节点特征矩阵 X∈Rⁿˣᶠ，常见任务包括节点分类、连接预测以及整个图的回归。<strong>节点分类</strong>输出每个节点的类别；<strong>链接预测</strong>需要为候选节点对打分；<strong>图分类</strong>需要读出或池化节点表示。三类任务的监督对象与可泄漏信息不同，不能只改模型最后一层就假定评估协议一致。</p>
+<p>一般的消息传递网络在第 ℓ 层为节点 v 从邻居 u 收集消息 mᶩ(u→v)，使用排列不变的聚合 AGG（例如 sum、mean、max）得到聚合值，然后与自身旧状态一起更新 hᶩ⁺¹ᵥ。<strong>排列不变</strong>是指交换邻居输入顺序不能改变同一多重集合的结果，但重复边、多重图边权、采样概率和节点 ID 的一致性仍需显式处理。</p>
+<div class="math-scroll" tabindex="0" role="region" aria-label="一般消息传递更新公式"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="一般消息传递更新公式"><mrow><msubsup><mi>h</mi><mi>v</mi><mrow><mi>ℓ</mi><mo>+</mo><mn>1</mn></mrow></msubsup><mo>=</mo><mi>UPDATE</mi><mo>(</mo><msubsup><mi>h</mi><mi>v</mi><mi>ℓ</mi></msubsup><mo>,</mo><mi>AGG</mi><mo>{</mo><mi>m</mi><mo>(</mo><msubsup><mi>h</mi><mi>u</mi><mi>ℓ</mi></msubsup><mo>)</mo><mo>:</mo><mi>u</mi><mo>∈</mo><mi>N</mi><mo>(</mo><mi>v</mi><mo>)</mo><mo>}</mo><mo>)</mo></mrow></math></div>
+<p>第一层如果只使用直接邻居的信息，那么堆两层后通常可以获得两跳邻域的信息；但“能接收到两跳信息”不等于一定能从高维表示中无损还原所有两跳路径。拓扑本身不保证标签有同质性：在异配图中，相邻节点常有不同标签，简单平滑可能损害性能。</p>
+</section>
+<section id="gcn"><h2>2. GCN 的归一化为什么不是普通平均？</h2>
+<p>Kipf &amp; Welling（ICLR 2017）的常用传播层先给邻接矩阵 A 加上自环：Ã=A+I；再计算自环之后的度矩阵 D̃，线性传播为 Hᶩ⁺¹=σ(D̃⁻¹/²ÃD̃⁻¹/² HᶩWᶩ)。这个算子对称地按来源、目标节点的度调整信息权重。<strong>普通均值</strong>是把邻居值直接相加除以数量；对称归一化需要同时使用两端的度，因此数值通常不同。</p>
+<div class="math-scroll" tabindex="0" role="region" aria-label="GCN 对称归一化传播算子"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="GCN 对称归一化传播算子"><mrow><msup><mi>H</mi><mrow><mi>ℓ</mi><mo>+</mo><mn>1</mn></mrow></msup><mo>=</mo><mi>σ</mi><mo>(</mo><msup><mover><mi>D</mi><mo>~</mo></mover><mrow><mo>−</mo><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mover><mi>A</mi><mo>~</mo></mover><msup><mover><mi>D</mi><mo>~</mo></mover><mrow><mo>−</mo><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><msup><mi>H</mi><mi>ℓ</mi></msup><msup><mi>W</mi><mi>ℓ</mi></msup><mo>)</mo></mrow></math></div>
+<p>考虑无向路径 A—B—C，自环后的节点度为 2、3、2。令所有节点仅有一个标量特征 x_A=1、x_B=x_C=0，同时取 W=1 且不使用激活函数：B 节点新的线性聚合为 1/√(2×3)=1/√6≈0.408248，<strong>不是</strong>普通三项均值 1/3。这一手算能直接暴露实现中把归一化写错的错误。</p>
+<figure class="lesson-figure"><img src="assets/lessons/22-a.svg" alt="在 A-B-C 路径加自环后，A B C 度数是 2 3 2，B 从 A 的归一化权重为一除以根号六。"><figcaption>一层 GCN 仅演示线性传播，输入 [1,0,0]、W=1、无激活；特征和结构均为玩具例子，不是 Cora 训练结果。</figcaption></figure>
+<div class="interactive-demo" data-demo="gcn"><h3>交互实验：对称归一化 vs 普通平均</h3><div class="demo-controls"><label for="gcn-x">改变 A 的输入特征 x_A：<output data-gcn-x-label>1.00</output></label><input id="gcn-x" data-gcn-x type="range" min="0" max="2" value="1" step="0.25"></div><div class="metric-grid"><div><span>B 的 GCN 线性值</span><strong data-gcn-output>0.4082</strong></div><div><span>B 的直接均值</span><strong data-gcn-mean>0.3333</strong></div></div><p class="demo-output" data-gcn-note aria-live="polite">B 自身与 C 的输入均为零；只改变 x_A，不训练模型。</p></div>
+<p>对孤立节点，添加自环意味着该节点仍能传播自身特征；如果模型另外加入偏置、归一化层、激活或学习到的权重，上述简化数值将改变。代码与报告必须说明自环添加位置，否则不同库可能“重复加自环”。</p></section>
+<section id="gat"><h2>3. GAT：注意力系数从哪里来？</h2>
+<p>Graph Attention Networks（Veličković 等，ICLR 2018）为每条允许参与聚合的边计算基于节点表示的原始注意力 logits，再在目标节点的邻居集合内做 softmax。典型单头形式 eᵥᵤ=LeakyReLU(aᵀ[Whᵥ∥Whᵤ])，αᵥᵤ=exp(eᵥᵤ)/∑ₖexp(eᵥₖ)。这仍然需要知道哪些边存在，所谓“注意力”并不使模型凭空发现未观测的边。</p>
+<div class="math-scroll" tabindex="0" role="region" aria-label="GAT 注意力分数在邻域内归一化"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="GAT 注意力分数在邻域内归一化"><mrow><msub><mi>α</mi><mrow><mi>v</mi><mi>u</mi></mrow></msub><mo>=</mo><mfrac><mrow><mi>exp</mi><mo>(</mo><msub><mi>e</mi><mrow><mi>v</mi><mi>u</mi></mrow></msub><mo>)</mo></mrow><mrow><munder><mo>∑</mo><mrow><mi>k</mi><mo>∈</mo><mi>N</mi><mo>(</mo><mi>v</mi><mo>)</mo></mrow></munder><mi>exp</mi><mo>(</mo><msub><mi>e</mi><mrow><mi>v</mi><mi>k</mi></mrow></msub><mo>)</mo></mrow></mfrac></mrow></math></div>
+<p>注意力权重是<strong>模型内部的依赖性参数化</strong>，未必等于因果影响、边的真实置信度或可用于政策决策的重要度。多头注意力可以拼接或平均多头结果，依层与任务而不同，不能说所有模型的 head 数或聚合规则都固定。</p>
+<div class="interactive-demo" data-demo="gat"><h3>交互实验：两邻居的 softmax 质量分配</h3><div class="demo-controls"><label for="gat-logit">令邻居 A 的 logit 为 0，邻居 C 的 logit 为 <output data-gat-logit-label>1.00</output></label><input id="gat-logit" data-gat-logit type="range" min="-2" max="2" step="0.5" value="1"></div><div class="metric-grid"><div><span>α(B,A)</span><strong data-gat-a>0.269</strong></div><div><span>α(B,C)</span><strong data-gat-c>0.731</strong></div></div><p class="demo-output" data-gat-note aria-live="polite">演示 exp(logit) 的归一化；不代表实际训练学到的系数。</p></div>
+</section>
+<section id="sage"><h2>4. GraphSAGE：如何对训练阶段没出现过的节点编码</h2>
+<p>GraphSAGE（Hamilton 等，NeurIPS 2017）学习的是从自身特征与邻居特征构造节点表示的<strong>聚合函数</strong>，而不只是为每个训练节点维护独立可学习 ID。典型形式是先对采样到的邻居求 AGG，再与自身前层表示拼接并经线性层、非线性激活；具体 mean、LSTM、pool aggregator 存在差异，文献中还有不同卷积变体，不应把 mean 的具体实现推广到全部 GraphSAGE。</p>
+<p>邻居采样使得一个多层模型可以在不枚举全部高阶邻域的条件下近似更新表示，但采样引入方差与估计偏差。若每层最多选 f 个邻居，L 层单个种子节点的理论展开上界可能近似为 O(fᴸ)，而不是只看单层 O(f)。高连接节点更需要明确采样概率、随机种子和层级 fanout。</p>
+<figure class="lesson-figure"><img src="assets/lessons/22-b.svg" alt="GCN 依图结构计算固定对称归一化，GAT 用节点特征计算邻域注意力，GraphSAGE 在采样邻居上学习聚合函数。"><figcaption>三种方法比较的是算法设计维度而非未经测量的模型优劣。GraphSAGE 可归纳新节点依赖可用节点特征和可观测邻域。</figcaption></figure>
+<table class="lesson-table"><thead><tr><th>方法</th><th>信息权重来源</th><th>新节点推理条件</th><th>主要风险</th></tr></thead><tbody><tr><td>GCN 基础形式</td><td>自环加度归一化</td><td>需要新图特征及邻接信息</td><td>同质性偏好、深层过平滑</td></tr><tr><td>GAT</td><td>特征计算的邻域 softmax</td><td>需要新节点/邻居特征</td><td>注意力不等于因果解释</td></tr><tr><td>GraphSAGE</td><td>聚合器与采样邻居</td><td>可观察特征和可用邻域</td><td>fanout 放大、采样方差</td></tr></tbody></table>
+</section>
+<section id="failure"><h2>5. 两种不同的深层失败：过平滑与过压缩</h2>
+<p><strong>过平滑（over-smoothing）</strong>指随着反复传播，某些图和传播算子会让节点表示越来越难区分；<strong>过压缩（over-squashing）</strong>指远处大量信息不得不通过有限维的图瓶颈传递，导致目标节点无法有效利用遥远依赖。前者更多涉及迭代平滑造成的区分度下降，后者更多是图几何与信息通道瓶颈；两个概念相关但不能混作一个现象。</p>
+<p>例如，两棵大分支只通过一条桥边相连时，对岸许多节点的信息要聚集经过这条桥。如果业务标签依赖远端某一小细节，有限维消息向量可能把信息挤掉。堆更多层未必改善。缓解方法可能涉及残差、跳跃连接、结构重连、全局读出和更适合任务的采样，但每种都要通过消融确认。</p></section>
+<section id="leakage"><h2>6. 训练—验证—测试：图是否先偷看了标签？</h2>
+<p>节点分类常见的<strong>transductive</strong>协议允许训练时见到测试节点的无标签图结构，标签只用于指定训练节点；严格<strong>inductive</strong>协议则可能把整张未来图或新节点留出。链接预测时更敏感：未来要预测的边不能进入训练时的消息传递邻接，否则 GNN 已经读到答案。负边采样必须说明何时观察、哪些节点能构成候选、是否存在未观察到但真实存在的边。</p>
+<p>此外，多次用测试集选超参数会形成选择偏差。应固定随机种子与数据划分，报告多次运行的分布、评估窗口、类别基线、AP/AUC 等指标的具体口径。对 Cora 等基准，引用论文的准确率必须写清使用的任务划分与训练协议，本页不声称复现论文分数。</p></section>
+<section id="code"><h2>7. 无需深度学习框架的 GCN 数值验证</h2>
+<p>下面对 A—B—C 路径计算单层对称归一化中 B 的值，并验证输出与 1/√6 一致。这是数值契约，未训练任何 GCN/GAT/GraphSAGE。</p>
+<pre><code class="language-python">from math import isclose, sqrt
+
+# A-B-C, undirected; explicit one self-loop per node.
+edges = {(0, 0), (1, 1), (2, 2), (0, 1), (1, 0), (1, 2), (2, 1)}
+degree = [sum(1 for source, target in edges if source == k) for k in range(3)]
+feature = [1.0, 0.0, 0.0]
+
+def propagate(target):
+    return sum(
+        feature[source] / sqrt(degree[source] * degree[target])
+        for source, dest in edges if dest == target
+    )
+
+assert degree == [2, 3, 2]
+assert isclose(propagate(1), 1 / sqrt(6), rel_tol=1e-12)
+assert not isclose(propagate(1), sum(feature) / 3, rel_tol=1e-3)
+print("GCN linear B =", round(propagate(1), 6))</code></pre>
+<p>迁移到 PyTorch/PyG 时，还应明确：边索引是否为双向，是否加自环，网络算子是否自动归一化，梯度如何传播，推理是否使用 batch/subgraph sampler。把上面的三节点例子作为第一条黄金测试，可比直接运行一轮训练更快定位实现偏差。</p></section>
+<section id="conclusion"><h2>8. 从网络科学问题选 GNN，而不是反过来</h2>
+<p>先确定边的因果与时间语义、目标任务以及测试节点是否新出现；再决定 GCN、GAT 或 GraphSAGE 的归一化、权重及采样方法。把 1/√6 手算、2-way softmax 和时间外评估都通过之后，才有基础比较大模型的指标。任何“注意力更可解释”“层数更深一定更强”或“归纳模型不需要新节点属性”的绝对说法都不成立。</p></section><section id="references"><h2>原始资料、证据范围与延伸阅读</h2><ol class="source-list"><li><a href="https://arxiv.org/abs/1609.02907">GCN 原论文（Kipf & Welling，ICLR 2017）</a>。请以论文原文及算法说明为最终复核依据。</li><li><a href="https://arxiv.org/abs/1710.10903">Graph Attention Networks（Veličković 等，ICLR 2018）</a>。请以论文原文及算法说明为最终复核依据。</li><li><a href="https://papers.nips.cc/paper/2017/hash/5dd9db5e033da9c6fb5ba83c7a7ebea9-Abstract.html">GraphSAGE（Hamilton 等，NeurIPS 2017）</a>。请以论文原文及算法说明为最终复核依据。</li><li><a href="https://arxiv.org/abs/2006.05205">Over-squashing（Alon & Yahav，ICLR 2021）</a>。请以论文原文及算法说明为最终复核依据。</li></ol><p>本章 SVG 为原创机制图；交互与示例均为可复算的合成小图，并未执行论文真实训练或复现 benchmark。正是明确这些证据边界，才能将模型解释与实验结果分开。</p></section></article></div><div class="footer-nav"><a href="21.html">← 第21章</a><a href="index.html">课程首页</a><a href="23.html">第23章 →</a></div></main><footer class="footer shell">网络科学 · 机制、数学与可复现实验</footer><script defer src="v2/apps/shared/lesson-interactions.js"></script></body></html>

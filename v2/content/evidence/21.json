@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0.0",
+  "chapter": "21",
+  "review_status": "reviewed",
+  "claims": [
+    {
+      "id": "advanced-21-01",
+      "claim": "DeepWalk generates truncated random walks and learns node representations with language-model objectives",
+      "source_url": "https://arxiv.org/abs/1403.6652",
+      "locator": "Algorithm and SkipGram section",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "advanced-21-02",
+      "claim": "node2vec uses second-order random walks with p and q controlling return and in-out preferences",
+      "source_url": "https://arxiv.org/abs/1607.00653",
+      "locator": "Biased random walks, transition bias alpha_pq",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "advanced-21-03",
+      "claim": "The toy t=A,v=B neighbor weights are 1/p,1,1/q",
+      "source_url": "https://arxiv.org/abs/1607.00653",
+      "locator": "Derived from alpha_pq case distinction on specified four-node graph",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "advanced-21-04",
+      "claim": "Toy probabilities p=1 q=2 are 0.4,0.4,0.2",
+      "source_url": "https://arxiv.org/abs/1607.00653",
+      "locator": "Arithmetic for fixed four-node graph; not empirical result",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "advanced-21-05",
+      "claim": "struc2vec builds a structural-similarity multilayer context graph",
+      "source_url": "https://www.kdd.org/kdd2017/papers/view/struc2vec-learning-node-representations-from-structural-identity",
+      "locator": "Structural identity framework and context generation",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "advanced-21-06",
+      "claim": "LINE targets first- and second-order network proximity",
+      "source_url": "https://arxiv.org/abs/1503.03578",
+      "locator": "Abstract and proximity-preserving objectives",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "advanced-21-07",
+      "claim": "Random walk embeddings trained on future edges leak link-prediction test structure",
+      "source_url": "https://arxiv.org/abs/1607.00653",
+      "locator": "Derived evaluation protocol, restriction on training graph",
+      "status": "derived",
+      "kind": "derived"
+    }
+  ]
+}
