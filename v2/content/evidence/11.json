@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0.0",
+  "chapter": "11",
+  "review_status": "reviewed",
+  "claims": [
+    {
+      "id": "infomap-objective",
+      "claim": "Infomap minimizes a map-equation description length of random-walk paths rather than modularity.",
+      "source_url": "https://doi.org/10.1073/pnas.0706851105",
+      "locator": "Rosvall and Bergstrom 2008, map equation and two-level coding",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "map-variables",
+      "claim": "The two-level map equation uses the index codebook usage q and module codebook usage p_i for entropy-weighted description lengths.",
+      "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2234100/",
+      "locator": "Original PNAS open-access article; map equation discussion",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "link-communities",
+      "claim": "Edge/link communities support overlapping node membership and multiscale organization.",
+      "source_url": "https://doi.org/10.1038/nature09182",
+      "locator": "Ahn et al. 2010, introduction and link-community framework",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "kcore-definition",
+      "claim": "The k-core is the maximum subgraph in which every retained vertex has at least k neighbors in that subgraph.",
+      "source_url": "https://www.sciencedirect.com/science/article/pii/037887338390028X",
+      "locator": "Seidman 1983, minimum degree hierarchy",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "kcore-api",
+      "claim": "NetworkX k_core requires a graph without self loops or parallel edges.",
+      "source_url": "https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.core.k_core.html",
+      "locator": "NetworkX k_core documented restrictions",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "toy-coreness",
+      "claim": "The seven-node teaching graph has 1-core size 7, 2-core size 5 and empty 3-core.",
+      "source_url": "https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.core.core_number.html",
+      "locator": "Derived by exhaustive peeling and independent NetworkX oracle on explicit edge list",
+      "status": "derived",
+      "kind": "derived"
+    }
+  ]
+}
