@@ -3,48 +3,48 @@
   "chapter": "17",
   "title": "网络可视化",
   "source_path": "17.html",
-  "source_git_blob": "bb49650e903f49ac336a4e26e30eeb0481442046",
-  "review_status": "migrated_unreviewed",
+  "source_git_blob": "0c12cdf841a6526c6c2e1e7e82bad1ebce38b78c",
+  "review_status": "reviewed",
   "headings": [
     {
       "depth": 2,
-      "title": "可视化的目的"
+      "title": "图上相距很远的两个点，在真实网络中一定疏远吗？"
     },
     {
       "depth": 2,
-      "title": "布局算法"
+      "title": "先决定每一种视觉变量表达什么"
+    },
+    {
+      "depth": 2,
+      "title": "三种常见布局，各有不同的故事"
+    },
+    {
+      "depth": 2,
+      "title": "改变坐标，不改变任何边"
     },
     {
       "depth": 3,
-      "title": "力导向布局（Force-Directed Layout）"
-    },
-    {
-      "depth": 3,
-      "title": "环形布局（Circular Layout）"
-    },
-    {
-      "depth": 3,
-      "title": "层次布局（Hierarchical Layout）"
+      "title": "在两种明确的布局间切换"
     },
     {
       "depth": 2,
-      "title": "Gephi实战"
+      "title": "网络大了以后怎么办？"
     },
     {
       "depth": 2,
-      "title": "大规模网络可视化"
+      "title": "代码：布局更换而拓扑不变"
     },
     {
       "depth": 2,
-      "title": "可视化规范与伦理"
+      "title": "原始来源与官方说明"
     }
   ],
   "examples": [
     {
       "id": "01",
       "path": "content/examples/17/01.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
+      "language": "python",
+      "review_status": "tested"
     }
   ]
 }

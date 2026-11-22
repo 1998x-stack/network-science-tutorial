@@ -3,68 +3,48 @@
   "chapter": "16",
   "title": "链路预测",
   "source_path": "16.html",
-  "source_git_blob": "0f03d904eecfe835bec8a46077294699b8b941d8",
-  "review_status": "migrated_unreviewed",
+  "source_git_blob": "c652555b631a899812d53eaccf54c85673918eb6",
+  "review_status": "reviewed",
   "headings": [
     {
       "depth": 2,
-      "title": "链路预测问题"
+      "title": "明天会出现哪条新边，能否只看今天的朋友关系？"
     },
     {
       "depth": 2,
-      "title": "基于相似性的方法"
-    },
-    {
-      "depth": 3,
-      "title": "共同邻居（Common Neighbors, CN）"
-    },
-    {
-      "depth": 3,
-      "title": "Jaccard系数"
-    },
-    {
-      "depth": 3,
-      "title": "Adamic-Adar指数（AA）"
-    },
-    {
-      "depth": 3,
-      "title": "Resource Allocation（RA）"
+      "title": "区分当前图、候选边、时间标签"
     },
     {
       "depth": 2,
-      "title": "基于路径的方法"
-    },
-    {
-      "depth": 3,
-      "title": "Katz指数"
-    },
-    {
-      "depth": 3,
-      "title": "Local Path指数（LP）"
-    },
-    {
-      "depth": 3,
-      "title": "Random Walk with Restart（RWR）"
+      "title": "第一步：共同邻居为什么能作为信号？"
     },
     {
       "depth": 2,
-      "title": "概率模型"
+      "title": "第二步：把“普通共同好友”与“超级枢纽”区分开"
+    },
+    {
+      "depth": 3,
+      "title": "为未连接的候选节点对评分"
     },
     {
       "depth": 2,
-      "title": "评估指标"
+      "title": "如何避免训练/测试泄漏？"
     },
     {
       "depth": 2,
-      "title": "应用案例"
+      "title": "代码：独立手算 + NetworkX 交叉验证"
+    },
+    {
+      "depth": 2,
+      "title": "原始论文、接口和适用范围"
     }
   ],
   "examples": [
     {
       "id": "01",
       "path": "content/examples/16/01.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
+      "language": "python",
+      "review_status": "tested"
     }
   ]
 }

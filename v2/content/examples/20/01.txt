@@ -1,19 +1,28 @@
-# 时间接触序列的数据结构示例
-import pandas as pd
+import networkx as nx
 
-# 每条记录: (节点A, 节点B, 开始时间, 结束时间)
-contacts = pd.DataFrame([
-    ('Alice', 'Bob',    1.0,  2.5),
-    ('Bob',   'Carol',  1.5,  2.0),
-    ('Alice', 'David',  3.0,  4.0),
-    ('Bob',   'David',  5.0,  6.0),
-    ('Carol', 'David',  5.5,  6.5),
-], columns=['src', 'dst', 't_start', 't_end'])
+ordered = [("A","B",1),("B","C",2),("C","D",3)]
+scrambled = [("A","B",3),("B","C",1),("C","D",2)]
+same_time = [("A","B",1),("B","C",1),("C","D",1)]
 
-# 计算每个时间点的活跃边数
-def active_edges_at(t):
-    mask = (contacts['t_start'] <= t) & (contacts['t_end'] >= t)
-    return len(contacts[mask])
+def earliest(events, origin="A", start=0):
+    arrival = {origin: start}
+    for t in sorted({t for _,_,t in events}):
+        previous = dict(arrival)
+        pending = dict(arrival)
+        for u,v,when in events:
+            if when != t:
+                continue
+            for source,target in ((u,v),(v,u)):
+                if previous.get(source,float("inf")) < t:
+                    pending[target] = min(pending.get(target,float("inf")),t)
+        arrival = pending
+    return arrival
 
-for t in [1.2, 1.7, 3.5, 5.8]:
-    print(f"t={t}: {active_edges_at(t)} 条活跃边")
+assert earliest(ordered) == {"A":0,"B":1,"C":2,"D":3}
+assert earliest(scrambled) == {"A":0,"B":3}
+assert earliest(same_time) == {"A":0,"B":1}
+
+for events in (ordered,scrambled,same_time):
+    flat = nx.Graph((u,v) for u,v,_ in events)
+    assert nx.shortest_path_length(flat,"A","D") == 3
+print("ordered arrival:",earliest(ordered))

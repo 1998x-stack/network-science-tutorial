@@ -1,18 +1,39 @@
-# 使用Tweepy库获取Twitter关注关系网络
-import tweepy
+import csv
+from io import StringIO
+import networkx as nx
 
-# 使用v2 API端点（需要先申请Bearer Token）
-client = tweepy.Client(bearer_token="YOUR_BEARER_TOKEN")
+raw = """src,dst,time
+A,B,1
+B,A,2
+B,C,3
+C,C,4
+C,D,5
+D,E,6
+"""
+rows = list(csv.DictReader(StringIO(raw)))
+assert len(rows) == 6
 
-# 获取指定用户的粉丝和关注列表
-user_id = 123456789  # 替换为目标用户的ID
-followers = client.get_users_followers(id=user_id, max_results=100)
-following = client.get_users_following(id=user_id, max_results=100)
+nodes = set("ABCDE")
+pairs = set()
+excluded_loops = 0
+for row in rows:
+    u, v = row["src"], row["dst"]
+    assert {u,v} <= nodes and row["time"].isdigit()
+    if u == v:
+        excluded_loops += 1
+        continue
+    pairs.add(frozenset((u,v)))
 
-# 构建用户关系网络（简化示例）
-followers_ids = [u.id for u in followers.data] if followers.data else []
-following_ids = [u.id for u in following.data] if following.data else []
+g = nx.Graph()
+g.add_nodes_from(nodes)
+g.add_edges_from(tuple(pair) for pair in pairs)
+assert excluded_loops == 1
+assert (g.number_of_nodes(), g.number_of_edges()) == (5,4)
+assert set(map(frozenset, g.edges())) == pairs
+assert nx.is_connected(g)
 
-# 对于每个粉丝，进一步获取其关注列表（BFS方式扩展）
-# 注意：需要控制请求速率，避免触发rate limit
-print(f"用户 {user_id} 有 {len(followers_ids)} 个粉丝和 {len(following_ids)} 个关注")
+missing = g.copy()
+missing.remove_edge("C","D")
+sizes = sorted(len(c) for c in nx.connected_components(missing))
+assert sizes == [2,3]
+print("raw rows:", len(rows), "projected edges:", len(pairs))
