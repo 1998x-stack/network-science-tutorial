@@ -62,7 +62,7 @@ def run():
         page.locator('.lesson[data-number="04"] .open-lesson').dispatch_event('click',{'button':1,'ctrlKey':True})
         # Page links are verified in static-generation tests. Do not navigate from about:blank.
         # S04/S05: ten independently authored lessons, standalone SVGs, MathML and tested controls.
-        for number in ('01','02','03','04','05','06','07','08','09','10','11','12','13','14','15'):
+        for number in ('01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20'):
             page.set_viewport_size({'width':1440,'height':900})
             page.set_content(inline_page(f'apps/web/lessons/{number}.html'))
             assert page.locator('.migrated-article figure').count()>=1
@@ -132,7 +132,43 @@ def run():
                 assert page.locator('[data-robust-r]').inner_text()=='0.167'
                 page.locator('[data-overload-cap="6"]').click()
                 assert page.locator('[data-overload-fail]').inner_text()=='0'
-            if number in ('06','07','08','09','10','11','12','13','14','15'):
+            elif number=='16':
+                page.locator('[data-lp-pair="AE"]').click()
+                assert page.locator('[data-lp-cn]').inner_text()=='0'
+                assert page.locator('[data-lp-aa]').inner_text()=='0.0000'
+                page.locator('[data-lp-pair="AD"]').click()
+                assert page.locator('[data-lp-cn]').inner_text()=='2'
+                assert page.locator('[data-lp-aa]').inner_text()=='1.8205'
+            elif number=='17':
+                picture=page.locator('[data-layout-image]')
+                previous=picture.get_attribute('src')
+                page.locator('[data-layout-mode="circular"]').click()
+                assert picture.get_attribute('src')!=previous
+                assert picture.evaluate('(el)=>el.complete&&el.naturalWidth>0')
+                assert '圆周示意' in page.locator('[data-layout-output]').inner_text()
+                page.locator('[data-layout-mode="schematic"]').click()
+                assert picture.get_attribute('src')==previous
+            elif number=='18':
+                page.locator('[data-collection-view="graph"]').click()
+                assert page.locator('[data-collection-count]').inner_text()=='4'
+                page.locator('[data-collection-view="events"]').click()
+                assert page.locator('[data-collection-count]').inner_text()=='6'
+            elif number=='19':
+                page.locator('[data-multi-mode="flat"]').click()
+                assert page.locator('[data-multi-length]').inner_text()=='2'
+                page.locator('[data-multi-mode="blocked"]').click()
+                assert page.locator('[data-multi-length]').inner_text()=='不可达'
+                page.locator('[data-multi-mode="allowed"]').click()
+                assert page.locator('[data-multi-length]').inner_text()=='3'
+            elif number=='20':
+                page.locator('[data-temporal-schedule="scrambled"]').click()
+                assert page.locator('[data-temporal-count]').inner_text()=='2 / 4'
+                assert page.locator('[data-temporal-arrival]').inner_text()=='不可达'
+                page.locator('[data-temporal-schedule="simultaneous"]').click()
+                assert page.locator('[data-temporal-count]').inner_text()=='2 / 4'
+                page.locator('[data-temporal-schedule="ordered"]').click()
+                assert page.locator('[data-temporal-arrival]').inner_text()=='3'
+            if number in ('06','07','08','09','10','11','12','13','14','15','16','17','18','19','20'):
                 captures=ROOT/'screenshots'
                 captures.mkdir(parents=True,exist_ok=True)
                 page.screenshot(path=str(captures/f'lesson-{number}-desktop.png'),full_page=True)
@@ -175,6 +211,6 @@ def run():
         page.set_content(inline_page('apps/web/lab.html'))
         page.screenshot(path=str(ROOT/'screenshots/s02-graph-lab.png'),full_page=True)
         browser.close()
-    print('Chromium E2E passed: root portal, V2 reader, first-fifteen responsive lessons and controls, Graph Lab, comparison, registry and legacy viewer.')
+    print('Chromium E2E passed: root portal, V2 reader, first-twenty responsive lessons and controls, Graph Lab, comparison, registry and legacy viewer.')
 
 if __name__=='__main__':run()
