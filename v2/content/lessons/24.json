@@ -3,56 +3,60 @@
   "chapter": "24",
   "title": "社交网络分析案例",
   "source_path": "24.html",
-  "source_git_blob": "f6b4ba283fcf26eba3e99c90cf0da2b1a850d72b",
-  "review_status": "migrated_unreviewed",
+  "source_git_blob": "60b7a9efe5a0ab5d43840aee3a96b40f60e788c8",
+  "review_status": "reviewed",
   "headings": [
     {
       "depth": 2,
-      "title": "Zachary's Karate Club"
+      "title": "1. 社交关系的“边”，在每个案例中是什么意思？"
+    },
+    {
+      "depth": 2,
+      "title": "2. 经典 Karate Club：34 节点、78 条边意味着什么？"
+    },
+    {
+      "depth": 2,
+      "title": "3. 分区标签可以整体交换，准确率不能按原始名字直接算"
     },
     {
       "depth": 3,
-      "title": "社团检测与真实分裂对比"
+      "title": "交互实验：社区编号互换的陷阱"
     },
     {
       "depth": 2,
-      "title": "arXiv合作网络"
+      "title": "4. 从“论文—作者”二部网络到合著网络：每一条边都可能放大"
     },
     {
       "depth": 3,
-      "title": "合作网络的关键特征"
+      "title": "交互实验：一篇论文会生成多少合著边？"
     },
     {
       "depth": 2,
-      "title": "微博社交网络"
+      "title": "5. 平台关注、合著与互动图不能借同一套分布结论"
     },
     {
       "depth": 2,
-      "title": "对比分析"
+      "title": "6. 两份最小可执行代码：分区对齐与真实图检查"
+    },
+    {
+      "depth": 2,
+      "title": "7. 案例研究的可靠结论"
+    },
+    {
+      "depth": 2,
+      "title": "原始文献、数据出处与实验边界"
     }
   ],
   "examples": [
     {
       "id": "01",
       "path": "content/examples/24/01.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
+      "language": "python",
+      "review_status": "tested"
     },
     {
       "id": "02",
       "path": "content/examples/24/02.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
-    },
-    {
-      "id": "03",
-      "path": "content/examples/24/03.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
-    },
-    {
-      "id": "04",
-      "path": "content/examples/24/04.txt",
       "language": "unclassified",
       "review_status": "not_executed"
     }

@@ -1,5 +1,5 @@
-# Python接口安装
-pip install igraph
-
-# 注意：如果希望安装完全版（包括plotting支持）
-pip install python-igraph  # 会自动编译C核心
+# Neo4j Cypher：运行于你自己的数据库，且事先创建 Person 标签与 KNOWS 关系
+CREATE INDEX person_id IF NOT EXISTS FOR (p:Person) ON (p.id);
+EXPLAIN MATCH (p:Person {id: $person_id})-[:KNOWS]-(friend:Person)
+RETURN friend.id LIMIT 20;
+# PROFILE 会实际执行并分析统计；EXPLAIN 仅生成计划。

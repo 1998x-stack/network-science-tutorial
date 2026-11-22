@@ -3,60 +3,48 @@
   "chapter": "25",
   "title": "大规模网络分析",
   "source_path": "25.html",
-  "source_git_blob": "3e9033969e573d423ae266c71fd67300b9ff46e0",
-  "review_status": "migrated_unreviewed",
+  "source_git_blob": "a761beaa0ecfe4c23e1b4dc30c806f3666c0624c",
+  "review_status": "reviewed",
   "headings": [
     {
       "depth": 2,
-      "title": "大规模网络的挑战"
+      "title": "1. 先做资源预算，再比较图计算框架"
+    },
+    {
+      "depth": 3,
+      "title": "交互实验：节点规模与稀疏图的理论存储"
     },
     {
       "depth": 2,
-      "title": "igraph入门"
-    },
-    {
-      "depth": 3,
-      "title": "安装与基本使用"
-    },
-    {
-      "depth": 3,
-      "title": "igraph vs NetworkX 性能对比"
+      "title": "2. 图算法复杂度必须带上对象与实现条件"
     },
     {
       "depth": 2,
-      "title": "网络采样"
+      "title": "3. 大图采样：随机选点与随机游走看到的不是同一群人"
     },
     {
       "depth": 3,
-      "title": "常见的采样策略"
-    },
-    {
-      "depth": 3,
-      "title": "采样方法的比较"
+      "title": "交互实验：改变星形网络叶子数"
     },
     {
       "depth": 2,
-      "title": "图数据库简介"
-    },
-    {
-      "depth": 3,
-      "title": "Neo4j与Cypher查询语言"
-    },
-    {
-      "depth": 3,
-      "title": "什么时候用图数据库？"
+      "title": "4. NetworkX、igraph、稀疏矩阵与图数据库的选择"
     },
     {
       "depth": 2,
-      "title": "分布式图处理"
-    },
-    {
-      "depth": 3,
-      "title": "GraphX/Spark简介"
+      "title": "5. 为什么分布式并不是大图的第一反应"
     },
     {
       "depth": 2,
-      "title": "性能比较"
+      "title": "6. 使用标准库手算 CSR 与采样偏差"
+    },
+    {
+      "depth": 2,
+      "title": "7. 从目标出发的一套工程决策顺序"
+    },
+    {
+      "depth": 2,
+      "title": "原始文献、数据出处与实验边界"
     }
   ],
   "examples": [
@@ -69,26 +57,8 @@
     {
       "id": "02",
       "path": "content/examples/25/02.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
-    },
-    {
-      "id": "03",
-      "path": "content/examples/25/03.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
-    },
-    {
-      "id": "04",
-      "path": "content/examples/25/04.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
-    },
-    {
-      "id": "05",
-      "path": "content/examples/25/05.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
+      "language": "python",
+      "review_status": "tested"
     }
   ]
 }

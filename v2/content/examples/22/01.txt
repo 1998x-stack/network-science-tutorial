@@ -1,29 +1,17 @@
-# GCN层的简化实现（PyTorch风格）
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
+from math import isclose, sqrt
 
-class GCNLayer(nn.Module):
-    def __init__(self, in_features, out_features):
-        super().__init__()
-        self.W = nn.Linear(in_features, out_features)
+# A-B-C, undirected; explicit one self-loop per node.
+edges = {(0, 0), (1, 1), (2, 2), (0, 1), (1, 0), (1, 2), (2, 1)}
+degree = [sum(1 for source, target in edges if source == k) for k in range(3)]
+feature = [1.0, 0.0, 0.0]
 
-    def forward(self, A_hat, X):
-        # A_hat: 归一化邻接矩阵 (N x N)
-        # X: 节点特征矩阵 (N x in_features)
-        # 消息聚合: A_hat @ X
-        agg = torch.mm(A_hat, X)  # 对每个节点，加权求和邻居特征
-        # 线性变换 + 激活
-        return F.relu(self.W(agg))
+def propagate(target):
+    return sum(
+        feature[source] / sqrt(degree[source] * degree[target])
+        for source, dest in edges if dest == target
+    )
 
-# 构建一个2层GCN
-class GCN(nn.Module):
-    def __init__(self, n_features, hidden_dim, n_classes):
-        super().__init__()
-        self.layer1 = GCNLayer(n_features, hidden_dim)
-        self.layer2 = GCNLayer(hidden_dim, n_classes)
-
-    def forward(self, A_hat, X):
-        h = self.layer1(A_hat, X)
-        h = self.layer2(A_hat, h)
-        return F.log_softmax(h, dim=1)
+assert degree == [2, 3, 2]
+assert isclose(propagate(1), 1 / sqrt(6), rel_tol=1e-12)
+assert not isclose(propagate(1), sum(feature) / 3, rel_tol=1e-3)
+print("GCN linear B =", round(propagate(1), 6))

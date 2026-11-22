@@ -3,94 +3,60 @@
   "chapter": "22",
   "title": "图神经网络入门",
   "source_path": "22.html",
-  "source_git_blob": "7d6590b21cd68d0d5d891ef93e6d7b0f3303a830",
-  "review_status": "migrated_unreviewed",
+  "source_git_blob": "3078a04d1bb87769e864a810bd42330c8b870f30",
+  "review_status": "reviewed",
   "headings": [
     {
       "depth": 2,
-      "title": "为什么需要图神经网络"
+      "title": "1. GNN 先要定义输入、邻居和要预测的对象"
     },
     {
       "depth": 2,
-      "title": "消息传递框架"
+      "title": "2. GCN 的归一化为什么不是普通平均？"
     },
     {
       "depth": 3,
-      "title": "置换不变性（Permutation Invariance）"
+      "title": "交互实验：对称归一化 vs 普通平均"
     },
     {
       "depth": 2,
-      "title": "GCN——图卷积网络"
+      "title": "3. GAT：注意力系数从哪里来？"
     },
     {
       "depth": 3,
-      "title": "谱域 vs 空域"
-    },
-    {
-      "depth": 3,
-      "title": "Kipf & Welling GCN"
+      "title": "交互实验：两邻居的 softmax 质量分配"
     },
     {
       "depth": 2,
-      "title": "GAT——图注意力网络"
-    },
-    {
-      "depth": 3,
-      "title": "注意力机制"
-    },
-    {
-      "depth": 3,
-      "title": "多头注意力（Multi-Head Attention）"
+      "title": "4. GraphSAGE：如何对训练阶段没出现过的节点编码"
     },
     {
       "depth": 2,
-      "title": "GraphSAGE——归纳式学习"
-    },
-    {
-      "depth": 3,
-      "title": "邻居采样（Neighborhood Sampling）"
-    },
-    {
-      "depth": 3,
-      "title": "三种聚合器"
+      "title": "5. 两种不同的深层失败：过平滑与过压缩"
     },
     {
       "depth": 2,
-      "title": "PyTorch Geometric入门"
+      "title": "6. 训练—验证—测试：图是否先偷看了标签？"
     },
     {
-      "depth": 3,
-      "title": "安装与基本概念"
+      "depth": 2,
+      "title": "7. 无需深度学习框架的 GCN 数值验证"
     },
     {
-      "depth": 3,
-      "title": "实战：节点分类"
+      "depth": 2,
+      "title": "8. 从网络科学问题选 GNN，而不是反过来"
+    },
+    {
+      "depth": 2,
+      "title": "原始资料、证据范围与延伸阅读"
     }
   ],
   "examples": [
     {
       "id": "01",
       "path": "content/examples/22/01.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
-    },
-    {
-      "id": "02",
-      "path": "content/examples/22/02.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
-    },
-    {
-      "id": "03",
-      "path": "content/examples/22/03.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
-    },
-    {
-      "id": "04",
-      "path": "content/examples/22/04.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
+      "language": "python",
+      "review_status": "tested"
     }
   ]
 }

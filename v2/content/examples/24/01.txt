@@ -1,12 +1,19 @@
-import networkx as nx
-import matplotlib.pyplot as plt
-import numpy as np
+from itertools import permutations
 
-G = nx.karate_club_graph()
-print(f"节点数: {G.number_of_nodes()}")
-print(f"边数: {G.number_of_edges()}")
-print(f"平均度: {2 * G.number_of_edges() / G.number_of_nodes():.2f}")
+def aligned_accuracy(truth, predicted):
+    classes = sorted(set(truth))
+    if len(classes) != len(set(predicted)):
+        raise ValueError("toy alignment expects equal class counts")
+    best = 0.0
+    for ordering in permutations(classes):
+        remap = dict(zip(sorted(set(predicted)), ordering))
+        score = sum(remap[p] == t for p, t in zip(predicted, truth)) / len(truth)
+        best = max(best, score)
+    return best
 
-# 看一下实际分裂后的归属
-for i in range(5):
-    print(f"  节点{i}: 归属 '{G.nodes[i]['club']}'")
+truth = ["A", "A", "B", "B"]
+swapped = ["B", "B", "A", "A"]
+mixed = ["A", "B", "B", "A"]
+assert aligned_accuracy(truth, swapped) == 1.0
+assert aligned_accuracy(truth, mixed) == 0.5
+print("label swap:", 0.0, "aligned:", aligned_accuracy(truth, swapped))
