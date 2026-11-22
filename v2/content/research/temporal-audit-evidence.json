@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0.0",
+  "scope": "second_round_cross_chapter_temporal_protocol",
+  "review_status": "reviewed",
+  "claims": [
+    {
+      "id": "time-split",
+      "claim": "Temporally predicting future links requires maintaining the intended observation boundary across candidate labels and graph features.",
+      "source_url": "https://ogb.stanford.edu/docs/linkprop/",
+      "locator": "Time-split link datasets such as ogbl-citation2; train graph and validation/test edge handling",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "negative-sampling",
+      "claim": "Candidate/negative sampling can materially change temporal evaluation difficulty and metrics.",
+      "source_url": "https://arxiv.org/abs/2311.18486",
+      "locator": "Evaluation and negative-sampling taxonomy for dynamic link prediction",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "toy-contamination",
+      "claim": "Injecting toy future B-D before testing makes B-D already observed, changes B->D walk probability from 0 to 1/3, and changes CN(B,E) from 0 to 1.",
+      "source_url": "https://ogb.stanford.edu/docs/linkprop/",
+      "locator": "Derived toy calculation for six timestamped events; NOT a benchmark outcome",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "gcn-normalization",
+      "claim": "In the toy undirected graph with self-loops, contaminated B-D GCN weight becomes 1/4 versus absent clean edge weight zero.",
+      "source_url": "https://arxiv.org/abs/1609.02907",
+      "locator": "Derived from symmetric D-1/2 (A+I) D-1/2 and explicit graph degrees",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "lightgcn-normalization",
+      "claim": "In the toy user-item graph, adding held-out U2-X changes U1-X LightGCN weight from 1/sqrt(2) to 1/2.",
+      "source_url": "https://arxiv.org/abs/2002.02126",
+      "locator": "Derived from the original LightGCN no-self-loop propagation operator",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "temporal-path",
+      "claim": "A strict temporal path uses strictly increasing time; two equal-time contacts cannot chain in this model.",
+      "source_url": "https://doi.org/10.1016/j.physrep.2012.03.001",
+      "locator": "Temporal paths, ordering conventions; explicitly frozen equal-timestamp batches",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "karate-dataset",
+      "claim": "NetworkX bundles a versioned historic Karate Club graph with 34 nodes, 78 edges and edge weights.",
+      "source_url": "https://networkx.org/documentation/stable/reference/generated/networkx.generators.social.karate_club_graph.html",
+      "locator": "Official documentation and bundled generator; triangle result verified by independent adjacency oracle",
+      "status": "verified",
+      "kind": "reference"
+    }
+  ]
+}
