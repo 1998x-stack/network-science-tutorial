@@ -24,7 +24,7 @@
 <section id="interactive"><h2>改变坐标，不改变任何边</h2>
 <div class="interactive-demo" data-demo="layout"><h3>在两种明确的布局间切换</h3>
 <div class="demo-controls"><button type="button" data-layout-mode="schematic" aria-pressed="true">结构示意</button><button type="button" data-layout-mode="circular" aria-pressed="false">圆周示意</button></div>
-<figure class="lesson-figure"><img src="assets/lessons/17-schematic.svg" data-layout-image alt="结构示意布局，左三角形 A-B-C 通过 C-D 连向右三角形 D-E-F。"><figcaption data-layout-caption>当前展示手工结构布局；全部七条边保持不变。</figcaption></figure>
+<figure class="lesson-figure"><img src="assets/lessons/17-schematic.svg" data-layout-image alt="结构示意布局，左三角形 A-B-C 通过 C-D 连向右三角形 D-E-F。"><img src="assets/lessons/17-circular.svg" data-layout-circular-payload alt="" aria-hidden="true" hidden><figcaption data-layout-caption>当前展示手工结构布局；全部七条边保持不变。</figcaption></figure>
 <p class="demo-output" data-layout-output aria-live="polite">结构示意：桥边 C–D 易于辨认，图中横向距离不是任何实测距离。</p></div>
 <p>布局切换只影响显示坐标与图形可读性。所有关于节点度数、连通性、介数与社团划分的计算应基于相同的原始邻接关系；如果用户拖动一个节点，也不能在数据中悄悄新增或移除边。</p></section>
 <section id="scale"><h2>网络大了以后怎么办？</h2>

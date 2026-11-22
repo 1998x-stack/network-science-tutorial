@@ -254,11 +254,12 @@ function initFourthBatch(doc){
  });
  doc.querySelectorAll('[data-demo="layout"]').forEach(group=>{
   const picture=group.querySelector('[data-layout-image]'),caption=group.querySelector('[data-layout-caption]'),out=group.querySelector('[data-layout-output]');
+  const defaultImage=picture.getAttribute('src');
+  const circularImage=group.querySelector('[data-layout-circular-payload]').getAttribute('src');
   group.querySelectorAll('[data-layout-mode]').forEach(b=>b.addEventListener('click',()=>{
    const mode=b.dataset.layoutMode;
    press(group,'data-layout-mode',b);
-   const previous=picture.getAttribute('src');
-   picture.setAttribute('src',previous.replace(/17-(schematic|circular)\.svg/, '17-'+mode+'.svg'));
+   picture.setAttribute('src',mode==='circular'?circularImage:defaultImage);
    picture.setAttribute('alt',mode==='schematic'?'两组三角形由 C–D 一条桥相连的结构示意布局。':'相同六节点七边在圆周上的示意布局。');
    caption.textContent=mode==='schematic'?'当前展示手工结构布局；全部七条边保持不变。':'当前展示圆周布局；全部七条边保持不变。';
    out.textContent=mode==='schematic'?'结构示意：桥边 C–D 易于辨认，图中横向距离不是任何实测距离。':'圆周示意：节点均匀排布、边交叉可能改变，但七条边的存在状态完全不变。';
