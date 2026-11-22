@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 410" role="img" aria-labelledby="f-pollution-title f-pollution-desc"><title id="f-pollution-title">加入未来BD会改变无关候选BE的共同邻居数</title><desc id="f-pollution-desc">未泄漏的训练图AB AC BC CD DE中 B 的邻居是A C，E 的邻居是D，共同邻居为零。若提前加入未来边BD，D成为B和E共同邻居，分数变成一。</desc><rect x="1" y="1" width="998" height="408" rx="24" fill="#10283b" stroke="#51748b"/><g font-family="system-ui,'PingFang SC',sans-serif">
+<rect x="20" y="58" width="462" height="280" rx="18" fill="#193d52" stroke="#6ca3a9"/>
+<rect x="518" y="58" width="462" height="280" rx="18" fill="#403c4b" stroke="#c4846f"/>
+<text x="252" y="103" fill="#97ecd9" font-size="24" text-anchor="middle">正确：t≤3</text>
+<text x="748" y="103" fill="#f4c5a4" font-size="24" text-anchor="middle">错误：加入 BD@5</text>
+
+<path d="M130 174 L288 174 L373 272" stroke="#86c5ce" stroke-width="5" fill="none"/>
+
+<circle cx="130" cy="174" r="34" fill="#257184" stroke="#e3efee" stroke-width="2"/><text x="130" y="183" text-anchor="middle" fill="#fff" font-size="26">B</text><circle cx="288" cy="174" r="34" fill="#a1703c" stroke="#e3efee" stroke-width="2"/><text x="288" y="183" text-anchor="middle" fill="#fff" font-size="26">D</text><circle cx="373" cy="272" r="34" fill="#257184" stroke="#e3efee" stroke-width="2"/><text x="373" y="281" text-anchor="middle" fill="#fff" font-size="26">E</text>
+<text x="252" y="315" text-anchor="middle" fill="#ecf6f5" font-size="20">CN(B,E) = 0</text>
+<path d="M628 174 L786 174 L871 272" stroke="#86c5ce" stroke-width="5" fill="none"/>
+<path d="M628 174 L871 272" stroke="#f3ad7c" stroke-width="6" stroke-dasharray="11 8" fill="none"/>
+<circle cx="628" cy="174" r="34" fill="#257184" stroke="#e3efee" stroke-width="2"/><text x="628" y="183" text-anchor="middle" fill="#fff" font-size="26">B</text><circle cx="786" cy="174" r="34" fill="#a1703c" stroke="#e3efee" stroke-width="2"/><text x="786" y="183" text-anchor="middle" fill="#fff" font-size="26">D</text><circle cx="871" cy="272" r="34" fill="#257184" stroke="#e3efee" stroke-width="2"/><text x="871" y="281" text-anchor="middle" fill="#fff" font-size="26">E</text>
+<text x="750" y="315" text-anchor="middle" fill="#ecf6f5" font-size="20">CN(B,E) = 1</text>
+<text x="500" y="386" text-anchor="middle" fill="#cfdfec" font-size="16">右图只是揭示泄漏风险：未来 B–D 一旦加入训练图，测试候选 B–D 甚至变为已有边。</text></g></svg>

@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="网络科学研究级交叉验证：六章节统一时间切分，动态边泄漏，随机游走，GCN，LightGCN，公开 NetworkX 网络和可复算实验。">
+<title>研究级交叉验证 · 时间信息泄漏与图实验 | 网络科学</title>
+<link rel="stylesheet" href="../v2/apps/web/site.css">
+<style>
+.research-page{max-width:1070px;margin:auto;padding:38px 0 70px}
+.research-page h1{font-size:clamp(31px,5.2vw,58px);letter-spacing:-.028em;line-height:1.18;margin:.35em 0}
+.research-page h2{font-size:clamp(22px,3vw,28px);margin:0 0 13px}
+.research-page p{line-height:1.88}
+.research-page section{margin:25px 0;padding:24px;background:var(--panel,#162d40);border:1px solid var(--border,#416478);border-radius:18px}
+.research-page .intro{background:none;border:0;padding:8px 0 20px}
+.research-page .research-lead{font-size:clamp(17px,2.5vw,21px);max-width:800px}
+.research-page .eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.14em}
+.research-page figure{margin:20px 0 14px}
+.research-page figure img{display:block;width:100%;max-height:420px;height:auto;object-fit:contain;border-radius:12px}
+.research-page figcaption{font-size:14px;color:var(--muted,#afc6d2);line-height:1.65;margin-top:10px}
+.research-page .research-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:18px 0}
+.research-page .research-metrics>div{padding:15px 12px;background:var(--bg,#0e2436);border:1px solid var(--border,#486879);border-radius:12px;min-width:0}
+.research-page .research-metrics strong{display:block;font-size:clamp(21px,2.6vw,29px);font-variant-numeric:tabular-nums;margin:7px 0;overflow-wrap:anywhere}
+.research-page .research-metrics span{font-size:13px;color:var(--muted,#b8cbd3)}
+.research-page .research-controls{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+.research-page .research-controls button{padding:10px 15px;border-radius:9px;border:1px solid #72a3ad;background:transparent;color:inherit;cursor:pointer;font:inherit}
+.research-page .research-controls button[aria-pressed="true"]{background:#146758;color:#fff;border-color:#92e8cf}
+.research-page .research-controls button:focus-visible{outline:3px solid #81ebcd;outline-offset:3px}
+.research-page .research-warning{border-left:4px solid #d99972;padding:10px 15px;margin-top:14px;background:rgba(205,135,88,.09)}
+.research-page .research-safe{border-left-color:#64d9b8;background:rgba(70,150,126,.08)}
+.research-page .research-table{display:block;max-width:100%;overflow-x:auto}
+.research-page table{border-collapse:collapse;width:100%;font-size:15px;min-width:580px}
+.research-page th,.research-page td{padding:11px 12px;text-align:left;border-bottom:1px solid var(--border,#486879);vertical-align:top}
+.research-page pre{max-width:100%;overflow-x:auto;padding:15px 18px;border-radius:12px;background:#102132}
+.research-page .research-path{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.research-page .research-path a{display:inline-block;padding:8px 11px;border:1px solid var(--border,#527181);border-radius:9px}
+.research-page .math-scroll{overflow:auto;max-width:100%;padding:12px 0}
+.research-page .research-note{font-size:14px;color:var(--muted,#b3ccd5)}
+@media(max-width:720px){.research-page{padding-top:20px}.research-page section{padding:16px}.research-page .research-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:380px){.research-page .research-metrics{gap:6px}.research-page .research-metrics>div{padding:10px 8px}}
+@media(prefers-reduced-motion:reduce){.research-page *{scroll-behavior:auto!important;transition:none!important}}
+@media print{.research-page section{break-inside:avoid}.research-page button{display:none}}
+</style>
+</head>
+<body>
+<header class="topnav shell"><a class="brand" href="../index.html"><span class="brand-mark">◉</span><span>NETWORK SCIENCE<small>跨章研究级实验</small></span></a><nav class="navlinks" aria-label="研究导航"><a href="../index.html">课程首页</a><a href="#live">泄漏交互</a><a href="#protocol">协议</a><a href="#sources">来源</a></nav></header>
+<main class="shell research-page">
+<section class="intro"><p class="eyebrow">SECOND REVIEW · REPRODUCIBLE GRAPH SCIENCE</p>
+<h1>同一条未来边，<br>会怎样污染整张图？</h1>
+<p class="research-lead">一条尚未发生的 B–D 合作边，如果在测试前进入图表示，不仅会使 B–D 从“待预测边”变成“已有边”，还会改变无关候选 B–E 的共同邻居、随机游走上下文与图卷积的归一化。下面通过完全可复算的小图说明这些错误如何在多种算法中同时出现。</p>
+<p class="research-note">数据身份：五个匿名合成节点 A–E、六条时间戳事件；无真实个人或公司数据。含真实历史网络的另一组静态拓扑实验独立运行，<strong>两者不可合并成同一套评估分数。</strong></p>
+<div class="research-path"><a href="../16.html">16 链路预测</a><a href="../20.html">20 时序网络</a><a href="../21.html">21 图嵌入</a><a href="../22.html">22 GNN</a><a href="../26.html">26 图推荐</a><a href="../28.html">28 综合项目</a></div></section>
+<section id="protocol"><h2>1. 从原始事件切训练、验证和测试</h2>
+<p>事件按时间排序：AB@1、AC@1、BC@2、CD@2、DE@3、BD@5。<strong>训练 t≤2、验证 t=3、测试 t=5</strong>；第 3 时刻的 D–E 可用于验证，但最终是否允许在测试前重新并入训练图，必须由固定协议决定。本示例展示在模型规则已确定后，使用 t≤3 累积已观察图进行测试特征计算，严格不使用 t=5 的 B–D。节点集合从头到尾保持 A、B、C、D、E，包括孤立点。</p>
+<figure><img src="temporal-pipeline.svg" alt="训练事件 A-B A-C B-C C-D 在时间1到2，验证 D-E 在时间3，未来测试 B-D 在时间5；时间轴严格区分三个阶段。"><figcaption>训练、验证与未来测试时窗。所有模型共享同一观察边界；图嵌入和采样器也必须使用训练期可见结构。</figcaption></figure>
+<div class="research-table"><table><thead><tr><th>时点</th><th>可见事件</th><th>训练/评估许可</th><th>为什么需要区分</th></tr></thead><tbody>
+<tr><td>t≤2</td><td>AB AC BC CD</td><td>训练期 4 条边</td><td>可用于训练参数及初始特征</td></tr>
+<tr><td>t=3</td><td>DE</td><td>验证期新边</td><td>用于选择模型/超参；是否并回取决于测试协议</td></tr>
+<tr><td>t≤3</td><td>AB AC BC CD DE</td><td>固定规则后的累积可见图</td><td>可用于 t=5 之前的预测特征（须预先声明）</td></tr>
+<tr><td>t=5</td><td>BD</td><td>未来观察正例</td><td>绝不能倒灌训练特征；只能核对测试标签</td></tr></tbody></table></div></section>
+<section id="live"><h2>2. 交互：把未来边偷放进去，会出现哪些变化？</h2>
+<p>选择不同的观察截止时间。<strong>t=5 模式是专门模拟错误操作的反例</strong>，并不是合法训练设置。共同邻居 CN(B,E) 在 t≤3 时为 0；提前加入未来 B–D 后，D 变成 B 和 E 的共同邻居，变成 1。同时 B→D 无偏一阶游走概率由 0 变成 1/3，GCN 含自环对称权重由 0 变成 1/4。</p>
+<div class="research-controls" role="group" aria-label="选择可见时间截止"><button type="button" data-temporal-cutoff="2" aria-pressed="false">t≤2 · 训练</button><button type="button" data-temporal-cutoff="3" aria-pressed="true">t≤3 · 可见历史</button><button type="button" data-temporal-cutoff="5" aria-pressed="false">t=5 · 故意泄漏</button></div>
+<div class="research-metrics"><div><span>图中已有边</span><strong data-ui-edge-count>5</strong></div><div><span>CN(B,E)</span><strong data-ui-cn-be>0</strong></div><div><span>P(B→D) 无偏游走</span><strong data-ui-walk-bd>0.000</strong></div><div><span>GCN(B,D) 含自环权重</span><strong data-ui-gcn-bd>0.000</strong></div></div>
+<p class="research-warning research-safe" data-ui-warning role="status" aria-live="polite">合规可见历史：截至 t=3 的图不包含未来 BD@5。</p>
+<p><strong>未来 B–D 是否成为训练已知边：</strong><span data-ui-observed-bd>否</span>；测试候选 B–D 的资格：<span data-ui-candidate-eligible>可以候选</span>。当这条边已经进入训练，正确的候选验证器必须拒绝给它再打“预测新边”分数。</p>
+<figure><img src="contamination-path.svg" alt="正确历史中B和E没有共同邻居，注入未来B-D边后D同时成为B和E的邻居，CN从0变1。"><figcaption>不是只有未来目标 B–D 受污染。未来数据一旦进入邻接，其他候选、节点度与整张图的表示也可能改变。</figcaption></figure></section>
+<section id="embedding"><h2>3. 为什么同一漏洞会污染图嵌入、GCN 与图推荐？</h2>
+<p><strong>DeepWalk / node2vec：</strong>训练时的游走必须只沿当时可见边采样。若提前让 B–D 出现，即使没有直接使用“测试标签”，从 B 一步走到 D 的概率就从 0 变为 1/3，构造的节点上下文和后续向量都已包含未来信息。node2vec 的二阶游走还会受前一节点和 p/q 条件影响，因此这个 1/3 仅是无偏一阶游走的核对值，不是任意 node2vec 参数下的概率。</p>
+<p><strong>GCN：</strong>单层对称归一化 D̃⁻¹/²(A+I)D̃⁻¹/² 使用图的结构及度数。洁净图中 B–D 不相邻，消息系数是 0；错误加入未来 B–D 后，两节点含自环度均为 4，系数变为 1/√(4×4)=1/4。更进一步，其它边的归一化系数也会随着 B、D 的度数变化而变化。<strong>这不是已经训练过的 GCN 模型效果。</strong></p>
+<p><strong>LightGCN：</strong>用户—物品网络另外构造 U1–X、U1–Y、U2–Y，若用户 U2 第四周才点击 X，就必须在第四周之前把 U2–X 留在训练图外。基础 LightGCN 不加自环：U1–X 系数原为 1/√(2×1)=0.707107；把未来边 U2–X 放进去后，X 的度从 1 升到 2，U1–X 系数变成 1/2。U2–X 新增消息系数也是 1/2。这与上一段无向五节点合作图是两个<strong>分开定义的玩具实验</strong>，不应把边集强行混合。</p>
+<div class="research-controls" role="group" aria-label="图推荐未来边模拟"><button type="button" data-ui-item-future="off" aria-pressed="true">图推荐：不读取未来</button><button type="button" data-ui-item-future="on" aria-pressed="false">图推荐：错误加入 U2–X</button></div>
+<div class="research-metrics"><div><span>LightGCN U1–X 权重</span><strong data-ui-item-u1x>0.7071</strong></div><div><span>LightGCN U2–X 权重</span><strong data-ui-item-u2x>0.0000</strong></div></div>
+<div class="math-scroll" tabindex="0" role="region" aria-label="图结构归一化权重公式"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="无向对称度归一化消息系数"><mrow><msub><mi>S</mi><mrow><mi>u</mi><mi>v</mi></mrow></msub><mo>=</mo><mfrac><msub><mi>A</mi><mrow><mi>u</mi><mi>v</mi></mrow></msub><msqrt><mi>d</mi><mo>(</mo><mi>u</mi><mo>)</mo><mi>d</mi><mo>(</mo><mi>v</mi><mo>)</mo></msqrt></mfrac></mrow></math></div>
+<p class="research-note">是否加自环、度数是否使用原始或自环图，要由具体算法定义决定；这个公式用于没有自环的 LightGCN 二部图。不能用带自环 GCN 的数值替代它。</p></section>
+<section id="temporal-path"><h2>4. 时间尊重路径与时间切分：两个不同维度</h2>
+<p>时间切分限制预测时可以访问哪些观测；时间尊重路径则额外限制消息沿接触边传播的顺序。例如 A–B@1、B–C@2、C–D@3 允许从 A@0 在 t=1、2、3 依次到达 D；把事件顺序改成 A–B@3、B–C@1、C–D@2 后，即使静态聚合图不变，严格递增时间规则下 A 无法到达 C、D。</p>
+<p>如果 A–B 和 B–C <strong>同时</strong>在 t=1 发生，本页采用“同时间批次冻结上一时刻到达”的严格模型，不允许 A 经两条零时间边在同一时刻到达 C。这是明确约定的一种事件传播规则，不必适用于所有物理过程或论文实现。</p>
+<div class="research-controls" role="group" aria-label="选择事件顺序"><button type="button" data-ui-path-case="ordered" aria-pressed="true">顺序接触</button><button type="button" data-ui-path-case="reordered" aria-pressed="false">错序接触</button><button type="button" data-ui-path-case="simultaneous" aria-pressed="false">同一时刻接触</button></div>
+<p><strong>从 A@0 出发，最早到达时间：</strong> <output data-ui-earliest>A:0，B:1，C:2，D:3</output></p>
+<p>这与“训练截止后能不能见到未来测试边”是两个不同检查项：一个控制事件可见性，一个控制路径合法性，缺少任意一个都可能得出虚假信息传播结论。</p></section>
+<section id="evidence"><h2>5. 一个公开历史网络可复算，但不能伪装成时序预测</h2>
+<p>NetworkX 内置 <em>Zachary Karate Club</em> 社会关系网络，官方文档注明节点编号在库中为 0–33、相对于原论文从 1 开始；边带有互动情境计数权重。以 NetworkX 3.x 典型数据结构读取，节点 34、无向边 78、连通分量 1；忽略权重后可数出 45 个三角形。此处的三角形数量通过独立的邻接集合枚举核验，而不仅依赖调用一次 <code>nx.triangles</code>。这些是静态结构事实，不是任何历史分裂的因果解释。<a href="https://networkx.org/documentation/stable/reference/generated/networkx.generators.social.karate_club_graph.html">原始官方数据文档</a>。</p>
+<p>为什么不把 Karate Club 随便按边序号切分为训练与未来预测？因为这个经典快照没有提供可用于该目的的可靠事件时间顺序。随意编造一个时间标签就不能声称复现真实历史预测。它适合度、聚类系数、三角形、社团方法的静态验证，而真实时序预测应选择附带明确时间戳和官方评估协议的数据。<a href="https://ogb.stanford.edu/docs/linkprop/">OGB Link Property Prediction</a> 列出了不同数据集的切分和评价器约定。</p>
+<div class="research-table"><table><thead><tr><th>可运行实验</th><th>数据类型</th><th>核查结果</th><th>不支持的结论</th></tr></thead><tbody>
+<tr><td>temporal_audit.py</td><td>六条合成带时事件</td><td>时间切分、CN、游走、GCN、LightGCN、严格时间路径</td><td>真实模型训练成绩</td></tr>
+<tr><td>public_karate_audit.py</td><td>NetworkX 内置历史图</td><td>34 节点、78 边、45 三角形、连通分量 1</td><td>任何时间外链接预测或历史因果归因</td></tr></tbody></table></div></section>
+<section id="run"><h2>6. 从零验证：标准库 + 独立 NetworkX oracle</h2>
+<pre><code class="language-bash"># 在仓库根目录运行；第一条脚本只有标准库依赖
+cd v2
+python -m experiments.temporal_audit
+
+# 公开历史图由 NetworkX 安装包提供，不调用互联网采集 API
+python -m pip install 'networkx>=3.3,<4'
+python -m experiments.public_karate_audit
+
+# 检查跨章数据契约、泄漏守卫、图结构与网页
+python -m unittest tests.test_research_round -v
+python scripts/migrate_lessons.py --check
+python scripts/build_web.py --check
+node --test tests/web/*.test.cjs</code></pre>
+<p>输出是包含源事件时间、候选分数、图结构差异与限制说明的 JSON。若要做真正研究：还必须增加训练域/测试域说明、候选池构建规则、未标注样本与假负例处理、验证集选择、固定版本、随机种子、多轮重复及真实测试误差区间。OGB 中有些数据集允许模型选择后在指定条件下并入验证边，有些则使用不同规则；不能推广成“任何预测都必须永远不许使用验证边”这样的绝对命令。</p></section>
+<section id="sources"><h2>原始来源、证据边界及审计记录</h2><ol>
+<li><a href="https://ogb.stanford.edu/docs/linkprop/">OGB 官方：Link Property Prediction</a>。提供数据集特定时间拆分、候选与评价协议。</li>
+<li><a href="https://arxiv.org/abs/2311.18486">New Perspectives on the Evaluation of Link Prediction Algorithms for Dynamic Graphs</a>。关于动态链接预测的负例采样和评估问题。</li>
+<li><a href="https://arxiv.org/abs/1609.02907">Kipf &amp; Welling：GCN</a>。对称归一化与图卷积机制。</li>
+<li><a href="https://arxiv.org/abs/2002.02126">He 等：LightGCN</a>。用户—物品图上的简化归一化传播。</li>
+<li><a href="https://doi.org/10.1016/j.physrep.2012.03.001">Holme &amp; Saramäki：Temporal Networks</a>。事件序列与时间尊重路径。</li>
+<li><a href="https://networkx.org/documentation/stable/reference/generated/networkx.generators.social.karate_club_graph.html">NetworkX 官方 Karate Club 图数据文档</a>。</li>
+</ol>
+<p>证据逐条登记在 <code>v2/content/research/temporal-audit-evidence.json</code>，数值断言位于 <code>v2/tests/test_research_round.py</code>。所有人工反例和实验输出都标注为数学教学结果，未以真实模型测试成绩替代。</p></section>
+</main><footer class="footer shell">网络科学 · 研究级交叉审计 · <a href="../index.html">返回 28 章学习门户</a> · <a href="https://github.com/1998x-stack/network-science-tutorial">GitHub 源码</a></footer>
+<script defer src="temporal-leakage.js"></script>
+</body></html>
