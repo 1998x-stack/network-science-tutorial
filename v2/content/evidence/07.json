@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0.0",
+  "chapter": "07",
+  "review_status": "reviewed",
+  "claims": [
+    {
+      "id": "degree-pmf",
+      "claim": "An empirical undirected degree distribution counts all vertices of each degree, including degree-zero isolates.",
+      "source_url": "https://networkx.org/documentation/stable/reference/classes/generated/networkx.Graph.degree.html",
+      "locator": "Graph.degree API and graph degree view",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "moments",
+      "claim": "The illustrative graph with degrees 5,2,3,2,1,1,0,0 has mean 1.75 and second moment 5.5.",
+      "source_url": "https://networkx.org/documentation/stable/reference/classes/generated/networkx.Graph.degree.html",
+      "locator": "Derivation from the explicitly enumerated eight-node graph in article",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "power-law-fit",
+      "claim": "Visual apparent linearity on a log-log plot does not establish a power law; tail fitting and alternative distributions must be considered.",
+      "source_url": "https://doi.org/10.1137/070710111",
+      "locator": "Clauset, Shalizi & Newman (2009), sections on fitting and model comparison",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "assortativity",
+      "claim": "Newman's degree assortativity measures the association of endpoint degrees over links.",
+      "source_url": "https://doi.org/10.1103/PhysRevE.67.026126",
+      "locator": "Newman (2003), Mixing patterns in networks, assortativity section",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "rich-club",
+      "claim": "Rich-club coefficients require a degree threshold and careful null model when drawing stronger connection-preference conclusions.",
+      "source_url": "https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.richclub.rich_club_coefficient.html",
+      "locator": "NetworkX rich_club_coefficient API",
+      "status": "verified",
+      "kind": "reference"
+    }
+  ]
+}

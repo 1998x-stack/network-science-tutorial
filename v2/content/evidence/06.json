@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0.0",
+  "chapter": "06",
+  "review_status": "reviewed",
+  "claims": [
+    {
+      "id": "preferential-attachment",
+      "claim": "Growth and degree-proportional preferential attachment form the Barabási–Albert model.",
+      "source_url": "https://doi.org/10.1126/science.286.5439.509",
+      "locator": "Barabási & Albert (1999), Science 286(5439), pp. 509–512, model and scaling argument",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "ba-probability",
+      "claim": "For linear preferential attachment, the candidate probability is k_i divided by the current total degree.",
+      "source_url": "https://arxiv.org/abs/cond-mat/9910332",
+      "locator": "BA mechanism; degree-proportional attachment kernel",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "ba-exponent",
+      "claim": "The ideal unmodified BA mechanism has asymptotic degree exponent 3; empirical networks do not necessarily share it.",
+      "source_url": "https://doi.org/10.1126/science.286.5439.509",
+      "locator": "Scaling analysis; conclusion applies to the stated generator",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "nx-generator",
+      "claim": "NetworkX barabasi_albert_graph uses an m parameter, a seed and a default initial-graph convention.",
+      "source_url": "https://networkx.org/documentation/stable/reference/generated/networkx.generators.random_graphs.barabasi_albert_graph.html",
+      "locator": "Generator parameters and initial_graph behavior",
+      "status": "verified",
+      "kind": "reference"
+    }
+  ]
+}
