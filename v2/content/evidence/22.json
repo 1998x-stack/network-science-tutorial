@@ -58,6 +58,14 @@
       "locator": "Derived leakage-safe task protocol, not an original paper benchmark",
       "status": "derived",
       "kind": "derived"
+    },
+    {
+      "id": "round2-22-temporal",
+      "claim": "The GCN adjacency-normalization operator changes when future edges are included, even without reading future supervisory labels.",
+      "source_url": "https://ogb.stanford.edu/docs/linkprop/",
+      "locator": "OGB train graph and time-based link splits; independent synthetic experiments in v2/tests/test_research_round.py",
+      "status": "derived",
+      "kind": "derived"
     }
   ]
 }

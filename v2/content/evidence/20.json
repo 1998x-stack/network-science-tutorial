@@ -50,6 +50,14 @@
       "locator": "Derived from declared instantaneous-event semantics; alternative same-time semantics are possible",
       "status": "derived",
       "kind": "derived"
+    },
+    {
+      "id": "round2-20-temporal",
+      "claim": "Strict temporal paths and forecasting observation cutoffs are distinct contracts; simultaneous events cannot chain under the frozen-batch strict model.",
+      "source_url": "https://ogb.stanford.edu/docs/linkprop/",
+      "locator": "OGB train graph and time-based link splits; independent synthetic experiments in v2/tests/test_research_round.py",
+      "status": "derived",
+      "kind": "derived"
     }
   ]
 }

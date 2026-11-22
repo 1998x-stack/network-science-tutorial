@@ -58,6 +58,14 @@
       "locator": "Derived evaluation protocol, restriction on training graph",
       "status": "derived",
       "kind": "derived"
+    },
+    {
+      "id": "round2-21-temporal",
+      "claim": "DeepWalk/node2vec embeddings would leak link-label structure when future edges are present during random-walk corpus generation.",
+      "source_url": "https://ogb.stanford.edu/docs/linkprop/",
+      "locator": "OGB train graph and time-based link splits; independent synthetic experiments in v2/tests/test_research_round.py",
+      "status": "derived",
+      "kind": "derived"
     }
   ]
 }

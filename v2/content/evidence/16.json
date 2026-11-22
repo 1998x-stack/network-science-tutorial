@@ -42,6 +42,14 @@
       "locator": "NetworkX scores are calculated for specified ebunch; evaluation protocol is external to the score",
       "status": "derived",
       "kind": "derived"
+    },
+    {
+      "id": "round2-16-temporal",
+      "claim": "Train/test candidate sets and structural CN scores must exclude future B-D; injecting that future edge changes CN(B,E) from 0 to 1.",
+      "source_url": "https://ogb.stanford.edu/docs/linkprop/",
+      "locator": "OGB train graph and time-based link splits; independent synthetic experiments in v2/tests/test_research_round.py",
+      "status": "derived",
+      "kind": "derived"
     }
   ]
 }
