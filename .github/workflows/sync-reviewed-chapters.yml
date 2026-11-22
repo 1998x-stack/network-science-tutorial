@@ -1,0 +1,53 @@
+name: Sync reviewed chapter snapshots
+on:
+  push:
+    branches: [main]
+    paths:
+      - '21.html'
+      - '22.html'
+      - '23.html'
+      - '24.html'
+      - '25.html'
+      - 'v2/content/evidence/21.json'
+      - 'v2/content/evidence/22.json'
+      - 'v2/content/evidence/23.json'
+      - 'v2/content/evidence/24.json'
+      - 'v2/content/evidence/25.json'
+      - '.github/workflows/sync-reviewed-chapters.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: reviewed-chapter-sync
+  cancel-in-progress: false
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Build V2 snapshots from root chapter sources
+        run: |
+          python3 v2/scripts/migrate_lessons.py
+          python3 v2/scripts/build_web.py
+          python3 v2/scripts/migrate_lessons.py --check
+          python3 v2/scripts/build_web.py --check
+      - name: Commit only deterministic chapter 21-25 outputs
+        run: |
+          git add v2/content/lessons/21.* v2/content/lessons/22.* v2/content/lessons/23.* v2/content/lessons/24.* v2/content/lessons/25.*
+          git add v2/content/examples/21/ v2/content/examples/22/ v2/content/examples/23/ v2/content/examples/24/ v2/content/examples/25/
+          git add v2/content/quizzes/21.json v2/content/quizzes/22.json v2/content/quizzes/23.json v2/content/quizzes/24.json v2/content/quizzes/25.json
+          git add v2/apps/web/lessons/21.html v2/apps/web/lessons/22.html v2/apps/web/lessons/23.html v2/apps/web/lessons/24.html v2/apps/web/lessons/25.html
+          if ! git diff --cached --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "build(netsci): sync reviewed chapters 21-25 into deterministic V2 reader"
+            git push origin HEAD:main
+          else
+            echo "Reviewed chapter artifacts already synchronized"
+          fi
