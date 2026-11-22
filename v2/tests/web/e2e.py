@@ -220,6 +220,43 @@ def run():
             page.emulate_media(media='print')
             assert page.locator('.migrated-article figure').first.is_visible()
             page.emulate_media(media='screen')
+        # Second research round: standalone source-linked temporal leakage explorer.
+        page.set_viewport_size({'width':1440,'height':900})
+        page.set_content(inline_page('../research/temporal-leakage.html'))
+        assert page.locator('figure img').count()==2
+        assert page.locator('figure img').first.evaluate('(el)=>el.complete&&el.naturalWidth>0')
+        assert page.locator('math').count()>=1
+        assert page.locator('math').first.evaluate('(el)=>el.getBoundingClientRect().width>0')
+        assert page.locator('[data-ui-edge-count]').inner_text()=='5'
+        assert page.locator('[data-ui-cn-be]').inner_text()=='0'
+        page.locator('[data-temporal-cutoff="5"]').click()
+        assert page.locator('[data-ui-edge-count]').inner_text()=='6'
+        assert page.locator('[data-ui-cn-be]').inner_text()=='1'
+        assert page.locator('[data-ui-walk-bd]').inner_text()=='0.333'
+        assert page.locator('[data-ui-gcn-bd]').inner_text()=='0.250'
+        assert page.locator('[data-ui-observed-bd]').inner_text()=='是'
+        assert '违规' in page.locator('[data-ui-warning]').inner_text()
+        page.locator('[data-temporal-cutoff="2"]').click()
+        assert page.locator('[data-ui-edge-count]').inner_text()=='4'
+        assert page.locator('[data-ui-cn-be]').inner_text()=='0'
+        page.locator('[data-ui-item-future="on"]').click()
+        assert page.locator('[data-ui-item-u1x]').inner_text()=='0.5000'
+        assert page.locator('[data-ui-item-u2x]').inner_text()=='0.5000'
+        page.locator('[data-ui-item-future="off"]').click()
+        assert page.locator('[data-ui-item-u1x]').inner_text()=='0.7071'
+        page.locator('[data-ui-path-case="reordered"]').click()
+        assert 'C:不可达' in page.locator('[data-ui-earliest]').inner_text()
+        page.locator('[data-ui-path-case="simultaneous"]').click()
+        assert 'D:不可达' in page.locator('[data-ui-earliest]').inner_text()
+        for width in (1440,768,390,360):
+            page.set_viewport_size({'width':width,'height':840})
+            assert page.evaluate('document.documentElement.scrollWidth <= innerWidth+3'), ('research-temporal-leakage',width)
+            if width in (1440,390):
+                captures=ROOT/'screenshots'
+                captures.mkdir(parents=True,exist_ok=True)
+                page.screenshot(path=str(captures/f'research-temporal-{width}.png'),full_page=True)
+        assert not errors,errors
+        page.set_viewport_size({'width':1440,'height':900})
         page.set_content(inline_page('apps/web/lab.html'))
         assert page.locator('#metrics .metric').count()==8
         assert 'ER' in page.locator('#experiment-title').inner_text()
@@ -253,6 +290,6 @@ def run():
         page.set_content(inline_page('apps/web/lab.html'))
         page.screenshot(path=str(ROOT/'screenshots/s02-graph-lab.png'),full_page=True)
         browser.close()
-    print('Chromium E2E passed: root portal, V2 reader, all 28 responsive lessons and controls, Graph Lab, comparison, registry and legacy viewer.')
+    print('Chromium E2E passed: root portal, V2 reader, all 28 responsive lessons and controls, research audit explorer, Graph Lab, comparison, registry and legacy viewer.')
 
 if __name__=='__main__':run()
