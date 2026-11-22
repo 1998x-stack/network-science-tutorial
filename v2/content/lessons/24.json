@@ -3,7 +3,7 @@
   "chapter": "24",
   "title": "社交网络分析案例",
   "source_path": "24.html",
-  "source_git_blob": "60b7a9efe5a0ab5d43840aee3a96b40f60e788c8",
+  "source_git_blob": "4ed5bd302a1192b947663c9ccc9b5095302b0de7",
   "review_status": "reviewed",
   "headings": [
     {
@@ -41,6 +41,10 @@
     {
       "depth": 2,
       "title": "7. 案例研究的可靠结论"
+    },
+    {
+      "depth": 2,
+      "title": "研究级交叉验证：公开历史拓扑的复现实验不能伪造事件时间"
     },
     {
       "depth": 2,

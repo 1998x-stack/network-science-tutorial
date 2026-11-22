@@ -3,7 +3,7 @@
   "chapter": "28",
   "title": "综合实战项目",
   "source_path": "28.html",
-  "source_git_blob": "907ef0d10a95f67a4fb92ef75b6eeff9fd0ad733",
+  "source_git_blob": "ccfae39264ce35deb3401af02232356cfadacd73",
   "review_status": "reviewed",
   "headings": [
     {
@@ -41,6 +41,10 @@
     {
       "depth": 2,
       "title": "8. 读者可以独立验证的五件事"
+    },
+    {
+      "depth": 2,
+      "title": "研究级交叉验证：训练、验证、测试三段协议比单一测试拆分更严格"
     },
     {
       "depth": 2,

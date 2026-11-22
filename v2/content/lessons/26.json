@@ -3,7 +3,7 @@
   "chapter": "26",
   "title": "网络科学+机器学习",
   "source_path": "26.html",
-  "source_git_blob": "faf269260ec2ba89e9414b47b7ed12a659a8933e",
+  "source_git_blob": "511bda3a0b38c0317d3112bfbe2207d663047b62",
   "review_status": "reviewed",
   "headings": [
     {
@@ -41,6 +41,10 @@
     {
       "depth": 2,
       "title": "7. 当图关系弱于内容信号时，应如何选择基线？"
+    },
+    {
+      "depth": 2,
+      "title": "研究级交叉验证：LightGCN 传播必须隔离未来用户行为"
     },
     {
       "depth": 2,
