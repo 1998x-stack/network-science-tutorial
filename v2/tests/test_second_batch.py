@@ -38,7 +38,7 @@ class SecondBatchOracleTests(unittest.TestCase):
         g=self.bridge_graph()
         degree=nx.degree_centrality(g)
         between=nx.betweenness_centrality(g,normalized=True,endpoints=False)
-        self.assertEqual(degree[2],0.6)
+        self.assertAlmostEqual(degree[2],0.6,places=12)
         self.assertAlmostEqual(between[2],0.6)
         self.assertAlmostEqual(between[3],0.6)
         self.assertTrue(all(abs(between[k])<1e-12 for k in (0,1,4,5)))

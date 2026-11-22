@@ -15,7 +15,7 @@ def test_lesson_01_konigsberg_has_four_odd_vertices():
     assert sorted(dict(graph.degree()).values())==[3,3,3,5]
     assert nx.is_connected(graph)
     assert not nx.has_eulerian_path(graph)
-    assert not nx.has_eulerian_circuit(graph)
+    assert not nx.is_eulerian(graph)
 
 def test_lesson_02_graph_representations_preserve_edges():
     graph=nx.Graph([("A","B"),("A","C"),("B","C"),("C","D")])
