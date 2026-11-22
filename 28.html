@@ -58,7 +58,7 @@ python3 scripts/build_web.py --check</code></pre>
 <p>任何“100% 精度”的说法都必须紧接候选池与样本数限定。本页不使用隐藏测试集调参，不宣称论文性能复现，也不因为学习了网络算法就默认可以公开任何用户关系数据。</p></section>
 <section id="finish"><h2>8. 读者可以独立验证的五件事</h2>
 <p>六个事件为什么只产生五条训练边？节点度数和边数如何满足握手定理？CN(B,D) 为什么为 1、CN(B,E) 为 0？为什么 100% 的 Precision@1 只限于本例？如何通过独立算法查出未来边泄漏？回答这些问题后，读者掌握的是一条可移植的工作流程：<strong>问题定义 → 数据语义 → 数学机制 → 实验断言 → 证据边界</strong>。</p></section>
-<section id="references"><h2>研究可复现性的原始资料</h2><ol class="source-list">
+<section id="research-bridge"><h2>研究级交叉验证：训练、验证、测试三段协议比单一测试拆分更严格</h2><p>本章 t≤3 累积可见历史预测 BD@5 是合法的固定教学协议。第二轮另将事件拆成 t≤2 训练、t=3 验证、t=5 测试，并明确在模型选型完成后是否允许将验证历史纳入测试时特征。两个口径不能不加说明地混用。若把未来 BD 反流到训练图，不仅无法再把 BD 当未观测候选，也使 CN(B,E) 从0错误增加到1。</p><p>研究页展示合法时间切分和故意泄漏的反例，并链接公开数据静态核验与可执行实验。<a href="research/temporal-leakage.html">进入跨章审计和复现实验 →</a></p></section><section id="references"><h2>研究可复现性的原始资料</h2><ol class="source-list">
 <li><a href="https://doi.org/10.1038/sdata.2016.18">Wilkinson 等（2016），FAIR Guiding Principles</a>。</li>
 <li><a href="https://proceedings.neurips.cc/paper/2020/hash/fb60d411a5c5b72b2e7d3527cfc84fd0-Abstract.html">Hu 等（2020），Open Graph Benchmark</a>。</li>
 <li><a href="https://ogb.stanford.edu/docs/linkprop/">OGB 官方 Link Property Prediction 拆分及评估文档</a>。</li>

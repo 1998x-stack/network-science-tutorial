@@ -48,7 +48,7 @@ print("lightgcn=", round(lightgcn_one_step(1), 6),
 <p>这些数值的证明不依赖训练框架或互联网，适合作为 Lightning/PyTorch 版实现前的黄金单测。真实项目还要补训练集数据契约、曝光信息、模型参数、消融、验证集选型和多个随机种子；本例没有训练模型，不声称任何外部数据集的 Recall 提升。</p></section>
 <section id="limits"><h2>7. 当图关系弱于内容信号时，应如何选择基线？</h2>
 <p>用户互动极少、新物品比例高、属性图延迟大或数据授权不清时，简单 popularity、内容相似性或双塔召回可能更适合。图上传播也可能放大热门物品的曝光优势；加入更多社会边不会自动提升用户满意度。有效的研究路线应依次回答<strong>行为语义、时间可见性、候选池、基线、任务指标、部署成本与伦理风险</strong>。</p></section>
-<section id="references"><h2>原始论文、协议与核验边界</h2><ol class="source-list">
+<section id="research-bridge"><h2>研究级交叉验证：LightGCN 传播必须隔离未来用户行为</h2><p>二部图 U1–X、U1–Y、U2–Y 中，基础 LightGCN 无自环传播的 U1–X 权重为 1/√2。如果 U2–X 是未来才出现的点击，提前纳入训练会把 X 的度升至2，令 U1–X 权重降到 1/2，同时制造一条训练时不该存在的 U2–X 传播路径。未观察并不等于被明确拒绝。</p><p>研究页展示合法时间切分和故意泄漏的反例，并链接公开数据静态核验与可执行实验。<a href="research/temporal-leakage.html">进入跨章审计和复现实验 →</a></p></section><section id="references"><h2>原始论文、协议与核验边界</h2><ol class="source-list">
 <li><a href="https://proceedings.mlr.press/r7/rendle09a.html">Rendle 等（2009），BPR</a>。</li>
 <li><a href="https://arxiv.org/abs/2002.02126">He 等（2020），LightGCN</a>。</li>
 <li><a href="https://proceedings.neurips.cc/paper_files/paper/2013/hash/1cecc7a77928ca8133fa24680a88d2f9-Abstract.html">Bordes 等（2013），TransE</a>。</li>
