@@ -1,1 +1,23 @@
-L(M) = q_↷ H(Q) + Σ_{i=1}^{m} p_{↺}^i H(P^i)
+import networkx as nx
+
+edges = [("A","B"), ("A","X"), ("B","X"),
+         ("X","C"), ("X","D"), ("C","D"),
+         ("A","L1"), ("D","L2")]
+graph = nx.Graph(edges)
+
+def peel(g, k):
+    nodes = set(g)
+    while True:
+        remove = {v for v in nodes if len(set(g.neighbors(v)) & nodes) < k}
+        if not remove:
+            return nodes
+        nodes -= remove
+
+assert graph.number_of_nodes() == 7
+assert graph.number_of_edges() == 8
+expected = {1: set(graph), 2: {"A","B","X","C","D"}, 3: set()}
+for k, nodes in expected.items():
+    assert peel(graph, k) == nodes
+    assert set(nx.k_core(graph, k=k)) == nodes
+assert {"A","B","X"} & {"X","C","D"} == {"X"}
+print("core numbers:", nx.core_number(graph))

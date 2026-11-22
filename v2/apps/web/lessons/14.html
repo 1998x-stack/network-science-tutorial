@@ -1,168 +1,63 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="网络科学可复现课程与实验平台"><title>第14章 网络上的博弈 | Network Science</title><link rel="stylesheet" href="../site.css"></head>
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="网络科学可复现课程与实验平台"><title>第14章 网络上的博弈 | Network Science</title><link rel="stylesheet" href="../site.css"><script defer src="../../shared/lesson-interactions.js"></script></head>
 <body><header class="topnav shell"><a class="brand" href="../index.html"><span class="brand-mark">◉</span><span>NETWORK SCIENCE<small>LEARN · EXPERIMENT · VERIFY</small></span></a>
-    <nav class="navlinks" aria-label="主导航"><a href="../index.html">课程</a><a href="../lab.html">Graph Lab</a><a href="../compare.html">模型比较</a><a href="../datasets.html">数据集</a></nav></header><main class="shell"><div class="article"><section class="subhero"><span class="eyebrow">CHAPTER 14 / 动态与预测</span><h1>第14章 · 网络上的博弈</h1><p class="lead">把策略选择、合作演化和意见动力学引入图结构。</p><div class="topics"><span>演化博弈</span><span>Voter</span><span>有界信任</span></div></section><div class="notice"><strong>S03 全文迁移（未经科学审校）</strong> 原始章节中的正文、表格、公式及代码按原貌保存；已知勘误请参见根目录 ERRATA.md。示例独立归档，但未保证可单独执行。</div><section class="panel"><h2>本章学习重点</h2><p>把策略选择、合作演化和意见动力学引入图结构。</p><p class="muted">建议围绕以下主题理解定义、数学假设、适用范围和验证方式：</p><div class="topics"><span>演化博弈</span><span>Voter</span><span>有界信任</span></div><h2>原始章节</h2><p>原始 HTML 在独立仓库中保存。点击下方链接可以查看 GitHub 中的完整正文源文件；离线时则请使用随原仓库保存的旧版 01–28.html。</p><a class="btn secondary" target="_blank" rel="noopener noreferrer" href="https://github.com/1998x-stack/network-science-tutorial/blob/main/14.html">查看原始章节 →</a></section><section class="panel migrated-article" aria-label="完整章节正文"><div class="section-head"><div><span class="eyebrow">ORIGINAL CONTENT / S03</span><h2>完整章节正文</h2></div></div><p>大家好，欢迎回到网络科学课程！在传播动力学中，我们假设节点的行为是被动的——一旦被感染或接收信息，就自动进入传播状态。但在现实中，人类的行为是<strong>策略性的</strong>：当我决定是否与某人合作、是否采纳某个观点、是否参与集体行动时，我会考虑对方的可能反应，考虑短期利益与长期收益。</p>
+    <nav class="navlinks" aria-label="主导航"><a href="../index.html">课程</a><a href="../lab.html">Graph Lab</a><a href="../compare.html">模型比较</a><a href="../datasets.html">数据集</a></nav></header><main class="shell"><div class="article"><section class="subhero"><span class="eyebrow">CHAPTER 14 / 动态与预测</span><h1>第14章 · 网络上的博弈</h1><p class="lead">把策略选择、合作演化和意见动力学引入图结构。</p><div class="topics"><span>演化博弈</span><span>Voter</span><span>有界信任</span></div></section><div class="notice"><strong>S04 首轮内容审校已完成。</strong> 本章的核心定义、关键数值与示例已建立证据账本，并通过本章自动化测试；这不等于完整论文复现或同行评审。</div><section class="panel"><h2>本章学习重点</h2><p>把策略选择、合作演化和意见动力学引入图结构。</p><p class="muted">建议围绕以下主题理解定义、数学假设、适用范围和验证方式：</p><div class="topics"><span>演化博弈</span><span>Voter</span><span>有界信任</span></div><h2>根目录兼容入口</h2><p>根目录中的 14.html 是 Pages 与离线阅读入口；本页正文由同一源文件确定性生成。</p><a class="btn secondary" target="_blank" rel="noopener noreferrer" href="https://github.com/1998x-stack/network-science-tutorial/blob/main/14.html">打开兼容阅读入口 →</a></section><section class="panel migrated-article" aria-label="完整章节正文"><div class="section-head"><div><span class="eyebrow">REVIEWED ARTICLE / S04</span><h2>完整章节正文</h2></div></div><article class="lesson-article"><header class="lesson-hero"><p class="eyebrow">EVOLUTIONARY GAMES / PAYOFF · VOTER · BOUNDED CONFIDENCE</p><p class="dek">“收益更高”与“邻居会模仿”之间，还差一条状态更新规则。</p><p class="reading-meta">核心问题：怎样分别定义收益计算、策略改变与连续意见更新？</p></header>
+<section id="why-strategy"><h2>和朋友连接，不代表一定采取相同策略</h2>
+<p>网络给出谁与谁发生互动，但并不规定谁会合作、模仿或改变意见。想理解群体合作，还需要定义每个人可选的策略、一次互动带来什么收益，以及谁在什么时候更新策略。把这三个层次分开，才能看清“邻居多是否占优势”“桥梁是否促进合作”等问题是否有意义。</p>
+<figure class="lesson-figure"><img src="../assets/lessons/14.svg" alt="四节点路径 A-B-C-D，初始 A、B 选择合作 C，C、D 选择背叛 D，并标注收益 A2 B1 C3 D0。"><figcaption>固定无向路径 A—B—C—D，初始策略为合作、合作、背叛、背叛（C,C,D,D）。按每条边的捐赠博弈 b=3、成本 c=1 计算，一轮收益依次为 2、1、3、0。绿色代表合作，橙色代表背叛；这些收益不是下一轮策略变化的预测。</figcaption></figure></section>
+<section id="donation"><h2>先定义边上的收益：捐赠博弈</h2>
+<p>令每位节点选择 C（合作）或 D（不合作），记 sᵢ=1 表示合作，否则为 0。每位合作节点<strong>对每个邻居</strong>付出成本 c，同时使那位邻居得到收益 b；不合作节点既不支付成本，也不给邻居带来收益。这里 b=3、c=1，且收益在每条无向边的两个方向累加。</p>
+<div class="math-scroll" tabindex="0"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="捐赠博弈中节点 i 的收益等于 b 乘合作邻居数，减去其自身合作时的 c 乘度数"><mrow><msub><mi>π</mi><mi>i</mi></msub><mo>=</mo><mi>b</mi><munder><mo>∑</mo><mrow><mi>j</mi><mo>∈</mo><mi>N</mi><mo>(</mo><mi>i</mi><mo>)</mo></mrow></munder><msub><mi>s</mi><mi>j</mi></msub><mo>−</mo><mi>c</mi><msub><mi>d</mi><mi>i</mi></msub><msub><mi>s</mi><mi>i</mi></msub></mrow></math></div>
+<table class="lesson-table"><thead><tr><th>节点</th><th>自身策略</th><th>合作邻居</th><th>成本支出</th><th>总收益</th></tr></thead><tbody>
+<tr><td>A</td><td>C</td><td>B（1 人）</td><td>1×1</td><td>3−1=2</td></tr>
+<tr><td>B</td><td>C</td><td>A（1 人）</td><td>1×2</td><td>3−2=1</td></tr>
+<tr><td>C</td><td>D</td><td>B（1 人）</td><td>0</td><td>3</td></tr>
+<tr><td>D</td><td>D</td><td>无人</td><td>0</td><td>0</td></tr></tbody></table>
+<p>B 的合作成本更高，因为 B 有两条边，需要给两个邻居各支付一份成本。C 虽然自己不合作，仍从 B 的合作获得收益。这正是社交困境结构：单轮个人收益未必直接奖励无条件合作。</p></section>
+<section id="interactive"><h2>收益与策略是两件独立的事</h2>
+<div class="interactive-demo" data-demo="game"><h3>调节收益 b，看四个节点的一轮结果</h3>
+<label for="game-benefit">每个合作邻居提供的收益 b：<output data-game-b-label>3.0</output></label><input id="game-benefit" type="range" min="1" max="5" step="0.5" value="3" data-game-benefit>
+<div class="metric-grid"><div><span>A 的收益</span><strong data-game-a>2.0</strong></div><div><span>B 的收益</span><strong data-game-b>1.0</strong></div><div><span>C 的收益</span><strong data-game-c>3.0</strong></div><div><span>D 的收益</span><strong data-game-d>0.0</strong></div></div>
+<p class="demo-output" data-game-result aria-live="polite">b=3.0，c=1；当前策略始终为 C、C、D、D。改变收益参数并不会自动更新策略。</p></div>
+<p>若在某种演化博弈中，让更高收益的邻居更可能被模仿，还必须额外指定模仿概率、更新顺序与随机选择机制。仅凭某轮中 C 的分数最高，并不能推断所有节点下一轮必将改为不合作。</p></section>
+<section id="voter"><h2>Voter 模型：中性模仿，不以收益为依据</h2>
+<p>Voter（选民/意见复制）模型的一个常见异步版本，在每次更新中随机选中一个节点，再随机选中它的一个邻居，将该节点的状态改为邻居当前状态。它不根据捐赠博弈收益决定是否复制，且一次只更新一个节点。本图中若指定 B 复制 C，B 的状态由合作变成不合作；其他三个节点在这一步不变。</p>
+<div class="interactive-demo" data-demo="voter"><h3>固定的单次复制事件：B 选择哪位邻居？</h3><div class="demo-controls"><button type="button" data-voter-neighbor="A" aria-pressed="true">复制 A（合作）</button><button type="button" data-voter-neighbor="C" aria-pressed="false">复制 C（背叛）</button></div>
+<p class="demo-output" data-voter-result aria-live="polite">B 复制 A 后仍为合作；全网保持 C、C、D、D。</p></div>
+<p>图中的原始四节点策略仅是更新前的快照。该组件展示<strong>两种可能的条件分支</strong>，并不表示先复制 A 再复制 C 的连续随机轨迹。若要预测全局共识，需要在选定的随机更新规则下重复仿真，并固定种子。</p></section>
+<section id="evolution"><h2>为什么经典的合作判据有很强的条件？</h2>
+<p>Ohtsuki 等人在<strong>弱选择、特定规则图与指定更新机制</strong>的模型下，给出过形如 b/c&gt;k 的合作优势条件，其中 k 表示规则图的邻居数。这个条件不是所有图、所有更新规则、所有游戏的普遍定律。比如本章四节点路径不是 k-规则图，因此不应直接套用这个判据。</p>
+<p>在“死亡—出生”更新、出生—死亡更新、模仿更新、同步选择和异步选择之间，实际的群体动力学可能不同。结论必须同时注明收益函数、策略更新规则、选取概率、图结构与初始状态。</p></section>
+<section id="bounded"><h2>连续意见：有界信任不等于二值投票</h2>
+<p>有界信任模型让每个人持有连续意见 xᵢ，例如在 [0,1] 内。Hegselmann–Krause 的一种同步版本只平均与自己意见距离不超过 ε 的个体（包括自己）：</p>
+<div class="math-scroll" tabindex="0"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="连续意见 x i 下一步等于可信邻居意见的平均值"><mrow><msub><mi>x</mi><mi>i</mi></msub><mo>(</mo><mi>t</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>=</mo><mfrac><mn>1</mn><mrow><mo>|</mo><msub><mi>C</mi><mi>i</mi></msub><mo>(</mo><mi>t</mi><mo>)</mo><mo>|</mo></mrow></mfrac><munder><mo>∑</mo><mrow><mi>j</mi><mo>∈</mo><msub><mi>C</mi><mi>i</mi></msub><mo>(</mo><mi>t</mi><mo>)</mo></mrow></munder><msub><mi>x</mi><mi>j</mi></msub><mo>(</mo><mi>t</mi><mo>)</mo></mrow></math></div>
+<p>对完全相互可见的三人，初始意见为 0.1、0.2、0.9，ε=0.2 时，前两位彼此相差 0.1，下一轮各成为 0.15；第三位与前两位距离都超过 ε，继续保持 0.9。这不是捐赠博弈，也不等价于 Voter 的随机复制；三类模型使用不同的状态空间。</p></section>
+<section id="python"><h2>代码：先复算收益，再独立验证一次 Voter 更新</h2><p>运行环境：Python 3.11+、NetworkX 3.3+。使用无向路径、确定性初始状态和明确的复制对象，没有模拟任何未经声明的随机平衡态。</p>
+<pre><code class="language-python">import networkx as nx
 
-        <p><strong>博弈论（Game Theory）</strong>正是研究这种策略互动的数学框架。当博弈发生在网络上时——每个人只与自己的邻居互动——问题变得更加微妙而有趣：网络的结构能否促进合作？观点如何在相互影响中演化？这一章，我们将揭开网络科学中"策略性互动"的神秘面纱。</p>
+g = nx.path_graph([&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;])
+strategy = {&quot;A&quot;: 1, &quot;B&quot;: 1, &quot;C&quot;: 0, &quot;D&quot;: 0}
+b, cost = 3, 1
 
-        <h2>博弈论基础</h2>
+def payoffs(states):
+    return {v: b * sum(states[u] for u in g.neighbors(v))
+                 - cost * g.degree(v) * states[v] for v in g}
 
-        <h3>囚徒困境</h3>
+assert [payoffs(strategy)[v] for v in &quot;ABCD&quot;] == [2, 1, 3, 0]
+after = dict(strategy)
+after[&quot;B&quot;] = strategy[&quot;C&quot;]  # one asynchronous voter copy
+assert [after[v] for v in &quot;ABCD&quot;] == [1, 0, 0, 0]
 
-        <p>如果要选一个博弈论中最著名的模型，那一定是<strong>囚徒困境（Prisoner's Dilemma）</strong>。它的标准形式如下：两名共犯被捕，被分别审讯。每人有两个选择：<strong>合作（Cooperate）</strong>或<strong>背叛（Defect）</strong>。</p>
-
-        <ul>
-            <li>如果两人都合作，各得3分（R，Reward）。</li>
-            <li>如果两人都背叛，各得1分（P，Punishment）。</li>
-            <li>如果一人合作一人背叛：合作者得0分（S，Sucker），背叛者得5分（T，Temptation）。</li>
-        </ul>
-
-        <p>数值关系满足：T &gt; R &gt; P &gt; S 且 R &gt; (T+S)/2。在这个结构下，无论对方选择什么，背叛（Defect）都是对自己最有利的选择——这就是<strong>纳什均衡</strong>。但问题在于，如果两人都背叛，得到的1分远低于两人都合作的3分。这就是困境所在：理性自利的个体行为导致了集体的次优结果。</p>
-
-        <table>
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>对方合作</th>
-                    <th>对方背叛</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><strong>我方合作</strong></td>
-                    <td>3 (R) / 3 (R)</td>
-                    <td>0 (S) / 5 (T)</td>
-                </tr>
-                <tr>
-                    <td><strong>我方背叛</strong></td>
-                    <td>5 (T) / 0 (S)</td>
-                    <td>1 (P) / 1 (P)</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <p>囚徒困境揭示了人类社会一个深刻的矛盾：<strong>个体理性与集体理性之间的冲突</strong>。但现实中，合作确实存在——人们彼此信任、互帮互助、维护公共资源。这是如何可能的？网络科学给出了一条重要的出路。</p>
-
-        <h2>演化博弈</h2>
-
-        <p>传统的博弈论假设参与者是完全理性的，能够进行完美的策略推理。但现实中的人既不是全知的，也不是永远理性的。<strong>演化博弈论（Evolutionary Game Theory）</strong>——由John Maynard Smith在1970年代提出——提供了另一种视角：策略不是通过推理选择的，而是通过"适者生存"的<strong>自然选择</strong>过程被淘汰或保留下来的。</p>
-
-        <h3>复制动力学</h3>
-
-        <p>在一个大规模混合的群体中，假设个体随机配对进行博弈。某个策略 s 的频率随时间的增长速率，正比于该策略的当前频率乘以它获得的收益与平均收益之差：</p>
-
-        <pre><code>dx_s/dt = x_s × (f_s - φ)</code></pre>
-
-        <p>其中 x_s 是策略 s 的频率，f_s 是策略 s 的平均收益，φ 是全局平均收益。这就是<strong>复制动力学（Replicator Dynamics）</strong>方程。</p>
-
-        <p>在囚徒困境中，复制动力学的预测很悲观：背叛策略的收益始终高于合作策略，因此合作者会逐渐灭绝。然而，一旦引入网络结构（个体只与邻居互动，而不是与全局随机配对），情况就会发生根本性的变化。</p>
-
-        <h3>进化稳定策略</h3>
-
-        <p>进化稳定策略（Evolutionary Stable Strategy, ESS）是演化博弈论的核心概念。一个策略是ESS的，意味着如果整个种群都采纳该策略，任何少量突变者（尝试不同策略）都无法侵入。在囚徒困境中，"永远背叛"是唯一的ESS。</p>
-
-        <p>但在其他博弈模型（如雪堆博弈、猎鹿博弈）中，ESS的图景更加丰富。例如，在猎鹿博弈（Stag Hunt）中，存在两个ESS——"猎鹿"（高风险高回报，需要合作）和"猎兔"（低风险低回报，可独立完成），而社会最终锁定哪个均衡，取决于初始条件和网络结构。</p>
-
-        <h2>网络上的合作</h2>
-
-        <p>1992年，Martin Nowak和Robert May在《自然》杂志上发表了一篇开创性的论文，证明了在空间结构（可以看作是最简单的网络）上，<strong>合作可以在囚徒困境中涌现</strong>。这一发现震惊了学术界，并开启了"网络上合作"这一研究领域。</p>
-
-        <h3>网络促进合作的机制</h3>
-
-        <p>Nowak后来总结了五种促进合作的机制，其中与网络结构最相关的是<strong>网络互惠（Network Reciprocity）</strong>。其核心原理如下：</p>
-
-        <ul>
-            <li>在网络上，合作者倾向于聚集在一起，形成"合作簇"（cooperative cluster）。</li>
-            <li>在合作簇内部，合作者相互互动，获得较高的收益（R）。</li>
-            <li>合作簇边缘的合作者虽然会被簇外的背叛者利用（得到S=0的损失），但簇内的收益弥补了边缘的损失。</li>
-            <li>只要合作簇足够大，合作者的平均收益就能超过背叛者。</li>
-        </ul>
-
-        <p>这就是网络上的"好人有好报"——邻居之间相互合作形成良性循环，而背叛者虽然能获得短期利益，却失去了合作的长期红利。</p>
-
-        <div class="highlight">
-            <strong>网络结构的影响：</strong>并非所有网络都同样能促进合作。研究发现：（1）高聚类系数的网络更有利于合作的维持（因为合作簇更容易形成）；（2）无标度网络中的高度数枢纽节点如果采用合作策略，能极大地扩散合作——因为它们的"辐射范围"很广；（3）度异质性在不加干预时会阻碍合作——需要配合适当的策略更新规则（如模仿比你更成功的邻居）才能发挥正面作用。
-        </div>
-
-        <h3>实践中的合作博弈</h3>
-
-        <p>让我分享一个来自开源社区的观察。GitHub上的开源项目本质上是一个大规模的合作网络：贡献者之间彼此不直接认识，没有合同约束，却共同维护着复杂软件。从博弈论的角度看，每个贡献者都有"搭便车"的动机——使用代码但不贡献，或者提交低质量代码来"刷存在感"。但开源社区之所以能维持高水平的合作，正是因为：</p>
-
-        <ul>
-            <li><strong>声誉机制</strong>：好的贡献建立声誉，带来长期回报（更好的工作机会、社区影响力）。</li>
-            <li><strong>互惠预期</strong>：我帮助你的项目，将来你也会帮助我的。在开源社区这个密集的网络中，互惠被强化了。</li>
-            <li><strong>结构约束</strong>：核心维护者形成了一个紧密的合作簇——他们的高度互信和频繁互动为整个项目提供了合作的基础。</li>
-        </ul>
-
-        <h2>意见动力学</h2>
-
-        <p>从"合作如何涌现"转向另一个重要问题——<strong>意见（观点）如何在网络中演化和极化</strong>？这就是<strong>意见动力学（Opinion Dynamics）</strong>的研究领域。</p>
-
-        <h3>Voter Model（投票者模型）</h3>
-
-        <p><strong>投票者模型（Voter Model）</strong>是最简单的意见动力学模型。每个节点持有二进制意见（0或1，左或右）。在每一步：</p>
-        <ol>
-            <li>随机选择一个节点。</li>
-            <li>该节点随机选择一个邻居，采纳其意见。</li>
-        </ol>
-
-        <p>尽管极其简单，投票者模型却产生了一个令人惊讶的丰富行为。在有限网络上，最终一定会上演"意见一致"（consensus）——系统陷入所有节点都是0或都是1的吸引子。但达到一致的时间随网络规模增长，在二维格子和无标度网络上的标度行为截然不同。</p>
-
-        <p>投票者模型的变体——<strong>多数规则模型（Majority Rule Model）</strong>——更贴近真实讨论：一群人一起讨论，多数意见胜出。如果讨论组大小是奇数且随机选取的，多数规则模型在某些条件下会导致最终极化（而不是一致）。</p>
-
-        <h3>有界信任模型（Deffuant）</h3>
-
-        <p><strong>有界信任模型（Bounded Confidence Model）</strong>由Guillaume Deffuant在2000年提出，是最贴合现实的意见动力学模型之一。它的基本假设是：人们只愿意与观点足够接近的人交流。</p>
-
-        <p>模型设定如下：</p>
-        <ul>
-            <li>每个节点的意见是连续值 x_i ∈ [0, 1]。</li>
-            <li>有一个"信任阈值" ε：如果 |x_i - x_j| &lt; ε，节点 i 和 j 才会交流。</li>
-            <li>交流时，双方的意见向彼此靠拢：x_i ← x_i + μ(x_j - x_i)，x_j ← x_j + μ(x_i - x_j)。</li>
-        </ul>
-
-        <p>Deffuant模型产生了一个关键结果：</p>
-
-        <pre><code># Deffuant模型的关键发现：ε决定了最终意见的多样性
-# 如果 ε 较大（如 ε > 0.5）→ 所有意见收敛到同一个值
-# 如果 ε 中等 → 形成2-3个意见簇（极化）
-# 如果 ε 较小 → 最终保持多个意见簇（多元化）
-
-import random
-
-def deffuant_model(G, epsilon=0.2, mu=0.5, steps=50000):
-    opinions = {n: random.random() for n in G.nodes()}
-    for _ in range(steps):
-        i, j = random.sample(list(G.nodes()), 2)
-        if abs(opinions[i] - opinions[j]) < epsilon:
-            opinions[i] += mu * (opinions[j] - opinions[i])
-            opinions[j] += mu * (opinions[i] - opinions[j])
-    return opinions</code></pre>
-
-        <p>这个简单的模型揭示了意见极化的核心机制：如果社会中的"摩擦"（不信任、不交流）足够大，不同观点的人就会彼此隔离，各自在封闭的圈子中强化已有观点，最终导致不可调和的分裂。</p>
-
-        <div class="warning">
-            <strong>现实隐喻：</strong>Deffuant模型中的 ε 值，在现实中对应着人们愿意倾听不同意见的"包容度"。如果社交媒体算法不断给我们推送与既有观点一致的内容（降低我们的有效ε值），那么社会整体的意见极化就会不可避免。这从理论上解释了为什么"过滤气泡"对整个社会的共识形成是有害的——它实际上是在降低每个人的 ε。
-        </div>
-
-        <h2>选举与舆论</h2>
-
-        <p>意见动力学的研究成果为我们理解真实世界中的选举和舆论演化提供了重要的理论框架。</p>
-
-        <p><strong>社会影响力</strong>在选举中扮演着关键角色。当朋友、家人、同事公开表达政治立场时，他们的观点会通过社会网络影响其他人。这种影响不是中性的——影响力大的节点（意见领袖、大V、社区名人）对周围人的影响远超普通人。</p>
-
-        <p>网络科学对选举研究的贡献包括：</p>
-
-        <ul>
-            <li><strong>投票预测</strong>：通过分析社交网络中的意见传播模型，可以比传统民调更准确地预测选举结果。2012年美国总统选举中，基于社交网络的分析在很多州的表现优于传统民调。</li>
-            <li><strong>摇摆选民识别</strong>：在意见动力学模型中，那些处于不同意见簇边界的节点是最容易"被说服"的摇摆选民。精准识别并影响这些节点，是竞选策略的核心。</li>
-            <li><strong>共识 vs 分裂</strong>：模型表明，如果社会网络高度极化（两个阵营之间几乎没有跨阵营连接），最终结果往往是分裂而非共识。这也是许多国家的政治两极分化的结构性根源。</li>
-        </ul>
-
-        <div class="highlight">
-            <strong>一个值得深思的结论：</strong>网络上的博弈和意见动力学研究反复告诉我们一个深刻的道理：人的行为既不是完全理性的，也不是完全被动的。我们既受周围人的影响，又在不断影响周围的人。网络结构（谁和谁相连）不仅决定了信息如何流动，更决定了合作、信任和共识是否可能。理解了这一点，你就理解了为什么网络科学被称为"复杂社会的物理学"。
-        </div>
-
-        <p>本章我们从囚徒困境出发，学习了网络结构如何让合作在"自私"的个体之间涌现；通过演化博弈理解了策略如何通过竞争和选择演化；通过意见动力学模型看到了观点如何极化或达成共识。这些内容标志着我们从"静态结构分析"到"动态策略互动"的视角转变——网络不再只是被分析的客体，而是承载人类社会互动行为的活生生的舞台。</p>
-
-        <p>下一章，我们将继续探索网络上的动态过程，但换一个角度——当灾难发生时，网络如何保持功能？这就是<strong>网络鲁棒性与脆弱性</strong>。我们将看到，网络结构如何同时赋予系统惊人的韧性和致命的软肋。我们第15章见！</p>
-</section><section class="panel"><h2>本章代码示例（原文提取）</h2><ol><li><a href="../../../content/examples/14/01.txt">代码片段 01（原始文本）</a></li><li><a href="../../../content/examples/14/02.txt">代码片段 02（原始文本）</a></li></ol><p class="muted small">代码片段仅做忠实归档，尚未经过依赖固定、单独运行和科学正确性验证。</p></section><section class="section"><h2>可执行配套实践</h2><p class="muted">相应的独立算法实验、习题及黄金测试计划在 S03–S06 阶段按课程映射逐步接入。</p></section><div class="chapter-nav"><a href="13.html">← 第13章</a><a href="15.html">第15章 →</a></div><p><a href="../index.html#curriculum">← 返回课程目录</a></p></div></main><footer class="footer shell">Network Science Tutorial V2 · S03 内容与展示层 · 原版 HTML 继续保留，科学结论待独立审校。</footer></body></html>
+opinions = [0.1, 0.2, 0.9]
+epsilon = 0.2
+updated = [sum(y for y in opinions if abs(y-x) &lt;= epsilon)
+           / sum(abs(y-x) &lt;= epsilon for y in opinions)
+           for x in opinions]
+assert all(abs(a-b) &lt; 1e-12 for a,b in zip(updated, [0.15,0.15,0.9]))
+print(&quot;payoffs:&quot;, payoffs(strategy), &quot;voter copy:&quot;, after)</code></pre>
+<p>对现实合作行为的因果推断需要选择机制与个体异质性等独立证据；网络上一个可重复的模型结果只是理论机制的例证。</p></section>
+<section id="references"><h2>原始来源与研究范围</h2><ol class="source-list">
+<li>Ohtsuki, Hauert, Lieberman &amp; Nowak (2006), <a href="https://doi.org/10.1038/nature04605">A simple rule for the evolution of cooperation on graphs and social networks</a>, Nature 441:502–505。</li>
+<li>Holley &amp; Liggett (1975), <a href="https://doi.org/10.1214/aop/1176996306">Ergodic Theorems for Weakly Interacting Infinite Systems and the Voter Model</a>, Annals of Probability。</li>
+<li>Hegselmann &amp; Krause (2002), <a href="https://www.jasss.org/5/3/2.html">Opinion Dynamics and Bounded Confidence: Models, Analysis and Simulation</a>，JASSS 5(3)。</li></ol>
+<p>当节点策略或系统负载发生变化，网络是否仍保持功能，取决于移除机制与故障反馈。下一篇把关注点转到鲁棒性。</p></section></article></div>
+</section><section class="panel"><h2>本章代码示例</h2><ol><li><a href="../../../content/examples/14/01.txt">代码示例 01（python）</a></li></ol><p class="muted small">代码示例已纳入本章确定性测试；依赖与运行方式见正文。</p></section><section class="section"><h2>可执行配套实践</h2><p class="muted">相应的独立算法实验、习题及黄金测试计划在 S03–S06 阶段按课程映射逐步接入。</p></section><div class="chapter-nav"><a href="13.html">← 第13章</a><a href="15.html">第15章 →</a></div><p><a href="../index.html#curriculum">← 返回课程目录</a></p></div></main><footer class="footer shell">Network Science Tutorial V2 · S04 首批审校章节 · 证据账本随源文件发布。</footer></body></html>

@@ -3,80 +3,52 @@
   "chapter": "11",
   "title": "社团检测（下）",
   "source_path": "11.html",
-  "source_git_blob": "4d0825d3b8057c1b86ad84b7f86934e8426bf4f7",
-  "review_status": "migrated_unreviewed",
+  "source_git_blob": "e186931c299afce061a5f0804cc09470c5a9344a",
+  "review_status": "reviewed",
   "headings": [
     {
       "depth": 2,
-      "title": "InfoMap算法"
-    },
-    {
-      "depth": 3,
-      "title": "压缩原理"
-    },
-    {
-      "depth": 3,
-      "title": "Map Equation"
+      "title": "一个人同时属于两个群体，应该被分到哪一边？"
     },
     {
       "depth": 2,
-      "title": "重叠社团检测"
-    },
-    {
-      "depth": 3,
-      "title": "BigCLAM"
-    },
-    {
-      "depth": 3,
-      "title": "Clique Percolation"
+      "title": "三个不同的问题，不应由同一个算法代答"
     },
     {
       "depth": 2,
-      "title": "核心-边缘结构"
-    },
-    {
-      "depth": 3,
-      "title": "K-Core分解"
-    },
-    {
-      "depth": 3,
-      "title": "Onion Layers"
+      "title": "Infomap：压缩随机游走而不是重新命名模块度"
     },
     {
       "depth": 2,
-      "title": "社团评估指标"
-    },
-    {
-      "depth": 3,
-      "title": "外部评估指标"
-    },
-    {
-      "depth": 3,
-      "title": "内部评估指标"
+      "title": "重叠社团：共享节点与边社团"
     },
     {
       "depth": 2,
-      "title": "真实案例：政治博客网络"
+      "title": "k-core：它不是另一种社团划分"
+    },
+    {
+      "depth": 3,
+      "title": "逐层剥离这张七节点图"
+    },
+    {
+      "depth": 2,
+      "title": "代码：用独立算法对照 NetworkX 的 k-core"
+    },
+    {
+      "depth": 2,
+      "title": "方法选择与适用边界"
+    },
+    {
+      "depth": 2,
+      "title": "原始论文与软件定义"
     }
   ],
   "examples": [
     {
       "id": "01",
       "path": "content/examples/11/01.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
-    },
-    {
-      "id": "02",
-      "path": "content/examples/11/02.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
-    },
-    {
-      "id": "03",
-      "path": "content/examples/11/03.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
+      "language": "python",
+      "review_status": "tested"
     }
   ]
 }

@@ -3,70 +3,56 @@
   "chapter": "14",
   "title": "网络上的博弈",
   "source_path": "14.html",
-  "source_git_blob": "e7a03e099cfd662c3a42288f774a91ca5646907b",
-  "review_status": "migrated_unreviewed",
+  "source_git_blob": "add57e891625c9d41a91acbfec840eb2bc33cfc2",
+  "review_status": "reviewed",
   "headings": [
     {
       "depth": 2,
-      "title": "博弈论基础"
-    },
-    {
-      "depth": 3,
-      "title": "囚徒困境"
+      "title": "和朋友连接，不代表一定采取相同策略"
     },
     {
       "depth": 2,
-      "title": "演化博弈"
-    },
-    {
-      "depth": 3,
-      "title": "复制动力学"
-    },
-    {
-      "depth": 3,
-      "title": "进化稳定策略"
+      "title": "先定义边上的收益：捐赠博弈"
     },
     {
       "depth": 2,
-      "title": "网络上的合作"
+      "title": "收益与策略是两件独立的事"
     },
     {
       "depth": 3,
-      "title": "网络促进合作的机制"
-    },
-    {
-      "depth": 3,
-      "title": "实践中的合作博弈"
+      "title": "调节收益 b，看四个节点的一轮结果"
     },
     {
       "depth": 2,
-      "title": "意见动力学"
+      "title": "Voter 模型：中性模仿，不以收益为依据"
     },
     {
       "depth": 3,
-      "title": "Voter Model（投票者模型）"
-    },
-    {
-      "depth": 3,
-      "title": "有界信任模型（Deffuant）"
+      "title": "固定的单次复制事件：B 选择哪位邻居？"
     },
     {
       "depth": 2,
-      "title": "选举与舆论"
+      "title": "为什么经典的合作判据有很强的条件？"
+    },
+    {
+      "depth": 2,
+      "title": "连续意见：有界信任不等于二值投票"
+    },
+    {
+      "depth": 2,
+      "title": "代码：先复算收益，再独立验证一次 Voter 更新"
+    },
+    {
+      "depth": 2,
+      "title": "原始来源与研究范围"
     }
   ],
   "examples": [
     {
       "id": "01",
       "path": "content/examples/14/01.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
-    },
-    {
-      "id": "02",
-      "path": "content/examples/14/02.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
+      "language": "python",
+      "review_status": "tested"
     }
   ]
 }

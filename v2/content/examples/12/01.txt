@@ -1,3 +1,27 @@
-dS/dt = -βSI
-dI/dt = βSI - γI
-dR/dt = γI
+import random
+import networkx as nx
+
+g = nx.path_graph(5)
+rng = random.Random(7)
+state = {v: ("I" if v == 0 else "S") for v in g}
+
+def step(old, beta):
+    new = dict(old)
+    for v in sorted(g):
+        if old[v] == "I":
+            new[v] = "R"
+        elif old[v] == "S":
+            for u in sorted(g.neighbors(v)):
+                if old[u] == "I" and rng.random() < beta:
+                    new[v] = "I"
+                    break
+    return new
+
+history = [dict(state)]
+for _ in range(5):
+    state = step(state, 1.0)
+    history.append(dict(state))
+assert [sum(s[v] == "I" for v in g) for s in history] == [1,1,1,1,1,0]
+assert [sum(s[v] == "R" for v in g) for s in history] == [0,1,2,3,4,5]
+assert all(len(s) == 5 for s in history)
+print("SIR progression:", history)
