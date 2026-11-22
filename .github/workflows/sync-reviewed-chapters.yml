@@ -8,11 +8,10 @@ on:
       - '23.html'
       - '24.html'
       - '25.html'
-      - 'v2/content/evidence/21.json'
-      - 'v2/content/evidence/22.json'
-      - 'v2/content/evidence/23.json'
-      - 'v2/content/evidence/24.json'
-      - 'v2/content/evidence/25.json'
+      - '26.html'
+      - '27.html'
+      - '28.html'
+      - 'v2/content/evidence/**'
       - '.github/workflows/sync-reviewed-chapters.yml'
   workflow_dispatch:
 permissions:
@@ -31,23 +30,25 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Build V2 snapshots from root chapter sources
+      - name: Rebuild deterministic V2 snapshots from root sources
         run: |
           python3 v2/scripts/migrate_lessons.py
           python3 v2/scripts/build_web.py
           python3 v2/scripts/migrate_lessons.py --check
           python3 v2/scripts/build_web.py --check
-      - name: Commit only deterministic chapter 21-25 outputs
+      - name: Commit reviewed chapter outputs only
         run: |
-          git add v2/content/lessons/21.* v2/content/lessons/22.* v2/content/lessons/23.* v2/content/lessons/24.* v2/content/lessons/25.*
-          git add v2/content/examples/21/ v2/content/examples/22/ v2/content/examples/23/ v2/content/examples/24/ v2/content/examples/25/
-          git add v2/content/quizzes/21.json v2/content/quizzes/22.json v2/content/quizzes/23.json v2/content/quizzes/24.json v2/content/quizzes/25.json
-          git add v2/apps/web/lessons/21.html v2/apps/web/lessons/22.html v2/apps/web/lessons/23.html v2/apps/web/lessons/24.html v2/apps/web/lessons/25.html
+          for n in $(seq -w 21 28); do
+            git add "v2/content/lessons/${n}.html" "v2/content/lessons/${n}.json"
+            git add "v2/content/examples/${n}/"
+            git add "v2/content/quizzes/${n}.json"
+            git add "v2/apps/web/lessons/${n}.html"
+          done
           if ! git diff --cached --quiet; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git commit -m "build(netsci): sync reviewed chapters 21-25 into deterministic V2 reader"
+            git commit -m "build(netsci): synchronize reviewed lessons 21–28 to V2"
             git push origin HEAD:main
           else
-            echo "Reviewed chapter artifacts already synchronized"
+            echo "All reviewed chapter artifacts are synchronized"
           fi
