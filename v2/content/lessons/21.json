@@ -3,7 +3,7 @@
   "chapter": "21",
   "title": "网络嵌入与表示学习",
   "source_path": "21.html",
-  "source_git_blob": "45d5d89245e6793dc532696fc7aff058b517d085",
+  "source_git_blob": "0a29b953f4fd333383e056070563b02de483116d",
   "review_status": "reviewed",
   "headings": [
     {
@@ -37,6 +37,10 @@
     {
       "depth": 2,
       "title": "7. 从这页可以迁移的研究流程"
+    },
+    {
+      "depth": 2,
+      "title": "研究级交叉验证：游走训练语料也必须严格隔离未来边"
     },
     {
       "depth": 2,

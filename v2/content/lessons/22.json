@@ -3,7 +3,7 @@
   "chapter": "22",
   "title": "图神经网络入门",
   "source_path": "22.html",
-  "source_git_blob": "3078a04d1bb87769e864a810bd42330c8b870f30",
+  "source_git_blob": "430aac5304f6cf37e353a6ba3fe7e166433fc0a7",
   "review_status": "reviewed",
   "headings": [
     {
@@ -45,6 +45,10 @@
     {
       "depth": 2,
       "title": "8. 从网络科学问题选 GNN，而不是反过来"
+    },
+    {
+      "depth": 2,
+      "title": "研究级交叉验证：图卷积泄漏不仅改变测试边，还改变图的归一化"
     },
     {
       "depth": 2,
