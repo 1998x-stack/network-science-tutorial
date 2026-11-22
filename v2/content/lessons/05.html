@@ -1,8 +1,10 @@
-<article class="lesson-article"><header class="lesson-hero">
+<article class="lesson-article" id="lesson-content"><header class="lesson-hero">
 <p class="eyebrow">SMALL-WORLD NETWORKS / LOCAL CLUSTERS, GLOBAL SHORTCUTS</p>
 <p class="dek">少量远距离连接，如何让局部紧密的网络变得全局可达？</p>
 <p class="reading-meta">核心问题：一个网络能否同时保留高聚集系数，并拥有接近随机网络的短路径？</p>
 </header>
+<figure class="visual-storyboard" data-visual-chapter="05" aria-label="重连保留边数但改变路径"><div class="visual-heading"><span class="visual-label">先读图 · 再看公式与实验</span><span class="visual-hint">左侧结构 → 右侧三个核对步骤</span></div><div class="diagram-viewport" tabindex="0" role="region" aria-label="第5章图解，可在窄屏横向滚动"><img src="assets/lessons/05-visual.svg" alt="重连保留边数但改变路径：以六节点环为演示，删除 0—1、增加 0—3，边数仍为 6，0 至 3 的最短路径从 3 缩至 1。该图仅演示重连步骤。"></div><figcaption><strong>检验点：</strong>以六节点环为演示，删除 0—1、增加 0—3，边数仍为 6，0 至 3 的最短路径从 3 缩至 1。该图仅演示重连步骤。</figcaption></figure>
+<nav class="lesson-jump" aria-label="本章内容导览"><span class="jump-label">本章阅读路线</span><a href="#paradox">1 · 局部抱团与全局通达之间的张力</a><a href="#six-degrees">2 · “六度分隔”是一项有边界的实验结果</a><a href="#ws">3 · Watts–Strogatz 模型：从规…</a><a href="#references">↗ 参考资料</a></nav>
 <section id="paradox">
 <h2>局部抱团与全局通达之间的张力</h2>
 <p>社交关系常有明显的局部聚集：你的两位朋友也可能彼此认识。若网络只由局部邻居组成，节点之间的远距离通信却可能需要经过许多中间人。反过来，完全随机的连接容易产生短路径，却未必保留真实社交网络中的局部团簇。小世界网络研究的核心问题，就是理解局部高聚集与全局短路径如何同时出现。</p>

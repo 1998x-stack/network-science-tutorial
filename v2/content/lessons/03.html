@@ -1,8 +1,10 @@
-<article class="lesson-article"><header class="lesson-hero">
+<article class="lesson-article" id="lesson-content"><header class="lesson-hero">
 <p class="eyebrow">NETWORK MEASURES / STRUCTURAL STATISTICS</p>
 <p class="dek">一张网络不能只用“很密”或“很复杂”来描述；结构比较需要可复算的指标。</p>
 <p class="reading-meta">核心问题：哪些数字能够概括连接数量、可达距离与局部闭合？这些数字又会遗漏什么？</p>
 </header>
+<figure class="visual-storyboard" data-visual-chapter="03" aria-label="四条边对应多个不同度量"><div class="visual-heading"><span class="visual-label">先读图 · 再看公式与实验</span><span class="visual-hint">左侧结构 → 右侧三个核对步骤</span></div><div class="diagram-viewport" tabindex="0" role="region" aria-label="第3章图解，可在窄屏横向滚动"><img src="assets/lessons/03-visual.svg" alt="四条边对应多个不同度量：三角形 A-B-C 外加 C-D 尾边：C 的度数为 3；全图四节点四边，度数和 8，密度 2/3。"></div><figcaption><strong>检验点：</strong>三角形 A-B-C 外加 C-D 尾边：C 的度数为 3；全图四节点四边，度数和 8，密度 2/3。</figcaption></figure>
+<nav class="lesson-jump" aria-label="本章内容导览"><span class="jump-label">本章阅读路线</span><a href="#why-measure">1 · 先明确测量对象</a><a href="#degree">2 · 度与度分布：连接集中在哪里？</a><a href="#density">3 · 密度：相对于最多可能的边有多稠密？</a><a href="#references">↗ 参考资料</a></nav>
 <section id="why-measure">
 <h2>先明确测量对象</h2>
 <p>设 G=(V,E) 是一张简单无向图，节点数为 n=|V|，边数为 m=|E|。网络指标把结构映射成数字，便于比较不同网络或同一网络在不同时刻的变化。但一个指标只刻画某个侧面：平均度相同的两张图，可能有完全不同的社团结构、路径长度和节点异质性。可靠分析通常需要一组互补指标，而不是寻找一个“总分”。</p>

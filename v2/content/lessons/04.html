@@ -1,8 +1,10 @@
-<article class="lesson-article"><header class="lesson-hero">
+<article class="lesson-article" id="lesson-content"><header class="lesson-hero">
 <p class="eyebrow">RANDOM GRAPHS / GENERATIVE BASELINES</p>
 <p class="dek">如果每一对节点都独立地随机决定是否连接，会出现怎样的网络？</p>
 <p class="reading-meta">核心问题：随机连接如何产生度分布、巨连通分量与连通阈值？</p>
 </header>
+<figure class="visual-storyboard" data-visual-chapter="04" aria-label="随机边数与数学期望"><div class="visual-heading"><span class="visual-label">先读图 · 再看公式与实验</span><span class="visual-hint">左侧结构 → 右侧三个核对步骤</span></div><div class="diagram-viewport" tabindex="0" role="region" aria-label="第4章图解，可在窄屏横向滚动"><img src="assets/lessons/04-visual.svg" alt="随机边数与数学期望：五个节点有 10 对潜在边，每对独立以 p=0.2 生成，E[m]=2；期望不是说每次采样恰好有两条边。"></div><figcaption><strong>检验点：</strong>五个节点有 10 对潜在边，每对独立以 p=0.2 生成，E[m]=2；期望不是说每次采样恰好有两条边。</figcaption></figure>
+<nav class="lesson-jump" aria-label="本章内容导览"><span class="jump-label">本章阅读路线</span><a href="#baseline">1 · 为什么需要随机基线？</a><a href="#models">2 · 两个容易混淆的 ER 模型</a><a href="#expectations">3 · 从连边概率推导期望值</a><a href="#references">↗ 参考资料</a></nav>
 <section id="baseline">
 <h2>为什么需要随机基线？</h2>
 <p>观察到一张网络具有较多三角形、较短路径或某个枢纽节点时，我们需要一个参照，判断这些结构是否超出了“随机连边”本身就会产生的程度。Erdős–Rényi（ER）随机图提供了一个清晰基线：固定 n 个顶点，让每一对顶点以相同概率、相互独立地决定是否连边。它不是所有真实网络的生成机制，而是帮助研究者识别非随机结构的起点。</p>

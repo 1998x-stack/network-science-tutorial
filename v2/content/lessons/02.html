@@ -1,8 +1,10 @@
-<article class="lesson-article"><header class="lesson-hero">
+<article class="lesson-article" id="lesson-content"><header class="lesson-hero">
 <p class="eyebrow">GRAPH THEORY / MATHEMATICAL LANGUAGE</p>
 <p class="dek">一张图由什么组成，决定了它能回答什么问题。</p>
 <p class="reading-meta">核心问题：怎样把现实关系转换成精确、可计算、不会混淆语义的数据结构？</p>
 </header>
+<figure class="visual-storyboard" data-visual-chapter="02" aria-label="四节点路径与邻接矩阵"><div class="visual-heading"><span class="visual-label">先读图 · 再看公式与实验</span><span class="visual-hint">左侧结构 → 右侧三个核对步骤</span></div><div class="diagram-viewport" tabindex="0" role="region" aria-label="第2章图解，可在窄屏横向滚动"><img src="assets/lessons/02-visual.svg" alt="四节点路径与邻接矩阵：A—B—C—D 的 3 条无向边，对应一张对称的 4×4 邻接矩阵。矩阵对角线为 0，总度数是 6。"></div><figcaption><strong>检验点：</strong>A—B—C—D 的 3 条无向边，对应一张对称的 4×4 邻接矩阵。矩阵对角线为 0，总度数是 6。</figcaption></figure>
+<nav class="lesson-jump" aria-label="本章内容导览"><span class="jump-label">本章阅读路线</span><a href="#definition">1 · 从现实关系到数学对象</a><a href="#graph-types">2 · 先判断你处理的是哪一种图</a><a href="#degree">3 · 度数与握手定理</a><a href="#references">↗ 参考资料</a></nav>
 <section id="definition">
 <h2>从现实关系到数学对象</h2>
 <p>图论研究由顶点和边组成的离散结构。给定顶点集合 <math class="math-inline" aria-label="V"><mi>V</mi></math> 与边集合 <math class="math-inline" aria-label="E"><mi>E</mi></math>，图记作 <math class="math-inline" aria-label="G 等于 V 和 E"><mrow><mi>G</mi><mo>=</mo><mo>(</mo><mi>V</mi><mo>,</mo><mi>E</mi><mo>)</mo></mrow></math>。例如，在地铁网络中，顶点可以是车站，边可以表示两站之间存在直达轨道；在引用网络中，顶点是论文，有向边表示一篇论文引用另一篇论文。</p>
