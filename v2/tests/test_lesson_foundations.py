@@ -64,10 +64,21 @@ def test_lesson_05_ws_rewiring_shortens_paths_before_clustering_disappears():
 def test_reviewed_evidence_ledgers_have_locators_and_valid_statuses():
     root=Path(__file__).resolve().parents[1]/"content"/"evidence"
     allowed={"verified","derived","illustrative"}
-    for number in ("01","02","03","04","05"):
+    for number in ("01","02","03","04","05","06","07","08","09","10"):
         ledger=json.loads((root/f"{number}.json").read_text(encoding="utf-8"))
         assert ledger["chapter"]==number and ledger["review_status"]=="reviewed"
         assert ledger["claims"]
         for claim in ledger["claims"]:
             assert claim.get("source_url") and claim.get("locator")
             assert claim.get("status") in allowed
+
+# The original checks were plain functions, which unittest discover did not collect.
+# Register them as real unittest cases so CI executes every mathematical assertion.
+import unittest
+class FoundationChecks(unittest.TestCase):
+    def test_euler(self): test_lesson_01_konigsberg_has_four_odd_vertices()
+    def test_graph_representation(self): test_lesson_02_graph_representations_preserve_edges()
+    def test_metrics(self): test_lesson_03_four_node_metric_values_are_exact()
+    def test_er(self): test_lesson_04_er_expectations_and_thresholds_are_distinct()
+    def test_ws(self): test_lesson_05_ws_rewiring_shortens_paths_before_clustering_disappears()
+    def test_evidence(self): test_reviewed_evidence_ledgers_have_locators_and_valid_statuses()
