@@ -3,54 +3,56 @@
   "chapter": "26",
   "title": "网络科学+机器学习",
   "source_path": "26.html",
-  "source_git_blob": "cbb9d73ca8f0bb4679c8a23d1767ecbfe42de4cf",
-  "review_status": "migrated_unreviewed",
+  "source_git_blob": "faf269260ec2ba89e9414b47b7ed12a659a8933e",
+  "review_status": "reviewed",
   "headings": [
     {
       "depth": 2,
-      "title": "网络科学赋能机器学习"
+      "title": "1. 先定义图：用户和商品连接意味着什么？"
     },
     {
       "depth": 2,
-      "title": "图数据与推荐系统"
+      "title": "2. LightGCN 的双向归一化传播：不等同于普通平均"
+    },
+    {
+      "depth": 3,
+      "title": "交互：观察归一化与普通均值的差异"
     },
     {
       "depth": 2,
-      "title": "知识图谱"
+      "title": "3. BPR：从一个正例和一个未观测候选构造排序目标"
+    },
+    {
+      "depth": 3,
+      "title": "交互：调整正负物品打分差"
     },
     {
       "depth": 2,
-      "title": "Graph Foundation Models"
+      "title": "4. 知识图谱的关系三元组与 TransE 平移几何"
     },
     {
       "depth": 2,
-      "title": "案例：社交推荐"
+      "title": "5. 时间切分为何必须先于图传播？"
+    },
+    {
+      "depth": 2,
+      "title": "6. 标准库可执行的数学验证代码"
+    },
+    {
+      "depth": 2,
+      "title": "7. 当图关系弱于内容信号时，应如何选择基线？"
+    },
+    {
+      "depth": 2,
+      "title": "原始论文、协议与核验边界"
     }
   ],
   "examples": [
     {
       "id": "01",
       "path": "content/examples/26/01.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
-    },
-    {
-      "id": "02",
-      "path": "content/examples/26/02.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
-    },
-    {
-      "id": "03",
-      "path": "content/examples/26/03.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
-    },
-    {
-      "id": "04",
-      "path": "content/examples/26/04.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
+      "language": "python",
+      "review_status": "tested"
     }
   ]
 }

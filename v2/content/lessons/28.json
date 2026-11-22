@@ -3,76 +3,60 @@
   "chapter": "28",
   "title": "综合实战项目",
   "source_path": "28.html",
-  "source_git_blob": "7f0e3d0c05eb87e2890a933eea0bcf6a60d6fddd",
-  "review_status": "migrated_unreviewed",
+  "source_git_blob": "907ef0d10a95f67a4fb92ef75b6eeff9fd0ad733",
+  "review_status": "reviewed",
   "headings": [
     {
       "depth": 2,
-      "title": "项目目标"
+      "title": "1. 研究问题、变量与验收标准"
     },
     {
       "depth": 2,
-      "title": "数据获取"
+      "title": "2. 从六条事件到正确的训练图：时间切分先行"
     },
     {
       "depth": 2,
-      "title": "网络构建与清洗"
+      "title": "3. 评分：共同邻居只准使用训练图"
+    },
+    {
+      "depth": 3,
+      "title": "交互：不同训练时间边界下的图特征"
     },
     {
       "depth": 2,
-      "title": "基本分析"
+      "title": "4. 指标：同样的排名，在不同候选池意味着不同难度"
     },
     {
       "depth": 2,
-      "title": "高级分析"
+      "title": "5. 一个可信的分析流水线还需输出什么？"
     },
     {
       "depth": 2,
-      "title": "可视化"
+      "title": "6. 不下载数据也能运行的完整最小代码"
     },
     {
       "depth": 2,
-      "title": "洞察与报告"
+      "title": "7. 研究报告必须主动列出无法支持的结论"
     },
     {
       "depth": 2,
-      "title": "总结与展望"
+      "title": "8. 读者可以独立验证的五件事"
+    },
+    {
+      "depth": 2,
+      "title": "研究可复现性的原始资料"
     }
   ],
   "examples": [
     {
       "id": "01",
       "path": "content/examples/28/01.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
+      "language": "python",
+      "review_status": "tested"
     },
     {
       "id": "02",
       "path": "content/examples/28/02.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
-    },
-    {
-      "id": "03",
-      "path": "content/examples/28/03.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
-    },
-    {
-      "id": "04",
-      "path": "content/examples/28/04.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
-    },
-    {
-      "id": "05",
-      "path": "content/examples/28/05.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
-    },
-    {
-      "id": "06",
-      "path": "content/examples/28/06.txt",
       "language": "unclassified",
       "review_status": "not_executed"
     }

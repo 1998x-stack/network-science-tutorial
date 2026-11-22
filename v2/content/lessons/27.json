@@ -3,52 +3,60 @@
   "chapter": "27",
   "title": "网络科学前沿",
   "source_path": "27.html",
-  "source_git_blob": "1e55161ea5165ac7cb2d56f799d4f93cc7caf30e",
-  "review_status": "migrated_unreviewed",
+  "source_git_blob": "9b900e4e14a41a68097e47ba9fd3f00e77fb5832",
+  "review_status": "reviewed",
   "headings": [
     {
       "depth": 2,
-      "title": "网络医学"
+      "title": "1. 网络科学的跨领域力量来自统一形式，不来自统一解释"
     },
     {
       "depth": 2,
-      "title": "脑网络与连接组学"
+      "title": "2. 网络医学：候选疾病模块不等于临床因果证据"
     },
     {
       "depth": 2,
-      "title": "计算社会科学"
+      "title": "3. 脑功能网络：换一个阈值，同一组信号就会变成另一张图"
+    },
+    {
+      "depth": 3,
+      "title": "交互：改变阈值观察可见的网络结构"
     },
     {
       "depth": 2,
-      "title": "AI公平性与网络"
+      "title": "4. 计算社会科学：同质性、共同环境与社会影响的区分"
     },
     {
       "depth": 2,
-      "title": "量子网络"
+      "title": "5. 公平性：群体预测率相同不等于没有不公"
+    },
+    {
+      "depth": 3,
+      "title": "交互：同等样本量下的预测率差"
     },
     {
       "depth": 2,
-      "title": "开放问题与挑战"
+      "title": "6. 量子网络与图基础模型：图连通不等于功能可实现"
+    },
+    {
+      "depth": 2,
+      "title": "7. 可复算程序：阈值、混杂、公平性逐条核对"
+    },
+    {
+      "depth": 2,
+      "title": "8. 面对“网络能够解释 X”的五步检查"
+    },
+    {
+      "depth": 2,
+      "title": "原始研究、方法边界和延伸阅读"
     }
   ],
   "examples": [
     {
       "id": "01",
       "path": "content/examples/27/01.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
-    },
-    {
-      "id": "02",
-      "path": "content/examples/27/02.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
-    },
-    {
-      "id": "03",
-      "path": "content/examples/27/03.txt",
-      "language": "unclassified",
-      "review_status": "not_executed"
+      "language": "python",
+      "review_status": "tested"
     }
   ]
 }
