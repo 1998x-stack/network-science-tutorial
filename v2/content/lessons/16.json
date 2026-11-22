@@ -3,7 +3,7 @@
   "chapter": "16",
   "title": "链路预测",
   "source_path": "16.html",
-  "source_git_blob": "c652555b631a899812d53eaccf54c85673918eb6",
+  "source_git_blob": "cd25d944a546b73df5f6fecbe8bca674a7d3c1f9",
   "review_status": "reviewed",
   "headings": [
     {
@@ -33,6 +33,10 @@
     {
       "depth": 2,
       "title": "代码：独立手算 + NetworkX 交叉验证"
+    },
+    {
+      "depth": 2,
+      "title": "研究级交叉验证：候选池和未来非边：CN 也会被未来数据改变"
     },
     {
       "depth": 2,

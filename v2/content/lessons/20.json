@@ -3,7 +3,7 @@
   "chapter": "20",
   "title": "时序与动态网络",
   "source_path": "20.html",
-  "source_git_blob": "18407cfe3db5b081d4f56a184ed2934e1000fb05",
+  "source_git_blob": "582aff3ce0918a58d78bea3f440fd5c7b0f2c14f",
   "review_status": "reviewed",
   "headings": [
     {
@@ -37,6 +37,10 @@
     {
       "depth": 2,
       "title": "代码：用事件扫描检验有序、错序与同时发生"
+    },
+    {
+      "depth": 2,
+      "title": "研究级交叉验证：时间尊重路径和数据切分是两项不同门禁"
     },
     {
       "depth": 2,
