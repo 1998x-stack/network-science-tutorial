@@ -190,7 +190,8 @@ class VisualStoryboardQuality(unittest.TestCase):
         self.assertEqual(dense,8_000_000_000_000)
         self.assertEqual(csr,168_000_008)
         text=(REPO/"25.html").read_text(encoding="utf-8")
-        self.assertIn("非峰值内存",text)
+        self.assertIn("没有计入对象开销",text)
+        self.assertIn("非峰值内存",(REPO/"assets/lessons/25-visual.svg").read_text(encoding="utf-8"))
         self.assertIn("168 MB",text)
 
     def test_09_page_rank_diagram_uses_real_arrowheads(self):
