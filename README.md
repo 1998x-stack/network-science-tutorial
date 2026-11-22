@@ -10,6 +10,7 @@
 - 仓库：<https://github.com/1998x-stack/network-science-tutorial>
 - 交互式 Graph Lab：<https://1998x-stack.github.io/network-science-tutorial/v2/apps/web/lab.html>
 - ER / WS / BA 模型比较：<https://1998x-stack.github.io/network-science-tutorial/v2/apps/web/compare.html>
+- 研究级时间泄漏交叉审计：<https://1998x-stack.github.io/network-science-tutorial/research/temporal-leakage.html>
 
 Pages 由 GitHub Actions 从主分支部署。首次启用时请在 Settings → Pages 确认 Source 为 GitHub Actions；部署完成后再访问在线入口。
 
@@ -152,3 +153,22 @@ python tests/web/e2e.py
 - 三章均配证据台账、MathML、原创 SVG 和离线交互。V2 课程全文由根章节经 `migrate_lessons.py` 与 `build_web.py` 唯一确定性生成。
 
 “全书 28/28 首轮精修”仅代表页面、公式、来源与教学实验审校覆盖，不等于复现原论文的大规模实验；相关真实性能、临床效果与政策结论一概不在该覆盖承诺内。
+
+## 第二轮研究级交叉审计（2026-11-22）
+
+这轮聚焦第 16、20、21、22、24、26、28 章的**时间可见性、采样与模型边界**，而不机械增加章节。新建 [时间泄漏交互研究页](research/temporal-leakage.html)，数据为明确标识的合成小图；用户可切换合法历史或故意引入未来 BD@5 的错误图，查看 CN(B,E) 从 0 变为 1、无偏 B→D 概率从 0 变为 1/3，以及含自环 GCN B–D 系数从 0 变为 1/4。另用独立二部图证明未来 U2–X 如何改变 LightGCN 的归一化。
+
+**公共历史数据实验**：`networkx.karate_club_graph()` 内置 34 节点、78 无向边；独立邻接枚举和 NetworkX 双重核对 45 个三角形与一个连通分量。它是静态历史图，不存在本教程所需的逐边时间标签，因此没有用于宣称真实未来边预测。
+
+可执行命令：
+
+```bash
+cd v2
+python -m experiments.temporal_audit  # 无第三方包、无外部网络请求
+python -m pip install 'networkx>=3.3,<4'
+python -m experiments.public_karate_audit
+python -m unittest tests.test_research_round -v
+node --test tests/web/*.test.cjs
+```
+
+完整协议与尚未覆盖的真实模型训练见 [研究级审计文档](docs/research-review-2026-11-22.md)。所有教学计算、原始文献与未执行的真实实验分开标注。
