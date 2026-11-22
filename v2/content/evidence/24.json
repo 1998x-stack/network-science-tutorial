@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0.0",
+  "chapter": "24",
+  "review_status": "reviewed",
+  "claims": [
+    {
+      "id": "advanced-24-01",
+      "claim": "Zachary karate club original study discusses social conflict and group fission",
+      "source_url": "https://www.journals.uchicago.edu/doi/abs/10.1086/jar.33.4.3629752",
+      "locator": "Original 1977 abstract and method",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "advanced-24-02",
+      "claim": "NetworkX karate_club_graph uses 0-based node indexes compared with paper 1-based",
+      "source_url": "https://networkx.org/documentation/stable/reference/generated/networkx.generators.social.karate_club_graph.html",
+      "locator": "Notes on zero-based numbering",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "advanced-24-03",
+      "claim": "Standard karate club dataset has 34 nodes 78 undirected edges",
+      "source_url": "https://networkx.org/documentation/stable/reference/generated/networkx.generators.social.karate_club_graph.html",
+      "locator": "Dataset graph and historical reference",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "advanced-24-04",
+      "claim": "SNAP ca-GrQc collaboration graph has 5242 nodes and 14496 undirected edges, January 1993 to April 2003",
+      "source_url": "https://snap.stanford.edu/data/ca-GrQc.html",
+      "locator": "Dataset statistics and temporal description",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "advanced-24-05",
+      "claim": "A 4-author paper produces 6 distinct pairs in one-mode coauthor projection",
+      "source_url": "https://snap.stanford.edu/data/ca-GrQc.html",
+      "locator": "Derived combinatorics n(n-1)/2, synthetic paper",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "advanced-24-06",
+      "claim": "Community label swapping preserves a partition; 4-node toy aligned score rises from raw 0 to 1",
+      "source_url": "https://www.journals.uchicago.edu/doi/abs/10.1086/jar.33.4.3629752",
+      "locator": "Mathematical label-permutation calculation on synthetic example",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "advanced-24-07",
+      "claim": "SNAP ego Facebook is anonymized and sampled from ego networks, not a full Facebook census",
+      "source_url": "https://snap.stanford.edu/data/egonets-Facebook.html",
+      "locator": "Dataset collection and anonymization statements",
+      "status": "verified",
+      "kind": "reference"
+    }
+  ]
+}

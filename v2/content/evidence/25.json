@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0.0",
+  "chapter": "25",
+  "review_status": "reviewed",
+  "claims": [
+    {
+      "id": "advanced-25-01",
+      "claim": "CSR uses compressed pointer, index and data arrays in sparse-matrix implementations",
+      "source_url": "https://networkx.org/documentation/stable/reference/generated/networkx.convert_matrix.to_scipy_sparse_array.html",
+      "locator": "Sparse array output formats / CSR semantics",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "advanced-25-02",
+      "claim": "For n=1e6,m=5e6, 8 byte CSR arrays with 2m entries need 168000008 bytes",
+      "source_url": "https://networkx.org/documentation/stable/reference/generated/networkx.convert_matrix.to_scipy_sparse_array.html",
+      "locator": "Derived toy storage formula under stated assumptions",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "advanced-25-03",
+      "claim": "Dense float64 matrix 1e6 squared occupies 8e12 bytes",
+      "source_url": "https://networkx.org/documentation/stable/reference/generated/networkx.convert_matrix.to_scipy_sparse_array.html",
+      "locator": "Derived simple matrix storage arithmetic",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "advanced-25-04",
+      "claim": "Uniform node sampling and random walk sampling introduce different structural biases",
+      "source_url": "https://www.cs.cmu.edu/~jure/pubs/sampling-kdd06.pdf",
+      "locator": "Sampling strategies and measured bias discussion",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "advanced-25-05",
+      "claim": "Undirected simple random walk stationary probabilities are proportional to degree",
+      "source_url": "https://www.cs.cmu.edu/~jure/pubs/sampling-kdd06.pdf",
+      "locator": "Derived Markov-chain stationary distribution, degree sampling",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "advanced-25-06",
+      "claim": "Cypher MATCH is pattern matching and planning/indexes affect cost",
+      "source_url": "https://neo4j.com/docs/cypher-manual/current/clauses/match/",
+      "locator": "MATCH query syntax and planner behavior",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "advanced-25-07",
+      "claim": "PROFILE/EXPLAIN distinguish actual vs planned execution statistics",
+      "source_url": "https://neo4j.com/docs/cypher-manual/current/planning-and-tuning/execution-plans/",
+      "locator": "Execution plan guide",
+      "status": "verified",
+      "kind": "reference"
+    }
+  ]
+}

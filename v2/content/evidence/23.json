@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0.0",
+  "chapter": "23",
+  "review_status": "reviewed",
+  "claims": [
+    {
+      "id": "advanced-23-01",
+      "claim": "NetworkX Graph is undirected and permits self-loops but no parallel edges",
+      "source_url": "https://networkx.org/documentation/stable/reference/classes/graph.html",
+      "locator": "Graph class documentation",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "advanced-23-02",
+      "claim": "NetworkX Graph, DiGraph, MultiGraph classes differ in edge direction and multiplicity",
+      "source_url": "https://networkx.org/documentation/stable/reference/classes/index.html",
+      "locator": "Graph types documentation",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "advanced-23-03",
+      "claim": "NetworkX degree centrality normalizes by n minus 1 for simple graphs",
+      "source_url": "https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.centrality.degree_centrality.html",
+      "locator": "Degree centrality normalization note",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "advanced-23-04",
+      "claim": "BFS component sets for toy 7 nodes 7 edges before C-D removal are sizes 6 and 1",
+      "source_url": "https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.components.connected_components.html",
+      "locator": "Derived from explicit synthetic edges",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "advanced-23-05",
+      "claim": "Removing C-D yields component sizes 3,3,1 and density 2/7",
+      "source_url": "https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.components.connected_components.html",
+      "locator": "Derived toy example, checked with NetworkX",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "advanced-23-06",
+      "claim": "The unweighted simple-graph density for n=7 m=7 is 1/3",
+      "source_url": "https://networkx.org/documentation/stable/reference/algorithms/",
+      "locator": "Derived from 2m/(n(n-1))",
+      "status": "derived",
+      "kind": "derived"
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 370" role="img" aria-labelledby="n25a-title n25a-desc"><title id="n25a-title">密集矩阵与 CSR 理论容量对比</title><desc id="n25a-desc">一百万节点五百万无向边时，float64 密集矩阵为八太字节，int64 索引与 float64 值 CSR 双向存储理论数组容量约一百六十八兆字节。</desc><rect x="1" y="1" width="918" height="368" rx="22" fill="#10283b" stroke="#34556e"/><g font-family="system-ui,'PingFang SC',sans-serif">
+ <text x="50" y="68" fill="#9debd9" font-size="22">理论存储字节（不包含 Python / 算法临时内存）</text>
+ <rect x="60" y="107" width="780" height="74" rx="11" fill="#a66839"/><text x="86" y="151" fill="white" font-size="22" font-weight="700">Dense float64：8,000,000 MB ≈ 8 TB</text>
+ <rect x="60" y="211" width="160" height="74" rx="11" fill="#257d73"/><text x="242" y="253" fill="#eaf1f6" font-size="22">CSR 约 168 MB</text>
+ <text x="60" y="333" fill="#bcdbe6" font-size="17">n=1,000,000；m=5,000,000；CSR 每条无向边存两份，三个数组均按 8 字节。</text></g></svg>
