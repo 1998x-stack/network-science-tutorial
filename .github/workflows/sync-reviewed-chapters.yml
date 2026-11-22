@@ -14,6 +14,7 @@ on:
       - '27.html'
       - '28.html'
       - 'v2/content/evidence/**'
+      - 'v2/scripts/build_web.py'
       - '.github/workflows/sync-reviewed-chapters.yml'
   workflow_dispatch:
 permissions:

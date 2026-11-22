@@ -62,6 +62,9 @@ def lesson(ch,prev_ch,next_ch,source_body=None,metadata=None):
         reviewed = bool(metadata and metadata.get('review_status') == 'reviewed')
         if reviewed:
             source_body = source_body.replace('src="assets/lessons/', 'src="../assets/lessons/')
+            # Root lesson cross-links are authoring-relative; V2 lives four levels down.
+            source_body = source_body.replace('href="research/temporal-leakage.html"',
+                                              'href="../../../../research/temporal-leakage.html"')
         new = ('<div class="notice"><strong>S04 首轮内容审校已完成。</strong> 本章的核心定义、关键数值与示例已建立证据账本，并通过本章自动化测试；这不等于完整论文复现或同行评审。</div>' if reviewed else '<div class="notice"><strong>S03 全文迁移（未经科学审校）</strong> 原始章节中的正文、表格、公式及代码按原貌保存；已知勘误请参见根目录 ERRATA.md。示例独立归档，但未保证可单独执行。</div>')
         assert old in body
         body = body.replace(old, new)
