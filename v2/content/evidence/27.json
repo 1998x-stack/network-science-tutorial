@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.0.0",
+  "chapter": "27",
+  "review_status": "reviewed",
+  "claims": [
+    {
+      "id": "capstone-27-1",
+      "claim": "Network medicine uses cellular interaction networks and candidate disease modules",
+      "source_url": "https://doi.org/10.1038/nrg2918",
+      "locator": "Network Medicine review: network perspective on human disease",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "capstone-27-2",
+      "claim": "Structural and functional brain networks have different measurement semantics",
+      "source_url": "https://doi.org/10.1038/nrn2575",
+      "locator": "Bullmore-Sporns review on anatomical and functional brain graphs",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "capstone-27-3",
+      "claim": "The specified toy correlations yield 2 edges at tau .5 and 1 edge at tau .7",
+      "source_url": "https://doi.org/10.1038/nrn2575",
+      "locator": "Derived thresholding of synthetic 0.8 0.6 0.2 matrix",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "capstone-27-4",
+      "claim": "PC causal discovery requires assumptions including faithfulness, causal sufficiency and Markov condition",
+      "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4841209/",
+      "locator": "Causal discovery method assumption discussion",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "capstone-27-5",
+      "claim": "The invented Z-stratified 2x2 counts show crude association .18 with zero difference within each stratum",
+      "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4841209/",
+      "locator": "Derived synthetic counts, illustrates confounding not empirical effect",
+      "status": "derived",
+      "kind": "derived"
+    },
+    {
+      "id": "capstone-27-6",
+      "claim": "Counterfactual fairness is defined via a causal model and not just demographic parity",
+      "source_url": "https://proceedings.neurips.cc/paper/2017/hash/a486cd07e4ac3d270571622f4f316ec5-Abstract.html",
+      "locator": "Kusner et al. counterfactual fairness definition",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "capstone-27-7",
+      "claim": "Graph fairness research distinguishes structural, embedding and prediction-level evaluation",
+      "source_url": "https://arxiv.org/abs/2307.03929",
+      "locator": "Fairness-aware graph neural networks survey taxonomy",
+      "status": "verified",
+      "kind": "reference"
+    },
+    {
+      "id": "capstone-27-8",
+      "claim": "The toy positive prediction rate gap is 3/4 minus 1/4 equals .5",
+      "source_url": "https://arxiv.org/abs/2307.03929",
+      "locator": "Derived synthetic four-person groups, not fairness judgment",
+      "status": "derived",
+      "kind": "derived"
+    }
+  ]
+}
