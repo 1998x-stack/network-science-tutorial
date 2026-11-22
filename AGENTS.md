@@ -89,3 +89,14 @@
 - CN、GCN、LightGCN 数值必须区分具体图和是否加自环；未观察候选不是永久真实负例。
 - Karate Club 只复核静态历史拓扑，不得捏造可用于时间外预测的逐边时点。
 - 改动第 16/20/21/22/24/26/28 章时同时检查 research/temporal-leakage.html、v2/experiments/temporal_audit.py、证据 JSON、数值测试和浏览器四视口验收。
+
+## 全站视觉推理规范：28 章 SVG 与 HTML
+
+- 每一幅机制图先写清问题、节点/边的精确语义、概率/时间/自环规则、可独立复核的数字与解释边界。禁止装饰性拓扑和没有数据来源的性能宣称。
+- 28 个 NN-visual.svg 必须与各自 HTML 和 Python 算例使用同一份数据，不得只满足边数总量而频数、桥的端点、时间事件或方向与程序不一致。
+- 根目录 NN.html 是唯一正文权威，配图为 assets/lessons/NN-visual.svg；同步 v2/apps/web/assets/lessons/NN-visual.svg 必须逐字节相同；V2 阅读页只可由脚本生成。
+- 新图需在 article 里有且只有一个 visual-storyboard，包含可聚焦的 diagram-viewport、准确 alt、独立 figcaption 和真实的四个章节段落跳转。
+- SVG 必须 XML 可解析、title/desc/ARIA 唯一对应、字体可读、不得引用外部资源；有向边用真正的箭头，未来边与真实训练边用线型及说明共同区分。
+- 在 1440、768、390、360px 下不产生整页水平溢出，窄屏机制图允许局部横向滚动；保持打印样式、减弱动效偏好和清晰键盘焦点。
+- 运行视觉测试、全套 Python/Node 回归及 Chromium 实验；GitHub Actions 保留截图 Artifact。未通过 CI 不准声称实验或页面已验收。
+- 具体 28 章的算例和图形修复日志见 docs/visual-redesign-2026-11-22.md。

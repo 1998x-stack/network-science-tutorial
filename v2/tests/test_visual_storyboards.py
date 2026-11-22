@@ -194,6 +194,14 @@ class VisualStoryboardQuality(unittest.TestCase):
         self.assertIn("非峰值内存",(REPO/"assets/lessons/25-visual.svg").read_text(encoding="utf-8"))
         self.assertIn("168 MB",text)
 
+    def test_editorial_guide_lists_all_visual_contracts(self):
+        guide=(REPO/'docs/visual-redesign-2026-11-22.md').read_text(encoding='utf-8')
+        for n in NUMBERS:
+            self.assertIn(f'| {n} |',guide)
+        self.assertIn('原始代码',guide)
+        self.assertIn('V2',guide)
+        self.assertIn('360px',guide)
+
     def test_09_page_rank_diagram_uses_real_arrowheads(self):
         tree=ET.parse(REPO/"assets/lessons/09-visual.svg")
         marker=tree.find(".//"+SVG_NS+"marker")
