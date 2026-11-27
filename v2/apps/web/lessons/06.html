@@ -10,7 +10,7 @@
 <p>Barabási–Albert（BA）模型将两个机制结合：新节点不断到来；新节点倾向于连接已经拥有更多邻居的旧节点。这是一个明确的生成机制，而不是针对所有现实网络的定律。</p>
 <figure class="lesson-figure"><img src="../assets/lessons/06.svg" alt="五个已有节点的度数为3、2、2、2、1，新节点F以不同概率选择它们。"><figcaption>示例中的旧图有 5 条边，总度数为 10。A 度数为 3，所以 A 被选中的概率为 3/10；E 度数为 1，概率为 1/10。虚线仅表示候选连接。</figcaption></figure>
 <ol class="step-list"><li><strong>初始化。</strong>给出一个小的连通图，记录每个旧节点的度数。</li><li><strong>增长。</strong>一个新节点加入，并打算连接 m 个不同的旧节点，通常要求 1 ≤ m &lt; 当前旧节点数。</li><li><strong>择优连接。</strong>每次候选选择按现有度数分配权重，建立边后更新度数；实际实现通常禁止自环和重复边。</li><li><strong>重复。</strong>早期获得连接的节点更可能继续吸引连接，形成累积优势。</li></ol>
-<div class="math-scroll" tabindex="0"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="节点 i 被选中的概率，等于其当前度数除以网络总度数"><mrow><mi>Π</mi><mo>(</mo><mi>i</mi><mo>)</mo><mo>=</mo><mfrac><msub><mi>k</mi><mi>i</mi></msub><mrow><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>k</mi><mi>j</mi></msub></mrow></mfrac></mrow></math></div>
+<div class="math-scroll" tabindex="0" role="region" aria-label="节点 i 被选中的概率，等于其当前度数除以网络总度数"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="节点 i 被选中的概率，等于其当前度数除以网络总度数"><mrow><mi>Π</mi><mo>(</mo><mi>i</mi><mo>)</mo><mo>=</mo><mfrac><msub><mi>k</mi><mi>i</mi></msub><mrow><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>k</mi><mi>j</mi></msub></mrow></mfrac></mrow></math></div>
 <p>这里 <code>kᵢ</code> 是节点 i 在选择之前的度数，分母是所有当前节点度数之和。无向图的握手定理给出分母等于 2E。此概率不是节点未来必然成为枢纽的确定性预言。</p></section>
 <section id="walkthrough"><h2>把一次连接选择拆开</h2>
 <div class="interactive-demo" data-demo="ba"><h3>同一张图的权重抽签</h3>
@@ -20,7 +20,7 @@
 <p>现实系统的增长可能同时受年龄、适应度、地理距离、成本和平台推荐机制影响。若连接概率并不与度数成正比，简单 BA 模型就可能失效。</p></section>
 <section id="tail"><h2>为什么模型会出现长尾？</h2>
 <p>在理想化、持续增长、线性优先连接的 BA 模型里，大度节点的连接增长率和它已有的度数相关。连续近似得到一个渐近尾部形式：</p>
-<div class="math-scroll" tabindex="0"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="理想线性优先连接模型，度分布在大度尾部近似服从 k 的负三次方"><mrow><mi>P</mi><mo>(</mo><mi>k</mi><mo>)</mo><mo>∝</mo><msup><mi>k</mi><mrow><mo>−</mo><mn>3</mn></mrow></msup></mrow></math></div>
+<div class="math-scroll" tabindex="0" role="region" aria-label="理想线性优先连接模型，度分布在大度尾部近似服从 k 的负三次方"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="理想线性优先连接模型，度分布在大度尾部近似服从 k 的负三次方"><mrow><mi>P</mi><mo>(</mo><mi>k</mi><mo>)</mo><mo>∝</mo><msup><mi>k</mi><mrow><mo>−</mo><mn>3</mn></mrow></msup></mrow></math></div>
 <p>指数 3 是这种特定机制的理论结果，并不是所有互联网、社交或生物网络共同的指数。有限网络具有最大度数和有限规模截断，实际的对数—对数图不能无限延伸；拟合真实数据应使用适当阈值、统计拟合与候选分布比较。</p>
 <table class="lesson-table"><thead><tr><th>模型</th><th>新增节点</th><th>连接偏好</th><th>能说明什么</th></tr></thead><tbody><tr><td>ER</td><td>非必需</td><td>边独立、同概率</td><td>随机基线</td></tr><tr><td>WS</td><td>非必需</td><td>规则局部边重连</td><td>短路径与高聚集</td></tr><tr><td>BA</td><td>持续增长</td><td>度比例优先连接</td><td>枢纽与度异质性</td></tr></tbody></table></section>
 <section id="python"><h2>使用确定性种子生成一个 BA 网络</h2>
