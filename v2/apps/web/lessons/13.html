@@ -8,7 +8,7 @@
 <p>这里研究的是<strong>传播机制</strong>，而非判断信息内容真假。传播迅速的消息并不因此更可信；谣言一词描述的是待核实的信息状态，不能凭网络拓扑判别具体文本的真实性。</p>
 <figure class="lesson-figure"><img src="../assets/lessons/13.svg" alt="六节点的社会影响图：A、B 初始采纳，C 相连 A 和 B，D 相连 B、C，E 相连 C、D，F 仅与 E 相连。"><figcaption>固定的六节点无向网络具有七条边。A、B 是初始采纳者。若只需 1 位采纳邻居，状态会传播到 F；若必须获得 2 位采纳邻居，F 永远只有一位直接采纳邻居，因而保持未采纳。</figcaption></figure></section>
 <section id="models"><h2>三种常被混称的“传播”</h2>
-<table class="lesson-table"><thead><tr><th>机制</th><th>节点何时变化</th><th>会不会回退</th><th>适合表达</th></tr></thead><tbody>
+<table class="lesson-table"><caption class="sr-only">独立级联、阈值与复杂传染机制对照</caption><thead><tr><th scope="col">机制</th><th scope="col">节点何时变化</th><th scope="col">会不会回退</th><th scope="col">适合表达</th></tr></thead><tbody>
 <tr><td>单接触传播</td><td>接到一次成功接触</td><td>依具体模型</td><td>简单信息触达、某些感染事件</td></tr>
 <tr><td>阈值采纳</td><td>同时或累计看到足够多邻居采纳</td><td>本章设定中不会</td><td>社会强化、规范采纳</td></tr>
 <tr><td>谣言状态模型</td><td>可能区分未知者、传播者和停止传播者</td><td>取决于传递/停止规则</td><td>消息扩散及传播意愿变化</td></tr></tbody></table>

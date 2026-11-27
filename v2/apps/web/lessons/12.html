@@ -9,7 +9,7 @@
 <section id="states"><h2>区分状态与传播事件：SIR 和 SIS</h2>
 <p><strong>SIR</strong> 的状态为 S（susceptible，易感）、I（infectious，可传播感染）、R（removed，移出传播状态）。在经典简化模型中，S 受到感染接触可成为 I，I 之后进入 R，R 不再回到 S；这里的 R 可以表示康复免疫或其他退出传播过程，不意味着所有现实疾病都有终生免疫。</p>
 <p><strong>SIS</strong> 中 I 康复后回到 S，因此同一节点未来可能再次感染。SIR 与 SIS 可以使用同一张图，但不同的恢复规则造成了不同的长期行为：SIR 的单轮疫情终会因为没有新的易感传播链而耗尽；SIS 在某些参数下可能持续反复。</p>
-<table class="lesson-table"><thead><tr><th>模型</th><th>允许的转移</th><th>是否可再次被感染</th><th>典型问题</th></tr></thead><tbody><tr><td>SIR</td><td>S→I→R</td><td>本模型中否</td><td>一次疫情最终影响多少节点</td></tr><tr><td>SIS</td><td>S↔I</td><td>是</td><td>感染能否在网络中持续</td></tr><tr><td>本章路径实验</td><td>同步 SIR，I 只持续一轮</td><td>否</td><td>逐轮检验状态更新顺序</td></tr></tbody></table>
+<table class="lesson-table"><caption class="sr-only">SI、SIR、SIS 模型的转移与再感染规则对照</caption><thead><tr><th scope="col">模型</th><th scope="col">允许的转移</th><th scope="col">是否可再次被感染</th><th scope="col">典型问题</th></tr></thead><tbody><tr><td>SIR</td><td>S→I→R</td><td>本模型中否</td><td>一次疫情最终影响多少节点</td></tr><tr><td>SIS</td><td>S↔I</td><td>是</td><td>感染能否在网络中持续</td></tr><tr><td>本章路径实验</td><td>同步 SIR，I 只持续一轮</td><td>否</td><td>逐轮检验状态更新顺序</td></tr></tbody></table>
 <p>两者都不是现实流行病学的完整模型：潜伏期、无症状感染、接触频次、人口流动与时间变化等，需要单独加入规则。</p></section>
 <section id="local-risk"><h2>从每条独立接触边推导感染概率</h2>
 <p>设某个易感节点当前拥有 m 个已经感染、并在这一轮可以接触它的邻居。每条感染接触独立成功的概率均为 β，那么全部 m 条接触都失败的概率是 (1−β) 的 m 次方。因此：</p>

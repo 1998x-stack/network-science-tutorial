@@ -18,7 +18,7 @@
 <p>其中 <code>q</code> 是模块间退出码本的使用率，<code>H(Q)</code> 是模块间编码熵；<code>pᵢ↻</code> 是第 i 个模块的局部码本使用率，<code>H(Pᵢ)</code> 是其中包含节点访问与退出事件的概率分布的熵。目标是最小化 <code>L(M)</code>，不是最大化 Q。具体随机游走的方向、权重、停留和跳转处理都会改变结果，不能凭示意图捏造“最优分区”。</p></section>
 <section id="overlap"><h2>重叠社团：共享节点与边社团</h2>
 <p>在图中，集合 {A,B,X} 与 {X,C,D} 共享一个节点 X。它们是我们根据三角结构手工定义的两个候选群体，并不是声称任何特定软件必定返回这两个结果。Ahn、Bagrow 与 Lehmann 提出的边社团框架，通过相近边的聚类间接产生重叠节点成员关系。</p>
-<table class="lesson-table"><thead><tr><th>表达方式</th><th>节点 X</th><th>能回答的问题</th><th>局限</th></tr></thead><tbody>
+<table class="lesson-table"><caption class="sr-only">重叠社团与 k-core 的表达方式、可回答问题与局限</caption><thead><tr><th scope="col">表达方式</th><th scope="col">节点 X</th><th scope="col">能回答的问题</th><th scope="col">局限</th></tr></thead><tbody>
 <tr><td>不重叠节点分区</td><td>恰属于一组</td><td>全图怎样分为互斥群体</td><td>掩盖跨组身份</td></tr>
 <tr><td>重叠节点成员关系</td><td>属于两个群体</td><td>哪些人跨越群体边界</td><td>需指定重叠定义与评价方法</td></tr>
 <tr><td>边社团</td><td>因关联两组边而跨组</td><td>关系本身可能有什么角色</td><td>大量边会增加计算与解释成本</td></tr>

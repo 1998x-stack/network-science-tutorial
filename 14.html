@@ -7,7 +7,7 @@
 <section id="donation"><h2>先定义边上的收益：捐赠博弈</h2>
 <p>令每位节点选择 C（合作）或 D（不合作），记 sᵢ=1 表示合作，否则为 0。每位合作节点<strong>对每个邻居</strong>付出成本 c，同时使那位邻居得到收益 b；不合作节点既不支付成本，也不给邻居带来收益。这里 b=3、c=1，且收益在每条无向边的两个方向累加。</p>
 <div class="math-scroll" tabindex="0" role="region" aria-label="捐赠博弈中节点 i 的收益等于 b 乘合作邻居数，减去其自身合作时的 c 乘度数"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="捐赠博弈中节点 i 的收益等于 b 乘合作邻居数，减去其自身合作时的 c 乘度数"><mrow><msub><mi>π</mi><mi>i</mi></msub><mo>=</mo><mi>b</mi><munder><mo>∑</mo><mrow><mi>j</mi><mo>∈</mo><mi>N</mi><mo>(</mo><mi>i</mi><mo>)</mo></mrow></munder><msub><mi>s</mi><mi>j</mi></msub><mo>−</mo><mi>c</mi><msub><mi>d</mi><mi>i</mi></msub><msub><mi>s</mi><mi>i</mi></msub></mrow></math></div>
-<table class="lesson-table"><thead><tr><th>节点</th><th>自身策略</th><th>合作邻居</th><th>成本支出</th><th>总收益</th></tr></thead><tbody>
+<table class="lesson-table"><caption class="sr-only">固定策略下的捐赠博弈收益核算</caption><thead><tr><th scope="col">节点</th><th scope="col">自身策略</th><th scope="col">合作邻居</th><th scope="col">成本支出</th><th scope="col">总收益</th></tr></thead><tbody>
 <tr><td>A</td><td>C</td><td>B（1 人）</td><td>1×1</td><td>3−1=2</td></tr>
 <tr><td>B</td><td>C</td><td>A（1 人）</td><td>1×2</td><td>3−2=1</td></tr>
 <tr><td>C</td><td>D</td><td>B（1 人）</td><td>0</td><td>3</td></tr>
