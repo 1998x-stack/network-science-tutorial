@@ -10,7 +10,7 @@
 <p>常见的结构鲁棒性指标是<strong>最大连通分量（LCC）</strong>的大小。对删去节点集合 S 后的无向图，定义保留下来的节点中，仍然处在同一个最大连通分量的比例：</p>
 <div class="math-scroll" tabindex="0" role="region" aria-label="剩余节点中的最大连通分量占比 R(S)，等于剩余图最大连通分量大小除以 n 减去移除节点数"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="剩余节点中的最大连通分量占比 R(S)，等于剩余图最大连通分量大小除以 n 减去移除节点数"><mrow><mi>R</mi><mo>(</mo><mi>S</mi><mo>)</mo><mo>=</mo><mfrac><mrow><mo>|</mo><mi>LCC</mi><mo>(</mo><mi>G</mi><mo>\</mo><mi>S</mi><mo>)</mo><mo>|</mo></mrow><mrow><mi>n</mi><mo>−</mo><mo>|</mo><mi>S</mi><mo>|</mo></mrow></mfrac></mrow></math></div>
 <p>此处 n 是原始节点数，|S| 为被删节点数；归一化分母采用<strong>剩余节点数</strong>。另一些研究把分母固定为原始 n，比较时必须写明口径。小图中的 LCC 并不自动等于随机图理论中随 n 增大具有正比例规模的“巨连通分量”。</p>
-<table class="lesson-table"><thead><tr><th>网络及删除对象</th><th>剩余节点</th><th>LCC 大小</th><th>R(S)</th></tr></thead><tbody><tr><td>星形：移除叶子</td><td>6</td><td>6</td><td>1.000</td></tr><tr><td>星形：移除枢纽</td><td>6</td><td>1</td><td>0.167</td></tr><tr><td>路径：移除正中间节点</td><td>6</td><td>3</td><td>0.500</td></tr></tbody></table>
+<table class="lesson-table"><caption class="sr-only">不同删除对象下的剩余节点与最大连通分量相对规模</caption><thead><tr><th scope="col">网络及删除对象</th><th scope="col">剩余节点</th><th scope="col">LCC 大小</th><th scope="col">R(S)</th></tr></thead><tbody><tr><td>星形：移除叶子</td><td>6</td><td>6</td><td>1.000</td></tr><tr><td>星形：移除枢纽</td><td>6</td><td>1</td><td>0.167</td></tr><tr><td>路径：移除正中间节点</td><td>6</td><td>3</td><td>0.500</td></tr></tbody></table>
 <p>最大连通分量只问是否可达，不能证明延迟、吞吐量、供电质量或经济产出仍然正常。这些必须另行指定功能指标。</p></section>
 <section id="random-target"><h2>随机失效与定向删除：为什么比较方法重要？</h2>
 <p>假设每个节点独立、等概率失效，则星形网络仅当中心被移除时才会在一次移除后碎裂得很严重；如果按照度数高低优先删除，则第一步就会失去中心。这里的“随机”必须来自实际抽样及多次试验，不能把选择一片叶子的示例称为随机攻击的均值。</p>

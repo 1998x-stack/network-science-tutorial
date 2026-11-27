@@ -6,7 +6,7 @@
 <figure class="lesson-figure"><img src="assets/lessons/17.svg" alt="同一张六节点七边的图，左侧人工布局显示两个三角形与一条桥边，右侧圆形布局保留相同边但边交叉和视觉距离不同。"><figcaption>两幅图的<strong>节点 A–F 与七条边完全相同</strong>：AB、AC、BC、CD、DE、DF、EF。只有画面坐标改变；左侧是结构示意排布，右侧是圆周排布。不要从画布的距离直接推出真实世界的距离或群体相似性。</figcaption></figure></section>
 <section id="visual-contract"><h2>先决定每一种视觉变量表达什么</h2>
 <p>可视化并非先把图画漂亮。需要先列出数据字段，再明确颜色、大小、位置、线型与透明度的语义，否则不同视觉变量容易混淆。以六节点、七边的无向图为例：</p>
-<table class="lesson-table"><thead><tr><th>视觉元素</th><th>教学图中的定义</th><th>不允许误读为</th></tr></thead><tbody>
+<table class="lesson-table"><caption class="sr-only">布局视觉元素的教学定义与误读边界</caption><thead><tr><th scope="col">视觉元素</th><th scope="col">教学图中的定义</th><th scope="col">不允许误读为</th></tr></thead><tbody>
 <tr><td>圆点大小</td><td>可选：度数 d(v)</td><td>人口、影响力或权威的直接测量</td></tr>
 <tr><td>颜色</td><td>两组教学标签；C、D 是桥端点</td><td>自动算法找到的真实社团</td></tr>
 <tr><td>连线</td><td>存在一条无向关系</td><td>传播方向或联系强度</td></tr>

@@ -8,7 +8,7 @@
 <figure class="lesson-figure"><img src="../assets/lessons/19.svg" alt="四个实体 A B C D 的社交层和合作层各出现一次；社交边 A-B B-C，合作边 A-C C-D，层间虚线连接同一实体的两个层副本。"><figcaption>这是一个<strong>同一批四个实体、两个关系层</strong>的 multiplex 示例：上层只有 A–B、B–C；下层只有 A–C、C–D。虚线把每个实体在两层的副本相连，表示允许切换关系层，而不是新的社交或合作边。</figcaption></figure></section>
 <section id="language"><h2>实体、层、节点—层对是不同的概念</h2>
 <p>现实实体为 A、B、C、D，总数为 4。若要记录每个实体在两个关系层中的状态，就使用<strong>节点—层对</strong>，例如 (A, 社交) 和 (A, 合作)。每个节点—层对是多层表示中的一个顶点，因而共有 4×2=8 个多层状态；它们并非现实中的 8 个人。</p>
-<table class="lesson-table"><thead><tr><th>对象</th><th>示例</th><th>解释</th></tr></thead><tbody>
+<table class="lesson-table"><caption class="sr-only">多层网络对象、示例与解释</caption><thead><tr><th scope="col">对象</th><th scope="col">示例</th><th scope="col">解释</th></tr></thead><tbody>
 <tr><td>实体（actor）</td><td>A、B、C、D</td><td>现实中 4 位参与者</td></tr><tr><td>层（layer）</td><td>社交、合作</td><td>两类不同关系</td></tr><tr><td>层内边</td><td>社交 AB、BC；合作 AC、CD</td><td>4 条独立按层定义的关系</td></tr><tr><td>层间耦合边</td><td>(A,社交)–(A,合作) 等 4 条</td><td>同一实体可跨层转换</td></tr><tr><td>节点—层状态</td><td>4×2=8</td><td>表示状态，不是新增真实参与者</td></tr></tbody></table>
 <p>Kivelä 等人用统一框架区分多层网络、multiplex、互依网络等相关概念。不同模型的层间耦合并不总是“同一实体跨层跳转”，有些互依系统的跨层关系代表“某个组件依赖另一组件存活”。必须在数据合同中明确语义。</p></section>
 <section id="supra"><h2>为什么需要 supra-adjacency，而非直接做边的并集？</h2><p>对齐 A、B、C、D 的节点顺序后，社交层的邻接矩阵记为 Aₛ，合作层记为 A꜀。如果同一实体在两个层之间可以一对一耦合，简单双层块矩阵可写成：</p>
