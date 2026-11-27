@@ -13,7 +13,7 @@
 <p>第二行的“至少两位邻居确认”是<strong>复杂传播</strong>的一种具体模型，但复杂传播不能泛化为所有社会行为都必须有两个来源。真实世界中也会存在曝光次数、来源独立性、意见强度、成本、异质门槛等差异。</p></section>
 <section id="threshold-rule"><h2>确定性阈值：每一轮从旧状态统一计算</h2>
 <p>令 xᵥ(t) 为节点 v 在离散时刻 t 是否已经采纳，取值 0 或 1；N(v) 是它的所有邻居。每位未采纳者在看到至少 m 位<strong>不同</strong>采纳邻居后采纳，一旦采纳则保持采纳。这个模型按邻居<strong>绝对人数</strong>设门槛，而不是按占邻居比例设门槛。</p>
-<div class="math-scroll" tabindex="0"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="下一轮状态等于当前状态或邻居采纳人数达到阈值的指示函数"><mrow><msub><mi>x</mi><mi>v</mi></msub><mo>(</mo><mi>t</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>=</mo><msub><mi>x</mi><mi>v</mi></msub><mo>(</mo><mi>t</mi><mo>)</mo><mo>∨</mo><mn>1</mn><mo>[</mo><munder><mo>∑</mo><mrow><mi>u</mi><mo>∈</mo><mi>N</mi><mo>(</mo><mi>v</mi><mo>)</mo></mrow></munder><msub><mi>x</mi><mi>u</mi></msub><mo>(</mo><mi>t</mi><mo>)</mo><mo>≥</mo><mi>m</mi><mo>]</mo></mrow></math></div>
+<div class="math-scroll" tabindex="0" role="region" aria-label="下一轮状态等于当前状态或邻居采纳人数达到阈值的指示函数"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="下一轮状态等于当前状态或邻居采纳人数达到阈值的指示函数"><mrow><msub><mi>x</mi><mi>v</mi></msub><mo>(</mo><mi>t</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>=</mo><msub><mi>x</mi><mi>v</mi></msub><mo>(</mo><mi>t</mi><mo>)</mo><mo>∨</mo><mn>1</mn><mo>[</mo><munder><mo>∑</mo><mrow><mi>u</mi><mo>∈</mo><mi>N</mi><mo>(</mo><mi>v</mi><mo>)</mo></mrow></munder><msub><mi>x</mi><mi>u</mi></msub><mo>(</mo><mi>t</mi><mo>)</mo><mo>≥</mo><mi>m</mi><mo>]</mo></mrow></math></div>
 <p>同步更新至关重要：在 t→t+1 的计算中，不能让本轮刚刚变化的 C 立即帮助 D，再让 D 立即帮助 E。否则会把同一轮中的局部计算顺序误写成真实扩散速度，结果依赖遍历顺序而不是模型定义。</p></section>
 <section id="walkthrough"><h2>同一张图，从一个邻居到两个邻居</h2>
 <ol class="step-list">

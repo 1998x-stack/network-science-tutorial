@@ -8,7 +8,7 @@
 <figure class="lesson-figure"><img src="../assets/lessons/15.svg" alt="同为七节点六边的星形网络与路径网络并排对照。星形图高亮中心枢纽，路径图高亮中间节点。"><figcaption>两张教学图都有 7 个节点、6 条边。星形中心删除后的最大连通分量只有 1 个节点；七节点路径中央顶点删除后得到两个大小为 3 的分量。相同 n 和 m 不保证相同鲁棒性。</figcaption></figure></section>
 <section id="metrics"><h2>先问“什么功能还存在”，再选择指标</h2>
 <p>常见的结构鲁棒性指标是<strong>最大连通分量（LCC）</strong>的大小。对删去节点集合 S 后的无向图，定义保留下来的节点中，仍然处在同一个最大连通分量的比例：</p>
-<div class="math-scroll" tabindex="0"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="剩余节点中的最大连通分量占比 R(S)，等于剩余图最大连通分量大小除以 n 减去移除节点数"><mrow><mi>R</mi><mo>(</mo><mi>S</mi><mo>)</mo><mo>=</mo><mfrac><mrow><mo>|</mo><mi>LCC</mi><mo>(</mo><mi>G</mi><mo>\</mo><mi>S</mi><mo>)</mo><mo>|</mo></mrow><mrow><mi>n</mi><mo>−</mo><mo>|</mo><mi>S</mi><mo>|</mo></mrow></mfrac></mrow></math></div>
+<div class="math-scroll" tabindex="0" role="region" aria-label="剩余节点中的最大连通分量占比 R(S)，等于剩余图最大连通分量大小除以 n 减去移除节点数"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="剩余节点中的最大连通分量占比 R(S)，等于剩余图最大连通分量大小除以 n 减去移除节点数"><mrow><mi>R</mi><mo>(</mo><mi>S</mi><mo>)</mo><mo>=</mo><mfrac><mrow><mo>|</mo><mi>LCC</mi><mo>(</mo><mi>G</mi><mo>\</mo><mi>S</mi><mo>)</mo><mo>|</mo></mrow><mrow><mi>n</mi><mo>−</mo><mo>|</mo><mi>S</mi><mo>|</mo></mrow></mfrac></mrow></math></div>
 <p>此处 n 是原始节点数，|S| 为被删节点数；归一化分母采用<strong>剩余节点数</strong>。另一些研究把分母固定为原始 n，比较时必须写明口径。小图中的 LCC 并不自动等于随机图理论中随 n 增大具有正比例规模的“巨连通分量”。</p>
 <table class="lesson-table"><thead><tr><th>网络及删除对象</th><th>剩余节点</th><th>LCC 大小</th><th>R(S)</th></tr></thead><tbody><tr><td>星形：移除叶子</td><td>6</td><td>6</td><td>1.000</td></tr><tr><td>星形：移除枢纽</td><td>6</td><td>1</td><td>0.167</td></tr><tr><td>路径：移除正中间节点</td><td>6</td><td>3</td><td>0.500</td></tr></tbody></table>
 <p>最大连通分量只问是否可达，不能证明延迟、吞吐量、供电质量或经济产出仍然正常。这些必须另行指定功能指标。</p></section>
@@ -21,7 +21,7 @@
 <p>若要比较 ER、WS 和 BA 网络的稳健性，必须至少固定节点数、尽量对齐边数或平均度、规定删除比例、定义是否每次删除后重算度排名，并对多组独立随机种子求不确定性区间。</p></section>
 <section id="percolation"><h2>渗流视角：阈值依赖网络与移除机制</h2>
 <p>在局部树状、度无相关的大规模配置模型里，独立保留节点概率 p 的随机点渗流常用下面的分枝判据讨论巨连通分量能否存在：</p>
-<div class="math-scroll" tabindex="0"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="点渗流分枝判据，保留概率乘度二阶矩减一阶矩再除以一阶矩，大于一"><mrow><mi>p</mi><mfrac><mrow><mo>⟨</mo><msup><mi>k</mi><mn>2</mn></msup><mo>⟩</mo><mo>−</mo><mo>⟨</mo><mi>k</mi><mo>⟩</mo></mrow><mrow><mo>⟨</mo><mi>k</mi><mo>⟩</mo></mrow></mfrac><mo>&gt;</mo><mn>1</mn></mrow></math></div>
+<div class="math-scroll" tabindex="0" role="region" aria-label="点渗流分枝判据，保留概率乘度二阶矩减一阶矩再除以一阶矩，大于一"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="点渗流分枝判据，保留概率乘度二阶矩减一阶矩再除以一阶矩，大于一"><mrow><mi>p</mi><mfrac><mrow><mo>⟨</mo><msup><mi>k</mi><mn>2</mn></msup><mo>⟩</mo><mo>−</mo><mo>⟨</mo><mi>k</mi><mo>⟩</mo></mrow><mrow><mo>⟨</mo><mi>k</mi><mo>⟩</mo></mrow></mfrac><mo>&gt;</mo><mn>1</mn></mrow></math></div>
 <p>这里 p 是一个节点<strong>被保留</strong>的概率，不是删除概率。该条件不适用于任意有限图的一次指定枢纽移除，也不能从“度分布重尾”直接推出任意情形下的零临界值；度数截断、度相关、网络分层和删除策略均会影响实际结果。</p></section>
 <section id="overload"><h2>拓扑还在，不代表系统负载能承受</h2>
 <p>除节点消失造成的断连外，还可能发生<strong>负载重分配引发的级联失效</strong>。例如，三台服务节点 A—B—C 初始都承载 4 单位工作量。若 B 失效后，其 4 单位工作均分给 A、C，那么两台剩余服务器负载各变为 6。只要容量低于 6，它们会同时超载，导致更大故障。</p>

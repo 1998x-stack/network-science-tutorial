@@ -13,7 +13,7 @@
 <p>两者都不是现实流行病学的完整模型：潜伏期、无症状感染、接触频次、人口流动与时间变化等，需要单独加入规则。</p></section>
 <section id="local-risk"><h2>从每条独立接触边推导感染概率</h2>
 <p>设某个易感节点当前拥有 m 个已经感染、并在这一轮可以接触它的邻居。每条感染接触独立成功的概率均为 β，那么全部 m 条接触都失败的概率是 (1−β) 的 m 次方。因此：</p>
-<div class="math-scroll" tabindex="0"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="m 条独立感染接触中至少一次成功的概率，等于一减一减 beta 的 m 次方"><mrow><mi>P</mi><mo>(</mo><mi>S</mi><mo>→</mo><mi>I</mi><mo>)</mo><mo>=</mo><mn>1</mn><mo>−</mo><msup><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mi>m</mi></msup></mrow></math></div>
+<div class="math-scroll" tabindex="0" role="region" aria-label="m 条独立感染接触中至少一次成功的概率，等于一减一减 beta 的 m 次方"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="m 条独立感染接触中至少一次成功的概率，等于一减一减 beta 的 m 次方"><mrow><mi>P</mi><mo>(</mo><mi>S</mi><mo>→</mo><mi>I</mi><mo>)</mo><mo>=</mo><mn>1</mn><mo>−</mo><msup><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>β</mi><mo>)</mo></mrow><mi>m</mi></msup></mrow></math></div>
 <p>这严格依赖“各接触在给定状态下独立、概率相同”的教学假设。现实的重复接触、家庭相关风险或共享环境可以破坏独立性。若 m=0，风险为 0；若 β=1 且 m≥1，风险为 1。</p>
 <div class="interactive-demo" data-demo="sir-risk"><h3>同时调整单边概率与暴露邻居数</h3>
 <label for="sir-beta">单次接触感染概率 β：<output data-sir-beta-label>0.30</output></label><input id="sir-beta" type="range" min="0" max="1" step="0.05" value="0.30" data-sir-beta>
@@ -28,7 +28,7 @@
 <p>状态数量每轮保持 S+I+R=5。这是程序可以逐轮测试的守恒不变量。这里的“同步一轮”并不等价于真实时间一天或现实患者的感染期。</p></section>
 <section id="threshold"><h2>为什么“传播阈值”不是一个通用常数？</h2>
 <p>在大规模、局部近似树状且无度相关的配置模型网络上，若一次感染沿每条边传播的<strong>整个感染期可传递概率</strong>为 T，SIR 最终传播规模可借助键渗流的分枝因子理解：</p>
-<div class="math-scroll" tabindex="0"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="SIR 分枝条件，T 乘以度二阶矩减去一阶矩，再除以一阶矩，大于一"><mrow><mi>T</mi><mfrac><mrow><mo>⟨</mo><msup><mi>k</mi><mn>2</mn></msup><mo>⟩</mo><mo>−</mo><mo>⟨</mo><mi>k</mi><mo>⟩</mo></mrow><mrow><mo>⟨</mo><mi>k</mi><mo>⟩</mo></mrow></mfrac><mo>&gt;</mo><mn>1</mn></mrow></math></div>
+<div class="math-scroll" tabindex="0" role="region" aria-label="SIR 分枝条件，T 乘以度二阶矩减去一阶矩，再除以一阶矩，大于一"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="SIR 分枝条件，T 乘以度二阶矩减去一阶矩，再除以一阶矩，大于一"><mrow><mi>T</mi><mfrac><mrow><mo>⟨</mo><msup><mi>k</mi><mn>2</mn></msup><mo>⟩</mo><mo>−</mo><mo>⟨</mo><mi>k</mi><mo>⟩</mo></mrow><mrow><mo>⟨</mo><mi>k</mi><mo>⟩</mo></mrow></mfrac><mo>&gt;</mo><mn>1</mn></mrow></math></div>
 <p>这里 T 是单条边在<strong>整个传染过程</strong>内实际传递成功的概率，并非任意情形都等于前面每轮的 β。该条件是模型在大图极限下出现巨规模传播分枝的判据，不适合直接用来预测五节点路径上会感染多少人。</p>
 <p>另一方面，在经典无度相关网络的 SIS 异质平均场（HMF）近似中，传播率与恢复率之比 λ 的临界值形式为 ⟨k⟩/⟨k²⟩。它<strong>不是</strong>上面的 SIR 键渗流阈值。有限网络、度相关、时变接触及更精细的谱方法都可能给出不同数值；不能笼统声称“幂律网络的阈值永远等于零”。</p></section>
 <section id="python"><h2>可复现实验：一步感染期的同步 SIR</h2>

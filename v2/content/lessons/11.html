@@ -14,7 +14,7 @@
 <p>同一张图按“社区密度”“流停留时间”“成员角色”解释，可能形成不同的有效结果。这是目标定义不同，不一定意味着某个算法出错。</p></section>
 <section id="infomap"><h2>Infomap：压缩随机游走而不是重新命名模块度</h2>
 <p>考虑一位随机浏览者沿网络的边移动。若它在某一子图内部停留很久，频繁出现的是该子图内的节点，跨组跳转相对较少。可以给组内节点使用较短的本地编码，在跨组时额外声明模块编号。Rosvall 与 Bergstrom 的 map equation 把这一思想写为两级编码长度：</p>
-<div class="math-scroll" tabindex="0"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="两级 map equation：模块间编码率乘其熵，加上各模块局部编码率乘局部熵之和"><mrow><mi>L</mi><mo>(</mo><mi>M</mi><mo>)</mo><mo>=</mo><mi>q</mi><mi>H</mi><mo>(</mo><mi>Q</mi><mo>)</mo><mo>+</mo><munder><mo>∑</mo><mi>i</mi></munder><msubsup><mi>p</mi><mi>i</mi><mo>↻</mo></msubsup><mi>H</mi><mo>(</mo><msub><mi>P</mi><mi>i</mi></msub><mo>)</mo></mrow></math></div>
+<div class="math-scroll" tabindex="0" role="region" aria-label="两级 map equation：模块间编码率乘其熵，加上各模块局部编码率乘局部熵之和"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="两级 map equation：模块间编码率乘其熵，加上各模块局部编码率乘局部熵之和"><mrow><mi>L</mi><mo>(</mo><mi>M</mi><mo>)</mo><mo>=</mo><mi>q</mi><mi>H</mi><mo>(</mo><mi>Q</mi><mo>)</mo><mo>+</mo><munder><mo>∑</mo><mi>i</mi></munder><msubsup><mi>p</mi><mi>i</mi><mo>↻</mo></msubsup><mi>H</mi><mo>(</mo><msub><mi>P</mi><mi>i</mi></msub><mo>)</mo></mrow></math></div>
 <p>其中 <code>q</code> 是模块间退出码本的使用率，<code>H(Q)</code> 是模块间编码熵；<code>pᵢ↻</code> 是第 i 个模块的局部码本使用率，<code>H(Pᵢ)</code> 是其中包含节点访问与退出事件的概率分布的熵。目标是最小化 <code>L(M)</code>，不是最大化 Q。具体随机游走的方向、权重、停留和跳转处理都会改变结果，不能凭示意图捏造“最优分区”。</p></section>
 <section id="overlap"><h2>重叠社团：共享节点与边社团</h2>
 <p>在图中，集合 {A,B,X} 与 {X,C,D} 共享一个节点 X。它们是我们根据三角结构手工定义的两个候选群体，并不是声称任何特定软件必定返回这两个结果。Ahn、Bagrow 与 Lehmann 提出的边社团框架，通过相近边的聚类间接产生重叠节点成员关系。</p>
@@ -26,7 +26,7 @@
 <section id="kcore"><h2>k-core：它不是另一种社团划分</h2>
 <p><strong>k-core</strong> 是每个保留节点在该诱导子图中度数至少为 k 的最大子图。算法不断剥离当前度数不足 k 的顶点，并重新计算邻居在剩余子图里的度数，直到不再变化。一个 k-core 可以有多个连通分量；它描述的是最小连接支撑层次，不保证社团边界或高聚类。</p>
 <p>图中两片叶子 L1、L2 度数为 1，首先会在 2-core 的剥离中消失。余下两个三角形共享 X，A、B、C、D 的剩余度数为 2，X 为 4。因此 2-core 是 {A,B,X,C,D}；但 3-core 最终为空，因为四个外围三角顶点先被移除，X 随后也失去全部邻居。</p>
-<div class="math-scroll" tabindex="0"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="k-core 内部的最小度至少为 k"><mrow><munder><mo>min</mo><mrow><mi>v</mi><mo>∈</mo><msub><mi>V</mi><mi>k</mi></msub></mrow></munder><msub><mi>d</mi><msub><mi>G</mi><mi>k</mi></msub></msub><mo>(</mo><mi>v</mi><mo>)</mo><mo>≥</mo><mi>k</mi></mrow></math></div>
+<div class="math-scroll" tabindex="0" role="region" aria-label="k-core 内部的最小度至少为 k"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="k-core 内部的最小度至少为 k"><mrow><munder><mo>min</mo><mrow><mi>v</mi><mo>∈</mo><msub><mi>V</mi><mi>k</mi></msub></mrow></munder><msub><mi>d</mi><msub><mi>G</mi><mi>k</mi></msub></msub><mo>(</mo><mi>v</mi><mo>)</mo><mo>≥</mo><mi>k</mi></mrow></math></div>
 <div class="interactive-demo" data-demo="core"><h3>逐层剥离这张七节点图</h3>
 <div class="demo-controls"><button type="button" data-core-k="1" aria-pressed="true">1-core</button><button type="button" data-core-k="2" aria-pressed="false">2-core</button><button type="button" data-core-k="3" aria-pressed="false">3-core</button></div>
 <p class="demo-output" data-core-output aria-live="polite">1-core 保留 7 个节点：A、B、X、C、D、L1、L2。</p></div>
