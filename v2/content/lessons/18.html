@@ -16,7 +16,7 @@
 <p class="demo-output" data-collection-output aria-live="polite">六条独立的原始交互事件；方向、时间与同一对节点的重复事件均保留。</p></div>
 <p>若完全不观察节点 E，就不能凭“当前图只出现 A–D”推断 E 从未存在。研究发现平均度、社团或中心性发生变化时，必须先排除采样条件发生变化的可能性。</p></section>
 <section id="missing"><h2>缺失一条边，就足以改变连通性结论</h2><p>完整的无向投影是 A–B–C–D–E，五个节点全部连通。如果遗漏 C–D 这一条关系，剩余图变成 A–B–C 和 D–E 两个分量，最大连通分量只剩 3/5。研究者如果不知道边缺失，就可能误以为网络自然形成两个互不联系的群体。</p>
-<div class="math-scroll" tabindex="0"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="样本中被观测到的连边比例等于观测边条数除以真实边条数，仅当真实边数已知时才可计算"><mrow><mi>coverage</mi><mo>=</mo><mfrac><msub><mi>m</mi><mi>observed</mi></msub><msub><mi>m</mi><mi>reference</mi></msub></mfrac></mrow></math></div>
+<div class="math-scroll" tabindex="0" role="region" aria-label="样本中被观测到的连边比例等于观测边条数除以真实边条数，仅当真实边数已知时才可计算"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="样本中被观测到的连边比例等于观测边条数除以真实边条数，仅当真实边数已知时才可计算"><mrow><mi>coverage</mi><mo>=</mo><mfrac><msub><mi>m</mi><mi>observed</mi></msub><msub><mi>m</mi><mi>reference</mi></msub></mfrac></mrow></math></div>
 <p>上式只在有独立可靠的参考图时可用。对于多数真实网络，我们并不知道真正的边总数，因此不能把“API 成功返回的记录比例”冒充完整性覆盖率。Kossinets 等研究展示了边/节点缺失会影响度、路径、聚集与其他网络统计。</p></section>
 <section id="privacy"><h2>合法可访问不等于可以任意发布</h2><p>在实际采集中，公开可见的互动、用户名和关系图也可能包含敏感个人信息；简单把真实姓名替换成匿名 ID 并不能保证不可再识别。需要评估合法基础、知情与预期用途、访问控制、保存周期、最小化采集和发布聚合结果的风险。具体合规义务会因地区、数据类型与研究主体而不同。</p><p>此处示例故意只使用合成 A–E 数据、无用户画像、无网络请求、无凭证。未经授权的大规模爬取、绕过登录或采集私密联系图，不是本章的复现实验目标。</p></section>
 <section id="python"><h2>代码：离线 CSV 审计、去重与缺失边敏感性</h2><p>运行环境 Python 3.11+、NetworkX 3.3+。只从程序内的合成 CSV 字符串读入，不使用任何在线平台数据。</p>

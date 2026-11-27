@@ -10,7 +10,7 @@
 <p>Holme 与 Saramäki 的时间网络综述强调：网络中的传播路径不能仅凭静态聚合图来定义。使用更短时间窗并非总能解决问题，因为窗内也可能有多个先后相反的事件。</p></section>
 <section id="rule"><h2>时间可行路径：每一步必须发生在消息到达之后</h2>
 <p>设接触序列为 (v₀,v₁,t₁)、(v₁,v₂,t₂)、…，本章假设事件是瞬时、无向、单步传递，允许节点中途等待，但同一个时间戳<strong>不允许</strong>一次事件刚收到的消息立刻通过另一事件继续传播。因此严格要求：</p>
-<div class="math-scroll" tabindex="0"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="时间尊重路径要求连续使用的接触时间严格递增"><mrow><msub><mi>t</mi><mn>1</mn></msub><mo>&lt;</mo><msub><mi>t</mi><mn>2</mn></msub><mo>&lt;</mo><mo>⋯</mo><mo>&lt;</mo><msub><mi>t</mi><mi>r</mi></msub></mrow></math></div>
+<div class="math-scroll" tabindex="0" role="region" aria-label="时间尊重路径要求连续使用的接触时间严格递增"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="时间尊重路径要求连续使用的接触时间严格递增"><mrow><msub><mi>t</mi><mn>1</mn></msub><mo>&lt;</mo><msub><mi>t</mi><mn>2</mn></msub><mo>&lt;</mo><mo>⋯</mo><mo>&lt;</mo><msub><mi>t</mi><mi>r</mi></msub></mrow></math></div>
 <p>为什么使用严格小于而不是小于等于？这是本章为了防止同一时间戳下隐含瞬时多跳而规定的事件语义。其他研究可能允许同时发生或使用不同的事件持续时间与等待规则；若改变约定，应重写可行性判断和测试。时间有向关系也需要把边方向加进条件。</p>
 <p>把在 t₀ 时刻已经持有消息的节点设为 A，t₀=0。对有序计划，A–B@1、B–C@2、C–D@3，最早到达时间依次为 A:0、B:1、C:2、D:3。错序计划 B–C@1、C–D@2、A–B@3，则 A 只有在 t=3 才能首次把消息传给 B，之后已经没有 B–C 接触。</p></section>
 <section id="interactive"><h2>不改动拓扑，只切换事件时间</h2>
@@ -20,7 +20,7 @@
 <p class="demo-output" data-temporal-output aria-live="polite">严格时间递增：A@0 → B@1 → C@2 → D@3。静态图的距离始终是 3 条边。</p></div>
 <p>同时发生的三条接触若均在 t=1，按本章严格递增规则，A 只能在 t=1 到达 B，不允许在同一个 t=1 继续借 B–C、C–D 两步传到 D；只有采用明确的其他同步语义才可能得到不同结果。</p></section>
 <section id="time-path"><h2>时间距离不等于静态最短路距离</h2><p>静态最短路 d_static(A,D)=3，度量的是三条边；时间最早到达 a(A,D) 度量的是时间戳。若在 t₀=0 出发，最早到达耗时为 a−t₀。没有时间可行路径时，时间距离可设为 +∞ 或“不可达”，不能用静态图的 3 代替。</p>
-<div class="math-scroll" tabindex="0"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="最早到达时间是所有合法时间路径终点接触时间的最小值"><mrow><mi>a</mi><mo>(</mo><mi>s</mi><mo>,</mo><mi>v</mi><mo>)</mo><mo>=</mo><munder><mo>min</mo><mrow><mi>P</mi><mo>∈</mo><mi>𝒯</mi><mo>(</mo><mi>s</mi><mo>,</mo><mi>v</mi><mo>)</mo></mrow></munder><msub><mi>t</mi><mi>last</mi></msub><mo>(</mo><mi>P</mi><mo>)</mo></mrow></math></div>
+<div class="math-scroll" tabindex="0" role="region" aria-label="最早到达时间是所有合法时间路径终点接触时间的最小值"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="最早到达时间是所有合法时间路径终点接触时间的最小值"><mrow><mi>a</mi><mo>(</mo><mi>s</mi><mo>,</mo><mi>v</mi><mo>)</mo><mo>=</mo><munder><mo>min</mo><mrow><mi>P</mi><mo>∈</mo><mi>𝒯</mi><mo>(</mo><mi>s</mi><mo>,</mo><mi>v</mi><mo>)</mo></mrow></munder><msub><mi>t</mi><mi>last</mi></msub><mo>(</mo><mi>P</mi><mo>)</mo></mrow></math></div>
 <p>这里 𝒯(s,v) 是从 s 到 v 的时间可行路径集合。空集合的最小值在此约定为不可达。与静态图不同，时间网络的到达可行性可能不对称：A 能在指定窗口内到 B，不意味着 B 从另一个出发时刻同样能回到 A。</p></section>
 <section id="method"><h2>怎样可靠计算最早到达？</h2>
 <p>对严格递增、瞬时、无向事件，按时间排序扫描。每一个时间戳 t 到来时，先保存扫描前已知的到达信息，使用这份快照来判断能否通过该时间戳上的事件，之后<strong>统一</strong>更新到达表。这样即使多个事件共享同一时间戳，也不会凭程序的行遍历顺序创造虚假的多跳。</p>

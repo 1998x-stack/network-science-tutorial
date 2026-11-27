@@ -22,8 +22,8 @@
 <li><strong>力导向布局。</strong>把边的吸引与节点间排斥视为可计算作用，寻找较易阅读的坐标。Fruchterman–Reingold 和 ForceAtlas2 都属于相关布局谱系，但公式与实现不同；NetworkX 的 <code>spring_layout</code> 不应冒称“已经运行了 Gephi ForceAtlas2”。</li>
 </ol>
 <p>Fruchterman–Reingold 的经典力模型中，若 d 是画布上的欧氏距离、k 是理想间距，典型吸引力大小与 d²/k 成正比，排斥力大小与 k²/d 成正比。方向、迭代温度、边权和停止条件会影响最终坐标，这里的两个量是机制解释而不是直接执行的力学模拟器。</p>
-<div class="math-scroll" tabindex="0"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="经典力导向模型中吸引力大小可写作 d 平方除以 k"><mrow><msub><mi>f</mi><mi>a</mi></msub><mo>(</mo><mi>d</mi><mo>)</mo><mo>=</mo><mfrac><msup><mi>d</mi><mn>2</mn></msup><mi>k</mi></mfrac></mrow></math></div>
-<div class="math-scroll" tabindex="0"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="经典力导向模型中的排斥力大小可写作 k 平方除以 d"><mrow><msub><mi>f</mi><mi>r</mi></msub><mo>(</mo><mi>d</mi><mo>)</mo><mo>=</mo><mfrac><msup><mi>k</mi><mn>2</mn></msup><mi>d</mi></mfrac></mrow></math></div>
+<div class="math-scroll" tabindex="0" role="region" aria-label="经典力导向模型中吸引力大小可写作 d 平方除以 k"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="经典力导向模型中吸引力大小可写作 d 平方除以 k"><mrow><msub><mi>f</mi><mi>a</mi></msub><mo>(</mo><mi>d</mi><mo>)</mo><mo>=</mo><mfrac><msup><mi>d</mi><mn>2</mn></msup><mi>k</mi></mfrac></mrow></math></div>
+<div class="math-scroll" tabindex="0" role="region" aria-label="经典力导向模型中的排斥力大小可写作 k 平方除以 d"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="经典力导向模型中的排斥力大小可写作 k 平方除以 d"><mrow><msub><mi>f</mi><mi>r</mi></msub><mo>(</mo><mi>d</mi><mo>)</mo><mo>=</mo><mfrac><msup><mi>k</mi><mn>2</mn></msup><mi>d</mi></mfrac></mrow></math></div>
 <p>如果 d 接近 0，需要算法数值保护。不同实现的具体能量函数与重力项不一定一样，也不要把二维位置本身当作节点嵌入算法的结果或预测标签。</p></section>
 <section id="interactive"><h2>改变坐标，不改变任何边</h2>
 <div class="interactive-demo" data-demo="layout"><h3>在两种明确的布局间切换</h3>
