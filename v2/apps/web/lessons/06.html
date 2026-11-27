@@ -22,7 +22,7 @@
 <p>在理想化、持续增长、线性优先连接的 BA 模型里，大度节点的连接增长率和它已有的度数相关。连续近似得到一个渐近尾部形式：</p>
 <div class="math-scroll" tabindex="0" role="region" aria-label="理想线性优先连接模型，度分布在大度尾部近似服从 k 的负三次方"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="理想线性优先连接模型，度分布在大度尾部近似服从 k 的负三次方"><mrow><mi>P</mi><mo>(</mo><mi>k</mi><mo>)</mo><mo>∝</mo><msup><mi>k</mi><mrow><mo>−</mo><mn>3</mn></mrow></msup></mrow></math></div>
 <p>指数 3 是这种特定机制的理论结果，并不是所有互联网、社交或生物网络共同的指数。有限网络具有最大度数和有限规模截断，实际的对数—对数图不能无限延伸；拟合真实数据应使用适当阈值、统计拟合与候选分布比较。</p>
-<table class="lesson-table"><thead><tr><th>模型</th><th>新增节点</th><th>连接偏好</th><th>能说明什么</th></tr></thead><tbody><tr><td>ER</td><td>非必需</td><td>边独立、同概率</td><td>随机基线</td></tr><tr><td>WS</td><td>非必需</td><td>规则局部边重连</td><td>短路径与高聚集</td></tr><tr><td>BA</td><td>持续增长</td><td>度比例优先连接</td><td>枢纽与度异质性</td></tr></tbody></table></section>
+<table class="lesson-table"><caption class="sr-only">ER、WS、BA 模型生成机制对照</caption><thead><tr><th scope="col">模型</th><th scope="col">新增节点</th><th scope="col">连接偏好</th><th scope="col">能说明什么</th></tr></thead><tbody><tr><td>ER</td><td>非必需</td><td>边独立、同概率</td><td>随机基线</td></tr><tr><td>WS</td><td>非必需</td><td>规则局部边重连</td><td>短路径与高聚集</td></tr><tr><td>BA</td><td>持续增长</td><td>度比例优先连接</td><td>枢纽与度异质性</td></tr></tbody></table></section>
 <section id="python"><h2>使用确定性种子生成一个 BA 网络</h2>
 <p>运行环境：Python 3.11+，NetworkX 3.3+。下例构造 200 个节点，每个新节点连向 2 个旧节点；此代码验证结构不变量，不把一次样本当作理论指数的估计。</p>
 <pre><code class="language-python">import networkx as nx
