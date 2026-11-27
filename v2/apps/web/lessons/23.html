@@ -6,7 +6,7 @@
 <section id="question"><h2>1. 先问清楚这张图究竟是什么</h2>
 <p>图分析的第一步不是调用 <code>nx.pagerank</code>，而是定义节点、边、方向、权重、重复记录、时间窗口和缺失含义。例如，一行“用户 A 给用户 B 点赞”产生的是<strong>有方向、可重复、带事件时间</strong>的关系；如果未经解释就将它装进无向简单图，反向是否存在、点赞次数和时间先后会被丢失。另一方面，若业务语义是“参与同一会议”，也不能无条件将所有与会者两两连成有因果含义的边。</p>
 <p>NetworkX 的 <code>Graph</code> 是无向图，允许自环但不保留平行边；<code>DiGraph</code> 有向，<code>MultiGraph</code>、<code>MultiDiGraph</code> 允许同一对节点之间存在多条边。在图表示转换中，孤立节点通常会被悄悄丢掉：如果仅由边列表创建图，未出现在任何边中的 G 节点不会自动出现。这个变化将直接影响节点总数、密度和分量数量。</p>
-<table class="lesson-table"><thead><tr><th>原始关系</th><th>正确建模前先决策</th><th>错误简化的代价</th></tr></thead><tbody><tr><td>A 给 B 发送 5 次消息</td><td>有向事件/带权聚合</td><td>丢失时间与重复次数</td></tr><tr><td>A 与 B 互为朋友</td><td>对称简单图是否有证据支持</td><td>虚构互惠关系</td></tr><tr><td>同一篇论文有 4 位作者</td><td>保留论文—作者二部图还是投影</td><td>投影会形成 6 条共同署名边</td></tr><tr><td>只知道 G 没有观测边</td><td>显式加入孤立节点</td><td>分母变化，孤立点消失</td></tr></tbody></table>
+<table class="lesson-table"><caption class="sr-only">原始关系、建模决策与错误简化的代价</caption><thead><tr><th scope="col">原始关系</th><th scope="col">正确建模前先决策</th><th scope="col">错误简化的代价</th></tr></thead><tbody><tr><td>A 给 B 发送 5 次消息</td><td>有向事件/带权聚合</td><td>丢失时间与重复次数</td></tr><tr><td>A 与 B 互为朋友</td><td>对称简单图是否有证据支持</td><td>虚构互惠关系</td></tr><tr><td>同一篇论文有 4 位作者</td><td>保留论文—作者二部图还是投影</td><td>投影会形成 6 条共同署名边</td></tr><tr><td>只知道 G 没有观测边</td><td>显式加入孤立节点</td><td>分母变化，孤立点消失</td></tr></tbody></table>
 </section>
 <section id="toy"><h2>2. 黄金样本：两个三角形 + 一条桥 + 一个孤立点</h2>
 <p>构造 7 个节点 A、B、C、D、E、F、G。其中 A-B-C-A 和 D-E-F-D 各组成一个三角形，额外用 C-D 连接两个三角形；G 是孤立节点。共有 n=7、m=7：两个三角形各 3 条边，桥 1 条边。<strong>C–D 是桥</strong>，因为删掉它将使原先连通的六节点分量分裂成两个三节点分量。</p>
@@ -18,7 +18,7 @@
 <section id="api"><h2>3. NetworkX 每项 API 的前提条件都写进实验协议</h2>
 <p><code>nx.number_connected_components(G)</code> 只适合无向图；对有向图必须先选择<strong>强连通</strong>还是<strong>弱连通</strong>。<code>nx.degree_centrality</code> 对简单图按最大可能度 n−1 归一化，故有孤立点时其中心性是 0；但对多重图、自环可能出现不超过 1 的直觉失效。<code>nx.betweenness_centrality</code> 衡量最短路位置，不等于在真实社交网络中的信息传播因果效应。</p>
 <p>带权图还需明确<strong>权重是距离还是强度</strong>。NetworkX 许多最短路径函数把 <code>weight</code> 作为路径成本；如果边权代表互动次数，数值越大通常代表“关系更强”，直接将其作为最短路径长度就可能反过来把强关系当作远距离。要么转换为正的成本（并说明公式），要么使用无权最短路径。负权甚至可能需要不同算法并产生负环问题。</p>
-<table class="lesson-table"><thead><tr><th>分析问题</th><th>推荐接口</th><th>前提/陷阱</th></tr></thead><tbody><tr><td>无向连通分量</td><td>connected_components</td><td>有向图需要 weakly/strongly_connected_components</td></tr><tr><td>桥边识别</td><td>bridges</td><td>适用于无向图的相关定义；注意 MultiGraph 语义</td></tr><tr><td>节点度中心性</td><td>degree_centrality</td><td>归一化基于节点数；并非影响力</td></tr><tr><td>最短路径</td><td>shortest_path_length</td><td>明确有向、权重为成本及不可达处理</td></tr><tr><td>读写与复现</td><td>read_edgelist / write_graphml</td><td>节点标识类型、属性类型、版本化输入</td></tr></tbody></table>
+<table class="lesson-table"><caption class="sr-only">常见图分析问题、推荐接口与前提陷阱</caption><thead><tr><th scope="col">分析问题</th><th scope="col">推荐接口</th><th scope="col">前提/陷阱</th></tr></thead><tbody><tr><td>无向连通分量</td><td>connected_components</td><td>有向图需要 weakly/strongly_connected_components</td></tr><tr><td>桥边识别</td><td>bridges</td><td>适用于无向图的相关定义；注意 MultiGraph 语义</td></tr><tr><td>节点度中心性</td><td>degree_centrality</td><td>归一化基于节点数；并非影响力</td></tr><tr><td>最短路径</td><td>shortest_path_length</td><td>明确有向、权重为成本及不可达处理</td></tr><tr><td>读写与复现</td><td>read_edgelist / write_graphml</td><td>节点标识类型、属性类型、版本化输入</td></tr></tbody></table>
 </section>
 <section id="pipeline"><h2>4. 从边表读取到报告：应该有怎样的验证顺序？</h2>
 <p>建议用固定的分析流程：① 记录原始文件哈希、来源与使用权限；② 解析节点/边类型并检查非法 ID；③ 统一是否去重、保留自环、聚合多重记录；④ 显式添加全部节点，包括孤立点；⑤ 检查 n、m、度和分量数、方向及权重范围；⑥ 才计算中心性、社团或模型；⑦ 导出机器可读报告和质量证据。<strong>先画图再解释图形位置</strong>容易把布局算法产生的远近误当真实的图论距离。</p>

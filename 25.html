@@ -10,7 +10,7 @@
 </section>
 <section id="complexity"><h2>2. 图算法复杂度必须带上对象与实现条件</h2>
 <p>对邻接表表示的无权图，BFS/DFS 从一个起点遍历可达部分的时间上界 O(n+m)，适合连通性和无权最短路。若要从<strong>每个节点</strong>运行 BFS 求精确全对最短路，最坏时间上界会增加到 O(n(n+m))，不能说“BFS 是线性，所以精确全对距离也线性”。Brandes 算法计算全部节点的无权介数中心性，常见时间复杂度是 O(nm)，加权图中可涉及优先队列及更高成本；具体内存需求还受实现和图类别影响。</p>
-<table class="lesson-table"><thead><tr><th>问题</th><th>常见理论上界</th><th>隐藏的条件/边界</th></tr></thead><tbody><tr><td>单源 BFS/DFS</td><td>O(n+m)</td><td>邻接表、可达部分、无权</td></tr><tr><td>所有节点对无权最短路</td><td>O(n(n+m))（重复 BFS）</td><td>不要和单次 BFS 混淆</td></tr><tr><td>无权介数（Brandes）</td><td>O(nm)</td><td>需要保存依赖与路径数量</td></tr><tr><td>多轮 PageRank</td><td>O(k(n+m))（稀疏迭代）</td><td>迭代次数 k、容差与 dangling 处理</td></tr><tr><td>力导向可视化</td><td>与迭代及力模型相关</td><td>通常不能从边数直接推断运行时间</td></tr><tr><td>Neo4j 多跳匹配</td><td>依查询计划和路径数量</td><td>不是简单 O(m) 的统一承诺</td></tr></tbody></table>
+<table class="lesson-table"><caption class="sr-only">图算法问题的理论上界与隐藏边界</caption><thead><tr><th scope="col">问题</th><th scope="col">常见理论上界</th><th scope="col">隐藏的条件/边界</th></tr></thead><tbody><tr><td>单源 BFS/DFS</td><td>O(n+m)</td><td>邻接表、可达部分、无权</td></tr><tr><td>所有节点对无权最短路</td><td>O(n(n+m))（重复 BFS）</td><td>不要和单次 BFS 混淆</td></tr><tr><td>无权介数（Brandes）</td><td>O(nm)</td><td>需要保存依赖与路径数量</td></tr><tr><td>多轮 PageRank</td><td>O(k(n+m))（稀疏迭代）</td><td>迭代次数 k、容差与 dangling 处理</td></tr><tr><td>力导向可视化</td><td>与迭代及力模型相关</td><td>通常不能从边数直接推断运行时间</td></tr><tr><td>Neo4j 多跳匹配</td><td>依查询计划和路径数量</td><td>不是简单 O(m) 的统一承诺</td></tr></tbody></table>
 <p>这些是算法层面的渐近表达，不是某家库的绝对性能保证。性能测量还需包括输入解析、索引构建、物理内存峰值、冷/热缓存、图副本数和输出序列化时间；只计一个函数调用可能把大部分实际成本隐藏起来。</p></section>
 <section id="sampling"><h2>3. 大图采样：随机选点与随机游走看到的不是同一群人</h2>
 <p>Uniform Node Sampling（均匀采样节点）让每个原图节点在抽样时有相同入样机会，抽样后通常使用诱导子图；但在稀疏图中会丢失大量边并改变连通性。随机游走取样在无向连通图上，基本随机游走的稳态概率正比于度：π(v)=d(v)/(2m)，更容易遇见高连接节点。<strong>随机游走样本的高平均度不一定代表原图就有那么多高连接用户</strong>，尤其短链、未混合和分量边界会增加偏差。</p>
@@ -27,7 +27,7 @@ CREATE INDEX person_id IF NOT EXISTS FOR (p:Person) ON (p.id);
 EXPLAIN MATCH (p:Person {id: $person_id})-[:KNOWS]-(friend:Person)
 RETURN friend.id LIMIT 20;
 # PROFILE 会实际执行并分析统计；EXPLAIN 仅生成计划。</code></pre>
-<table class="lesson-table"><thead><tr><th>任务侧重点</th><th>优先评估的工具</th><th>要先确认什么</th></tr></thead><tbody><tr><td>教学与算法审计</td><td>NetworkX + unittest</td><td>语义正确、数据量是否可控</td></tr><tr><td>单机大图统计</td><td>igraph / SciPy 稀疏</td><td>输入输出转换成本、算法支持</td></tr><tr><td>多方访问的持久图数据</td><td>Neo4j / 图数据库</td><td>索引、查询计划、事务与权限</td></tr><tr><td>超出单机内存的批计算</td><td>分布式图系统</td><td>分区通信量、数据倾斜、容错和总费用</td></tr><tr><td>图神经网络训练</td><td>框架稀疏算子 + 采样器</td><td>显存、fanout、样本偏差和可重复性</td></tr></tbody></table>
+<table class="lesson-table"><caption class="sr-only">任务侧重点、优先评估工具与先决条件</caption><thead><tr><th scope="col">任务侧重点</th><th scope="col">优先评估的工具</th><th scope="col">要先确认什么</th></tr></thead><tbody><tr><td>教学与算法审计</td><td>NetworkX + unittest</td><td>语义正确、数据量是否可控</td></tr><tr><td>单机大图统计</td><td>igraph / SciPy 稀疏</td><td>输入输出转换成本、算法支持</td></tr><tr><td>多方访问的持久图数据</td><td>Neo4j / 图数据库</td><td>索引、查询计划、事务与权限</td></tr><tr><td>超出单机内存的批计算</td><td>分布式图系统</td><td>分区通信量、数据倾斜、容错和总费用</td></tr><tr><td>图神经网络训练</td><td>框架稀疏算子 + 采样器</td><td>显存、fanout、样本偏差和可重复性</td></tr></tbody></table>
 </section>
 <section id="distributed"><h2>5. 为什么分布式并不是大图的第一反应</h2>
 <p>把图拆到多台机器会引入跨分区边通信、网络同步、重复状态、任务调度和容错开销。枢纽节点连接很多分区时尤其容易形成热点。图任务是否可并行，取决于算法是否主要局部遍历、是否多次全局同步、是否涉及优先队列或迭代收敛。先用流式读入、压缩索引、外存算法、单机并行与近似统计，评估是否已满足 SLA，再决定是否跨机器扩展。</p>

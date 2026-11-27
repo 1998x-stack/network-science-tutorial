@@ -6,7 +6,7 @@
 <section id="question"><h2>1. 社交关系的“边”，在每个案例中是什么意思？</h2>
 <p>社交网络分析的节点通常指个人或账户，但边可以表示观察到的互动、好友、关注、共同署名或消息转发。<strong>相同图统计值的社会含义可能完全不同</strong>：共同署名是协作关系，关注是单向关系，短时间内互动密集不等于长期稳定的社会纽带。若先把这些都转换成无向简单图再说“所有真实社交网络都有相同规律”，结论将因建图语义不一致而失效。</p>
 <p>本页采用两个有明确出处的数据对象：历史的 Zachary Karate Club（真实来源）、Stanford SNAP ca-GrQc 合著网络（公开研究资源）。第三种“平台关注”只以合成有向小图讨论，<strong>不假装下载或运行微博私有数据</strong>，也不借平台规模臆造个人信息。</p>
-<table class="lesson-table"><thead><tr><th>网络</th><th>节点定义</th><th>边语义</th><th>分析前须确认</th></tr></thead><tbody><tr><td>Karate Club</td><td>1970 年代俱乐部成员</td><td>采集的线下互动关系</td><td>历史观察与权重来源</td></tr><tr><td>ca-GrQc</td><td>论文作者</td><td>至少合作一篇论文</td><td>合著窗与作者重名/投影口径</td></tr><tr><td>平台关注（合成）</td><td>账户</td><td>用户 A 关注账户 B</td><td>方向、机器人、缺失与隐私</td></tr><tr><td>评论回复（合成）</td><td>回复者/被回复者</td><td>按时间发生的互动事件</td><td>多重事件与话题上下文</td></tr></tbody></table>
+<table class="lesson-table"><caption class="sr-only">不同数据对象的节点、边语义与分析前检查项</caption><thead><tr><th scope="col">网络</th><th scope="col">节点定义</th><th scope="col">边语义</th><th scope="col">分析前须确认</th></tr></thead><tbody><tr><td>Karate Club</td><td>1970 年代俱乐部成员</td><td>采集的线下互动关系</td><td>历史观察与权重来源</td></tr><tr><td>ca-GrQc</td><td>论文作者</td><td>至少合作一篇论文</td><td>合著窗与作者重名/投影口径</td></tr><tr><td>平台关注（合成）</td><td>账户</td><td>用户 A 关注账户 B</td><td>方向、机器人、缺失与隐私</td></tr><tr><td>评论回复（合成）</td><td>回复者/被回复者</td><td>按时间发生的互动事件</td><td>多重事件与话题上下文</td></tr></tbody></table>
 </section>
 <section id="karate"><h2>2. 经典 Karate Club：34 节点、78 条边意味着什么？</h2>
 <p>Zachary（1977）研究了一个大学空手道俱乐部在冲突后分裂的关系网络。广泛使用的简单无向图版本包含<strong>34 个节点、78 条边</strong>；NetworkX 的 <code>karate_club_graph</code> 以 0–33 编号，原文通常按 1–34 编号，引用原文个体身份时必须小心<strong>编号相差 1</strong>。边有权重，反映不同互动语境的计数或强度；忽略这些权重后，某些算法的目标函数会改变。</p>

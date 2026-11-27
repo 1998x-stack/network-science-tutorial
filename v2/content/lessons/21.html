@@ -5,7 +5,7 @@
 <p>给定图 G=(V,E)，节点可能是用户、论文、设备或蛋白质；一条边必须先定义清楚，例如“在观察窗内共同署名过论文”，不能直接把边解释成因果影响。<strong>节点嵌入</strong>就是构造映射 f:V→Rᵈ，把每个节点编码为 d 维向量，使该向量适合某项下游任务。向量的绝对坐标通常并无固定语义，两次训练的结果可能整体旋转；相对距离、内积和任务表现才有可比较的意义。</p>
 <p>“相似”至少有三个不同定义：相邻或共同邻居多是<strong>局部接近性</strong>；在随机游走窗口中经常共现是<strong>上下文接近性</strong>；在两个彼此遥远的子图中扮演类似枢纽、叶子或桥梁角色，是<strong>结构角色相似性</strong>。三者不能直接划等号。设两个不同社团各有一个星形中心，它们即使完全不相连，也可能角色相似；但普通局部游走未必会让二者共现。</p>
 <p>具体输出也必须说明：DeepWalk、node2vec 的经典浅层模型通常为已知节点分别学习一个向量表；若线上出现新用户，单凭已有向量表一般不能直接得到该用户的向量，必须额外设计算法、增量更新或使用能处理特征的归纳模型。嵌入维数 d 与训练样本数不同，d 较大并不自动提升泛化能力。</p>
-<table class="lesson-table"><thead><tr><th>研究目标</th><th>保留什么</th><th>下游任务示例</th><th>不能直接保证什么</th></tr></thead><tbody><tr><td>局部邻近</td><td>共同邻居、短路径</td><td>链接预测</td><td>真实好友关系形成的因果性</td></tr><tr><td>随机游走上下文</td><td>多步访问的共现</td><td>节点分类、检索</td><td>跨分量结构等价</td></tr><tr><td>结构角色</td><td>度序列或邻域形态</td><td>相似职业/角色检索</td><td>节点处于相同社团</td></tr><tr><td>端到端节点预测</td><td>任务损失中的有效信息</td><td>分类/回归</td><td>跨时间漂移后仍有效</td></tr></tbody></table>
+<table class="lesson-table"><caption class="sr-only">三类相似性目标保留的结构与下游任务</caption><thead><tr><th scope="col">研究目标</th><th scope="col">保留什么</th><th scope="col">下游任务示例</th><th scope="col">不能直接保证什么</th></tr></thead><tbody><tr><td>局部邻近</td><td>共同邻居、短路径</td><td>链接预测</td><td>真实好友关系形成的因果性</td></tr><tr><td>随机游走上下文</td><td>多步访问的共现</td><td>节点分类、检索</td><td>跨分量结构等价</td></tr><tr><td>结构角色</td><td>度序列或邻域形态</td><td>相似职业/角色检索</td><td>节点处于相同社团</td></tr><tr><td>端到端节点预测</td><td>任务损失中的有效信息</td><td>分类/回归</td><td>跨时间漂移后仍有效</td></tr></tbody></table>
 </section>
 <section id="deepwalk"><h2>2. DeepWalk：把随机游走当成训练语料</h2>
 <p>DeepWalk（Perozzi 等，KDD 2014）将图上的短随机游走转成节点序列。对无权简单无向图，位于 v 时，下一步在 N(v) 中均匀选一个邻居；若 d(v)=0，游走立即终止。这个转移是 P(v→x)=1/d(v)，它与 PageRank 的传送项不同，也不等于“随机游走就是谱分解”。后者只有在特定矩阵分解分析与极限假设下才能建立联系，不能用来描述原始算法的直接步骤。</p>
@@ -25,7 +25,7 @@
 <section id="role"><h2>4. 同一社团 vs 相同角色：struc2vec 为何单独存在</h2>
 <p>假设两个互不连通的星形分量各有一个中心：中心都具有较高度数，并连接许多低度叶子。单纯邻近游走不能跨分量生成正例，因此可能学习不到“两个中心承担相同角色”。struc2vec（Ribeiro 等，KDD 2017）采用层级结构相似性建立新的多层辅助图，再在辅助图上生成结构上下文；这不是把原图节点编号送入 node2vec，也不是只比较“一跳度数是否相同”。</p>
 <p>原论文使用不同邻域尺度的度序列等结构描述与距离比较，并围绕结构相似性构造跨分量的上下文机会。这会增加预处理与存储成本。它更适合<strong>角色相似</strong>研究，但结构角色仍然需要明确任务定义。若两个完全不同的组织中“度高”并不代表功能相同，那么该表征也不能自动给出功能解释。</p>
-<table class="lesson-table"><thead><tr><th>方法</th><th>用于生成上下文的信号</th><th>优点</th><th>必须承认的限制</th></tr></thead><tbody><tr><td>DeepWalk</td><td>无偏截断随机游走</td><td>简单、自然的局部上下文</td><td>窗口与访问偏差敏感</td></tr><tr><td>node2vec</td><td>带上一节点条件的 p/q 有偏游走</td><td>可调局部/向外探索</td><td>并非严格 BFS/DFS；仍是有限样本</td></tr><tr><td>struc2vec</td><td>跨节点结构相似性构成的多层上下文图</td><td>能强调远距离结构角色</td><td>计算昂贵，结构相似不等于业务同质</td></tr><tr><td>LINE</td><td>一阶、二阶网络邻近目标</td><td>适合大规模邻接建模</td><td>与随机游走窗口目标不等价</td></tr></tbody></table>
+<table class="lesson-table"><caption class="sr-only">DeepWalk、node2vec、struc2vec、LINE 的上下文信号与限制</caption><thead><tr><th scope="col">方法</th><th scope="col">用于生成上下文的信号</th><th scope="col">优点</th><th scope="col">必须承认的限制</th></tr></thead><tbody><tr><td>DeepWalk</td><td>无偏截断随机游走</td><td>简单、自然的局部上下文</td><td>窗口与访问偏差敏感</td></tr><tr><td>node2vec</td><td>带上一节点条件的 p/q 有偏游走</td><td>可调局部/向外探索</td><td>并非严格 BFS/DFS；仍是有限样本</td></tr><tr><td>struc2vec</td><td>跨节点结构相似性构成的多层上下文图</td><td>能强调远距离结构角色</td><td>计算昂贵，结构相似不等于业务同质</td></tr><tr><td>LINE</td><td>一阶、二阶网络邻近目标</td><td>适合大规模邻接建模</td><td>与随机游走窗口目标不等价</td></tr></tbody></table>
 </section>
 <section id="evaluation"><h2>5. 数据切分：嵌入本身也可能泄漏未来答案</h2>
 <p>做<strong>未来新边预测</strong>时，不能先用包含未来边的全图训练随机游走嵌入，再把那条未来边藏进测试标签。虽然分类模型训练时未看到测试标签，但图表示已经偷看了答案。应先按事件时间得到 G_train，只在这张训练图上构造游走、度、负例采样池和向量；再在明确的未来窗口评估。新节点、缺失关系和不可见候选应分别记录。</p>

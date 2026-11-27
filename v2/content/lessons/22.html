@@ -24,7 +24,7 @@
 <p>GraphSAGE（Hamilton 等，NeurIPS 2017）学习的是从自身特征与邻居特征构造节点表示的<strong>聚合函数</strong>，而不只是为每个训练节点维护独立可学习 ID。典型形式是先对采样到的邻居求 AGG，再与自身前层表示拼接并经线性层、非线性激活；具体 mean、LSTM、pool aggregator 存在差异，文献中还有不同卷积变体，不应把 mean 的具体实现推广到全部 GraphSAGE。</p>
 <p>邻居采样使得一个多层模型可以在不枚举全部高阶邻域的条件下近似更新表示，但采样引入方差与估计偏差。若每层最多选 f 个邻居，L 层单个种子节点的理论展开上界可能近似为 O(fᴸ)，而不是只看单层 O(f)。高连接节点更需要明确采样概率、随机种子和层级 fanout。</p>
 <figure class="lesson-figure"><img src="assets/lessons/22-b.svg" alt="GCN 依图结构计算固定对称归一化，GAT 用节点特征计算邻域注意力，GraphSAGE 在采样邻居上学习聚合函数。"><figcaption>三种方法比较的是算法设计维度而非未经测量的模型优劣。GraphSAGE 可归纳新节点依赖可用节点特征和可观测邻域。</figcaption></figure>
-<table class="lesson-table"><thead><tr><th>方法</th><th>信息权重来源</th><th>新节点推理条件</th><th>主要风险</th></tr></thead><tbody><tr><td>GCN 基础形式</td><td>自环加度归一化</td><td>需要新图特征及邻接信息</td><td>同质性偏好、深层过平滑</td></tr><tr><td>GAT</td><td>特征计算的邻域 softmax</td><td>需要新节点/邻居特征</td><td>注意力不等于因果解释</td></tr><tr><td>GraphSAGE</td><td>聚合器与采样邻居</td><td>可观察特征和可用邻域</td><td>fanout 放大、采样方差</td></tr></tbody></table>
+<table class="lesson-table"><caption class="sr-only">GCN、GAT、GraphSAGE 的信息权重来源与新节点推理条件</caption><thead><tr><th scope="col">方法</th><th scope="col">信息权重来源</th><th scope="col">新节点推理条件</th><th scope="col">主要风险</th></tr></thead><tbody><tr><td>GCN 基础形式</td><td>自环加度归一化</td><td>需要新图特征及邻接信息</td><td>同质性偏好、深层过平滑</td></tr><tr><td>GAT</td><td>特征计算的邻域 softmax</td><td>需要新节点/邻居特征</td><td>注意力不等于因果解释</td></tr><tr><td>GraphSAGE</td><td>聚合器与采样邻居</td><td>可观察特征和可用邻域</td><td>fanout 放大、采样方差</td></tr></tbody></table>
 </section>
 <section id="failure"><h2>5. 两种不同的深层失败：过平滑与过压缩</h2>
 <p><strong>过平滑（over-smoothing）</strong>指随着反复传播，某些图和传播算子会让节点表示越来越难区分；<strong>过压缩（over-squashing）</strong>指远处大量信息不得不通过有限维的图瓶颈传递，导致目标节点无法有效利用遥远依赖。前者更多涉及迭代平滑造成的区分度下降，后者更多是图几何与信息通道瓶颈；两个概念相关但不能混作一个现象。</p>
